@@ -53,6 +53,14 @@ def translate_img(img, dx, dy, fill=255):
     return img_translation
 
 
+def rotate_img(img, angle, fill):
+    height, width = img.shape[:2]
+    center = (width // 2, height // 2)
+    M = cv2.getRotationMatrix2D(center, angle, 1)
+    rotated_img = cv2.warpAffine(img, M, (width, height), borderMode=cv2.BORDER_CONSTANT, borderValue=fill)
+    return rotated_img
+
+
 def random_translate_img(img, sx: float, sy: float, fill=255):
     """Сдвигает изображение в случайном направлении максимум на sx по оси OX и на sy по оси OY
     sx, sy: [0, 1] и заполняет освободившиеся пиксели значением fill"""
@@ -62,6 +70,11 @@ def random_translate_img(img, sx: float, sy: float, fill=255):
     dx = random.randint(-max_dx, max_dx)
     dy = random.randint(-max_dy, max_dy)
     return translate_img(img, dx, dy, fill)
+
+
+def random_rotate_img(img, max_angle, fill):
+    angle = random.randint(-max_angle, max_angle)
+    return rotate_img(img, angle, fill)
 
 
 def order_points(pts: np.ndarray):
