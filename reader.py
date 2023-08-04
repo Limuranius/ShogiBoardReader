@@ -6,17 +6,20 @@ from corner_getter import CornerDetector
 from config import config
 from figures import Figure, Direction, FIGURE_ICONS_PATHS
 from recognizer import Recognizer
+from board_analyzer import BoardAnalyzer
 
 
 class ShogiBoardReader:
     image_getter: ImageGetter
     corner_getter: CornerDetector
     recognizer: Recognizer
+    analyzer: BoardAnalyzer
 
     def __init__(self, image_getter: ImageGetter, corner_getter: CornerDetector, recognizer: Recognizer):
         self.image_getter = image_getter
         self.corner_getter = corner_getter
         self.recognizer = recognizer
+        self.analyzer = BoardAnalyzer()
 
     def get_board_image(self):
         """Возвращает изображение доски с убранной перспективой и вырезанным фоном"""
@@ -25,8 +28,10 @@ class ShogiBoardReader:
         return utils.remove_perspective(full_img, np.array(corners))
 
     def get_board_cells(self) -> list[list[np.ndarray]]:
+        # return self.get_board_cells_lab_threshold()
         return self.get_board_cells_canny()
         # return self.get_board_cells_mask()
+        # return self.get_board_cells_grayscale()
 
     def get_board_cells_grayscale(self) -> list[list[np.ndarray]]:
         board_img = self.get_board_image()
@@ -41,6 +46,13 @@ class ShogiBoardReader:
     def get_board_cells_mask(self) -> list[list[np.ndarray]]:
         board_img = self.get_board_image()
         mask = utils.get_black_mask(board_img)
+        return self.__get_board_cells(mask)
+
+    def get_board_cells_lab_threshold(self):
+        board_img = self.get_board_image()
+        img_lab = cv2.cvtColor(board_img, cv2.COLOR_BGR2LAB)
+        mask = img_lab[:, :, 0] < 100
+        mask = mask.astype(np.uint8) * 255
         return self.__get_board_cells(mask)
 
     def get_board_cells_original(self) -> list[list[np.ndarray]]:
@@ -105,6 +117,9 @@ class ShogiBoardReader:
     def get_digital_board(self):
         figures = self.recognize_board_figures()
         directions = self.recognize_board_directions()
+
+        self.analyzer.update(figures)
+        figures = self.analyzer.get_board()
 
         BOARD_SIZE = 1000
         FIGURE_SIZE = BOARD_SIZE // 9
