@@ -7,12 +7,12 @@ CONFIG_PATH = path.join(ROOT_DIR, "config.ini")
 
 NN_DATA_DIR = path.join(ROOT_DIR, "NN_data")
 DATASETS_DIR = path.join(NN_DATA_DIR, "datasets")
-X_TRAIN_PATH = path.join(NN_DATA_DIR, "x_train_path.pickle")
-X_TEST_PATH = path.join(NN_DATA_DIR, "x_test.pickle")
-Y_FIGURE_TRAIN_PATH = path.join(NN_DATA_DIR, "y_figure_train_path.pickle")
-Y_FIGURE_TEST_PATH = path.join(NN_DATA_DIR, "y_figure_test_path.pickle")
-Y_DIRECTION_TRAIN_PATH = path.join(NN_DATA_DIR, "y_direction_train_path.pickle")
-Y_DIRECTION_TEST_PATH = path.join(NN_DATA_DIR, "y_direction_test_path.pickle")
+X_TRAIN_PATH = path.join(DATASETS_DIR, "x_train.pickle")
+X_TEST_PATH = path.join(DATASETS_DIR, "x_test.pickle")
+Y_FIGURE_TRAIN_PATH = path.join(DATASETS_DIR, "y_figure_train.pickle")
+Y_FIGURE_TEST_PATH = path.join(DATASETS_DIR, "y_figure_test.pickle")
+Y_DIRECTION_TRAIN_PATH = path.join(DATASETS_DIR, "y_direction_train.pickle")
+Y_DIRECTION_TEST_PATH = path.join(DATASETS_DIR, "y_direction_test.pickle")
 IMGS_EXAMPLE_DIR = path.join(NN_DATA_DIR, "imgs_examples")
 
 MODELS_DIR = path.join(ROOT_DIR, "models")
@@ -34,8 +34,6 @@ create_folders([
     DATASETS_DIR,
     IMGS_EXAMPLE_DIR,
     MODELS_DIR,
-    MODEL_FIGURE_PATH,
-    MODEL_DIRECTION_PATH,
     IMGS_DIR,
     TRAIN_BOARDS_DIR,
     FIGURE_ICONS_DIR,
