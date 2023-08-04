@@ -9,6 +9,8 @@ class NN_data:
     test_fraction: float
     random_translate_repeat: int
     random_translate_max_margin: float
+    random_rotate_repeat: int
+    random_rotate_max_angle: int
 
 
 @section(config_path=CONFIG_PATH, section_name="HSV Threshold")

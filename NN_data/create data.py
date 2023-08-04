@@ -66,11 +66,16 @@ def create_training_data() -> list[tuple[np.ndarray, tuple[int, int]]]:
                 cell_img = cells[i][j]
 
                 cell_variations = [cell_img]
-                for _ in range(config.NN_data.random_translate_repeat):
+                for _ in range(config.NN_data.random_translate_repeat):  # random translate
                     max_margin = config.NN_data.random_translate_max_margin
-                    trans_img = utils.random_translate_img(cell_img, max_margin, max_margin, fill=0)
-                    # trans_img = utils.random_translate_img(cell_img, max_margin, max_margin, fill=255)
+                    trans_img = utils.random_translate_img(cell_img, max_margin, max_margin, fill=150)
                     cell_variations.append(trans_img)
+
+                for _ in range(config.NN_data.random_rotate_repeat):  # random rotate
+                    for img in cell_variations[: config.NN_data.random_translate_repeat + 1]:
+                        max_angle = config.NN_data.random_rotate_max_angle
+                        rot_img = utils.random_rotate_img(img, max_angle, fill=150)
+                        cell_variations.append(rot_img)
 
                 figure_label = CATEGORIES_FIGURE_TYPE.index(true_figure)
                 direction_label = CATEGORIES_DIRECTION.index(true_direction)
@@ -120,9 +125,8 @@ def main():
         paths.Y_DIRECTION_TRAIN_PATH: y_direction_train,
         paths.Y_DIRECTION_TEST_PATH: y_direction_test,
     })
-    # save_data_to_imgs(X_test, y_figure_test)
+    save_data_to_imgs(X_test, y_figure_test)
 
 
 if __name__ == '__main__':
     main()
-
