@@ -68,13 +68,13 @@ def create_training_data() -> list[tuple[np.ndarray, tuple[int, int]]]:
                 cell_variations = [cell_img]
                 for _ in range(config.NN_data.random_translate_repeat):  # random translate
                     max_margin = config.NN_data.random_translate_max_margin
-                    trans_img = utils.random_translate_img(cell_img, max_margin, max_margin, fill=150)
+                    trans_img = utils.random_translate_img(cell_img, max_margin, max_margin, fill=0)
                     cell_variations.append(trans_img)
 
                 for _ in range(config.NN_data.random_rotate_repeat):  # random rotate
                     for img in cell_variations[: config.NN_data.random_translate_repeat + 1]:
                         max_angle = config.NN_data.random_rotate_max_angle
-                        rot_img = utils.random_rotate_img(img, max_angle, fill=150)
+                        rot_img = utils.random_rotate_img(img, max_angle, fill=0)
                         cell_variations.append(rot_img)
 
                 figure_label = CATEGORIES_FIGURE_TYPE.index(true_figure)
