@@ -1,3 +1,6 @@
+from paths import TRAIN_BOARDS_DIR
+
+
 class TrueFigureTypes:
     START_BOARD = """
     LNSGKGSNL
@@ -12,12 +15,12 @@ class TrueFigureTypes:
     """
 
     TRUE_BOARDS = {
-        "imgs/board.jpg": START_BOARD,
-        "imgs/board2.jpg": START_BOARD,
-        "imgs/board3.jpg": START_BOARD,
-        "imgs/board4.jpg": START_BOARD,
-        "imgs/board5.jpg": START_BOARD,
-        "imgs/board6.png": """
+        f"{TRAIN_BOARDS_DIR}\\board.jpg": START_BOARD,
+        f"{TRAIN_BOARDS_DIR}\\board2.jpg": START_BOARD,
+        f"{TRAIN_BOARDS_DIR}\\board3.jpg": START_BOARD,
+        f"{TRAIN_BOARDS_DIR}\\board4.jpg": START_BOARD,
+        f"{TRAIN_BOARDS_DIR}\\board5.jpg": START_BOARD,
+        f"{TRAIN_BOARDS_DIR}\\board6.png": """
             LNKG.GSNL
             .RS....B.
             PPPPPP.PP
@@ -28,40 +31,7 @@ class TrueFigureTypes:
             .B...K...
             LNSG.GSNL
         """,
-        "imgs/board7.png": """
-            LNKG.GSNL
-            .RS....B.
-            PPPPPP.PP
-            ......P..
-            .......P.
-            ..P....R.
-            PP.PPPP.P
-            .B...K...
-            LNSG.GSNL
-        """,
-        "imgs/board8.png": """
-            LNKG.GSNL
-            .RS....B.
-            .PPPPP.PP
-            P.....P..
-            ....B..P.
-            ..P.P..R.
-            PP.P.PP.P
-            .....K...
-            LNSG.GSNL
-        """,
-        "imgs/board9.png": """
-            LNKG.GSNL
-            .RS....B.
-            .PPPPP.PP
-            P.....P..
-            ....B..P.
-            ..P.P..R.
-            PP.P.PP.P
-            .....K...
-            LNSG.GSNL
-        """,
-        "imgs/board10.png": """
+        f"{TRAIN_BOARDS_DIR}\\board7.png": """
             LNKG.GSNL
             .RS....B.
             PPPPPP.PP
@@ -72,7 +42,40 @@ class TrueFigureTypes:
             .B...K...
             LNSG.GSNL
         """,
-        "imgs/board11.png": """
+        f"{TRAIN_BOARDS_DIR}\\board8.png": """
+            LNKG.GSNL
+            .RS....B.
+            .PPPPP.PP
+            P.....P..
+            ....B..P.
+            ..P.P..R.
+            PP.P.PP.P
+            .....K...
+            LNSG.GSNL
+        """,
+        f"{TRAIN_BOARDS_DIR}\\board9.png": """
+            LNKG.GSNL
+            .RS....B.
+            .PPPPP.PP
+            P.....P..
+            ....B..P.
+            ..P.P..R.
+            PP.P.PP.P
+            .....K...
+            LNSG.GSNL
+        """,
+        f"{TRAIN_BOARDS_DIR}\\board10.png": """
+            LNKG.GSNL
+            .RS....B.
+            PPPPPP.PP
+            ......P..
+            .......P.
+            ..P....R.
+            PP.PPPP.P
+            .B...K...
+            LNSG.GSNL
+        """,
+        f"{TRAIN_BOARDS_DIR}\\board11.png": """
             LNKG.GSNL
             .RS....B.
             PPPPPP.PP
@@ -83,7 +86,7 @@ class TrueFigureTypes:
             .B...K...
             LNSG.GSNL
         """,
-        "imgs/board12.png": """
+        f"{TRAIN_BOARDS_DIR}\\board12.png": """
             LNKG.GSNL
             .RS....B.
             PPPPPP.PP
@@ -94,7 +97,7 @@ class TrueFigureTypes:
             .....K...
             LNSG.GSNL
         """,
-        "imgs/board13.jpg": """
+        f"{TRAIN_BOARDS_DIR}\\board13.jpg": """
             ....L....
             ..S...R..
             ....N...L
@@ -106,7 +109,7 @@ class TrueFigureTypes:
             .....P...
         """,
 
-        "imgs/board14.jpg": """
+        f"{TRAIN_BOARDS_DIR}\\board14.jpg": """
             ......L..
             .........
             ....NL...
@@ -137,12 +140,12 @@ class TrueDirections:
     """
 
     TRUE_BOARDS = {
-        "imgs/board.jpg": START_BOARD,
-        "imgs/board2.jpg": START_BOARD,
-        "imgs/board3.jpg": START_BOARD,
-        "imgs/board4.jpg": START_BOARD,
-        "imgs/board5.jpg": START_BOARD,
-        "imgs/board6.png": """
+        f"{TRAIN_BOARDS_DIR}\\board.jpg": START_BOARD,
+        f"{TRAIN_BOARDS_DIR}\\board2.jpg": START_BOARD,
+        f"{TRAIN_BOARDS_DIR}\\board3.jpg": START_BOARD,
+        f"{TRAIN_BOARDS_DIR}\\board4.jpg": START_BOARD,
+        f"{TRAIN_BOARDS_DIR}\\board5.jpg": START_BOARD,
+        f"{TRAIN_BOARDS_DIR}\\board6.png": """
             DDDD.DDDD
             .DD....D.
             DDDDDD.DD
@@ -153,40 +156,7 @@ class TrueDirections:
             .U...U...
             UUUU.UUUU
         """,
-        "imgs/board7.png": """
-            DDDD.DDDD
-            .DD....D.
-            DDDDDD.DD
-            ......D..
-            .......U.
-            ..U....U.
-            UU.UUUU.U
-            .U...U...
-            UUUU.UUUU
-        """,
-        "imgs/board8.png": """
-            DDDD.DDDD
-            .DD....D.
-            .DDDDD.DD
-            D.....D..
-            ....U..U.
-            ..U.U..U.
-            UU.U.UU.U
-            .....U...
-            UUUU.UUUU
-        """,
-        "imgs/board9.png": """
-            DDDD.DDDD
-            .DD....D.
-            .DDDDD.DD
-            D.....D..
-            ....U..U.
-            ..U.U..U.
-            UU.U.UU.U
-            .....U...
-            UUUU.UUUU
-        """,
-        "imgs/board10.png": """
+        f"{TRAIN_BOARDS_DIR}\\board7.png": """
             DDDD.DDDD
             .DD....D.
             DDDDDD.DD
@@ -197,7 +167,40 @@ class TrueDirections:
             .U...U...
             UUUU.UUUU
         """,
-        "imgs/board11.png": """
+        f"{TRAIN_BOARDS_DIR}\\board8.png": """
+            DDDD.DDDD
+            .DD....D.
+            .DDDDD.DD
+            D.....D..
+            ....U..U.
+            ..U.U..U.
+            UU.U.UU.U
+            .....U...
+            UUUU.UUUU
+        """,
+        f"{TRAIN_BOARDS_DIR}\\board9.png": """
+            DDDD.DDDD
+            .DD....D.
+            .DDDDD.DD
+            D.....D..
+            ....U..U.
+            ..U.U..U.
+            UU.U.UU.U
+            .....U...
+            UUUU.UUUU
+        """,
+        f"{TRAIN_BOARDS_DIR}\\board10.png": """
+            DDDD.DDDD
+            .DD....D.
+            DDDDDD.DD
+            ......D..
+            .......U.
+            ..U....U.
+            UU.UUUU.U
+            .U...U...
+            UUUU.UUUU
+        """,
+        f"{TRAIN_BOARDS_DIR}\\board11.png": """
             DDDD.DDDD
             .DD....D.
             DDDDDD.DD
@@ -208,7 +211,7 @@ class TrueDirections:
             .U...U...
             UUUU.UUUU
         """,
-        "imgs/board12.png": """
+        f"{TRAIN_BOARDS_DIR}\\board12.png": """
             DDDD.DDDD
             .DD....D.
             DDDDDD.DD
@@ -219,7 +222,7 @@ class TrueDirections:
             .....U...
             UUUU.UUUU
         """,
-        "imgs/board13.jpg": """
+        f"{TRAIN_BOARDS_DIR}\\board13.jpg": """
             ....D....
             ..U...D..
             ....U...U
@@ -231,7 +234,7 @@ class TrueDirections:
             .....U...
         """,
 
-        "imgs/board14.jpg": """
+        f"{TRAIN_BOARDS_DIR}\\board14.jpg": """
             ......D..
             .........
             ....UD...

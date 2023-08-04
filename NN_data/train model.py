@@ -2,12 +2,17 @@ import pickle
 from tensorflow import keras
 from time import time
 from config import config
+import paths
 
 
-def load_data(names: list[str]):
+FIGURE_EPOCH = 5
+DIRECTION_EPOCH = 5
+
+
+def load_data(paths: list[str]):
     return [
-        pickle.load(open(f"datasets/{name}.pickle", "rb"))
-        for name in names
+        pickle.load(open(path, "rb"))
+        for path in paths
     ]
 
 
@@ -35,12 +40,12 @@ def train_figure_type():
     )
 
     X_train, y_train = load_data([
-        "X_train", "y_figure_train",
+        paths.X_TRAIN_PATH, paths.Y_FIGURE_TRAIN_PATH,
     ])
     X_train = X_train.astype("float32") / 255
 
-    model.fit(X_train, y_train, batch_size=32, epochs=5)
-    model.save("../reader_figure_type.model")
+    model.fit(X_train, y_train, batch_size=32, epochs=FIGURE_EPOCH)
+    model.save(paths.MODEL_FIGURE_PATH)
 
 
 def train_direction():
@@ -67,26 +72,26 @@ def train_direction():
     )
 
     X_train, y_train = load_data([
-        "X_train", "y_direction_train",
+        paths.X_TRAIN_PATH, paths.Y_DIRECTION_TRAIN_PATH,
     ])
     X_train = X_train.astype("float32") / 255
 
-    model.fit(X_train, y_train, batch_size=32, epochs=5)
-    model.save("../reader_direction.model")
+    model.fit(X_train, y_train, batch_size=32, epochs=DIRECTION_EPOCH)
+    model.save(paths.MODEL_DIRECTION_PATH)
 
 
 def test_figure():
-    model = keras.models.load_model("../reader_figure_type.model")
+    model = keras.models.load_model(paths.MODEL_FIGURE_PATH)
     X_test, y_test = load_data([
-        "X_test", "y_figure_test",
+        paths.X_TEST_PATH, paths.Y_FIGURE_TEST_PATH,
     ])
     model.evaluate(X_test, y_test, batch_size=32)
 
 
 def test_direction():
-    model = keras.models.load_model("../reader_direction.model")
+    model = keras.models.load_model(paths.MODEL_DIRECTION_PATH)
     X_test, y_test = load_data([
-        "X_test", "y_direction_test",
+        paths.X_TEST_PATH, paths.Y_DIRECTION_TEST_PATH,
     ])
     model.evaluate(X_test, y_test, batch_size=32)
 
