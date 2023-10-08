@@ -1,4 +1,5 @@
 from paths import TRAIN_BOARDS_DIR
+import os
 
 
 class TrueFigureTypes:
@@ -15,12 +16,12 @@ class TrueFigureTypes:
     """
 
     TRUE_BOARDS = {
-        f"{TRAIN_BOARDS_DIR}\\board.jpg": START_BOARD,
-        f"{TRAIN_BOARDS_DIR}\\board2.jpg": START_BOARD,
-        f"{TRAIN_BOARDS_DIR}\\board3.jpg": START_BOARD,
-        f"{TRAIN_BOARDS_DIR}\\board4.jpg": START_BOARD,
-        f"{TRAIN_BOARDS_DIR}\\board5.jpg": START_BOARD,
-        f"{TRAIN_BOARDS_DIR}\\board6.png": """
+        os.path.join(TRAIN_BOARDS_DIR, "board.jpg"): START_BOARD,
+        os.path.join(TRAIN_BOARDS_DIR, "board2.jpg"): START_BOARD,
+        os.path.join(TRAIN_BOARDS_DIR, "board3.jpg"): START_BOARD,
+        os.path.join(TRAIN_BOARDS_DIR, "board4.jpg"): START_BOARD,
+        os.path.join(TRAIN_BOARDS_DIR, "board5.jpg"): START_BOARD,
+        os.path.join(TRAIN_BOARDS_DIR, "board6.jpg"): """
             LNKG.GSNL
             .RS....B.
             PPPPPP.PP
@@ -31,40 +32,7 @@ class TrueFigureTypes:
             .B...K...
             LNSG.GSNL
         """,
-        f"{TRAIN_BOARDS_DIR}\\board7.png": """
-            LNKG.GSNL
-            .RS....B.
-            PPPPPP.PP
-            ......P..
-            .......P.
-            ..P....R.
-            PP.PPPP.P
-            .B...K...
-            LNSG.GSNL
-        """,
-        f"{TRAIN_BOARDS_DIR}\\board8.png": """
-            LNKG.GSNL
-            .RS....B.
-            .PPPPP.PP
-            P.....P..
-            ....B..P.
-            ..P.P..R.
-            PP.P.PP.P
-            .....K...
-            LNSG.GSNL
-        """,
-        f"{TRAIN_BOARDS_DIR}\\board9.png": """
-            LNKG.GSNL
-            .RS....B.
-            .PPPPP.PP
-            P.....P..
-            ....B..P.
-            ..P.P..R.
-            PP.P.PP.P
-            .....K...
-            LNSG.GSNL
-        """,
-        f"{TRAIN_BOARDS_DIR}\\board10.png": """
+        os.path.join(TRAIN_BOARDS_DIR, "board7.jpg"): """
             LNKG.GSNL
             .RS....B.
             PPPPPP.PP
@@ -75,7 +43,40 @@ class TrueFigureTypes:
             .B...K...
             LNSG.GSNL
         """,
-        f"{TRAIN_BOARDS_DIR}\\board11.png": """
+        os.path.join(TRAIN_BOARDS_DIR, "board8.jpg"): """
+            LNKG.GSNL
+            .RS....B.
+            .PPPPP.PP
+            P.....P..
+            ....B..P.
+            ..P.P..R.
+            PP.P.PP.P
+            .....K...
+            LNSG.GSNL
+        """,
+        os.path.join(TRAIN_BOARDS_DIR, "board9.jpg"): """
+            LNKG.GSNL
+            .RS....B.
+            .PPPPP.PP
+            P.....P..
+            ....B..P.
+            ..P.P..R.
+            PP.P.PP.P
+            .....K...
+            LNSG.GSNL
+        """,
+        os.path.join(TRAIN_BOARDS_DIR, "board10.jpg"): """
+            LNKG.GSNL
+            .RS....B.
+            PPPPPP.PP
+            ......P..
+            .......P.
+            ..P....R.
+            PP.PPPP.P
+            .B...K...
+            LNSG.GSNL
+        """,
+        os.path.join(TRAIN_BOARDS_DIR, "board11.jpg"): """
             LNKG.GSNL
             .RS....B.
             PPPPPP.PP
@@ -86,7 +87,7 @@ class TrueFigureTypes:
             .B...K...
             LNSG.GSNL
         """,
-        f"{TRAIN_BOARDS_DIR}\\board12.png": """
+        os.path.join(TRAIN_BOARDS_DIR, "board12.jpg"): """
             LNKG.GSNL
             .RS....B.
             PPPPPP.PP
@@ -97,7 +98,7 @@ class TrueFigureTypes:
             .....K...
             LNSG.GSNL
         """,
-        f"{TRAIN_BOARDS_DIR}\\board13.jpg": """
+        os.path.join(TRAIN_BOARDS_DIR, "board13.jpg"): """
             ....L....
             ..S...R..
             ....N...L
@@ -109,7 +110,7 @@ class TrueFigureTypes:
             .....P...
         """,
 
-        f"{TRAIN_BOARDS_DIR}\\board14.jpg": """
+        os.path.join(TRAIN_BOARDS_DIR, "board14.jpg"): """
             ......L..
             .........
             ....NL...
@@ -121,6 +122,7 @@ class TrueFigureTypes:
             .....P...
         """,
 
+        os.path.join(TRAIN_BOARDS_DIR, "board15.jpg"): START_BOARD,
     }
 
 
@@ -140,12 +142,12 @@ class TrueDirections:
     """
 
     TRUE_BOARDS = {
-        f"{TRAIN_BOARDS_DIR}\\board.jpg": START_BOARD,
-        f"{TRAIN_BOARDS_DIR}\\board2.jpg": START_BOARD,
-        f"{TRAIN_BOARDS_DIR}\\board3.jpg": START_BOARD,
-        f"{TRAIN_BOARDS_DIR}\\board4.jpg": START_BOARD,
-        f"{TRAIN_BOARDS_DIR}\\board5.jpg": START_BOARD,
-        f"{TRAIN_BOARDS_DIR}\\board6.png": """
+        os.path.join(TRAIN_BOARDS_DIR, "board.jpg"): START_BOARD,
+        os.path.join(TRAIN_BOARDS_DIR, "board2.jpg"): START_BOARD,
+        os.path.join(TRAIN_BOARDS_DIR, "board3.jpg"): START_BOARD,
+        os.path.join(TRAIN_BOARDS_DIR, "board4.jpg"): START_BOARD,
+        os.path.join(TRAIN_BOARDS_DIR, "board5.jpg"): START_BOARD,
+        os.path.join(TRAIN_BOARDS_DIR, "board6.jpg"): """
             DDDD.DDDD
             .DD....D.
             DDDDDD.DD
@@ -156,40 +158,7 @@ class TrueDirections:
             .U...U...
             UUUU.UUUU
         """,
-        f"{TRAIN_BOARDS_DIR}\\board7.png": """
-            DDDD.DDDD
-            .DD....D.
-            DDDDDD.DD
-            ......D..
-            .......U.
-            ..U....U.
-            UU.UUUU.U
-            .U...U...
-            UUUU.UUUU
-        """,
-        f"{TRAIN_BOARDS_DIR}\\board8.png": """
-            DDDD.DDDD
-            .DD....D.
-            .DDDDD.DD
-            D.....D..
-            ....U..U.
-            ..U.U..U.
-            UU.U.UU.U
-            .....U...
-            UUUU.UUUU
-        """,
-        f"{TRAIN_BOARDS_DIR}\\board9.png": """
-            DDDD.DDDD
-            .DD....D.
-            .DDDDD.DD
-            D.....D..
-            ....U..U.
-            ..U.U..U.
-            UU.U.UU.U
-            .....U...
-            UUUU.UUUU
-        """,
-        f"{TRAIN_BOARDS_DIR}\\board10.png": """
+        os.path.join(TRAIN_BOARDS_DIR, "board7.jpg"): """
             DDDD.DDDD
             .DD....D.
             DDDDDD.DD
@@ -200,7 +169,40 @@ class TrueDirections:
             .U...U...
             UUUU.UUUU
         """,
-        f"{TRAIN_BOARDS_DIR}\\board11.png": """
+        os.path.join(TRAIN_BOARDS_DIR, "board8.jpg"): """
+            DDDD.DDDD
+            .DD....D.
+            .DDDDD.DD
+            D.....D..
+            ....U..U.
+            ..U.U..U.
+            UU.U.UU.U
+            .....U...
+            UUUU.UUUU
+        """,
+        os.path.join(TRAIN_BOARDS_DIR, "board9.jpg"): """
+            DDDD.DDDD
+            .DD....D.
+            .DDDDD.DD
+            D.....D..
+            ....U..U.
+            ..U.U..U.
+            UU.U.UU.U
+            .....U...
+            UUUU.UUUU
+        """,
+        os.path.join(TRAIN_BOARDS_DIR, "board10.jpg"): """
+            DDDD.DDDD
+            .DD....D.
+            DDDDDD.DD
+            ......D..
+            .......U.
+            ..U....U.
+            UU.UUUU.U
+            .U...U...
+            UUUU.UUUU
+        """,
+        os.path.join(TRAIN_BOARDS_DIR, "board11.jpg"): """
             DDDD.DDDD
             .DD....D.
             DDDDDD.DD
@@ -211,7 +213,7 @@ class TrueDirections:
             .U...U...
             UUUU.UUUU
         """,
-        f"{TRAIN_BOARDS_DIR}\\board12.png": """
+        os.path.join(TRAIN_BOARDS_DIR, "board12.jpg"): """
             DDDD.DDDD
             .DD....D.
             DDDDDD.DD
@@ -222,7 +224,7 @@ class TrueDirections:
             .....U...
             UUUU.UUUU
         """,
-        f"{TRAIN_BOARDS_DIR}\\board13.jpg": """
+        os.path.join(TRAIN_BOARDS_DIR, "board13.jpg"): """
             ....D....
             ..U...D..
             ....U...U
@@ -234,7 +236,7 @@ class TrueDirections:
             .....U...
         """,
 
-        f"{TRAIN_BOARDS_DIR}\\board14.jpg": """
+        os.path.join(TRAIN_BOARDS_DIR, "board14.jpg"): """
             ......D..
             .........
             ....UD...
@@ -245,6 +247,8 @@ class TrueDirections:
             .U..UDU..
             .....U...
         """,
+
+        os.path.join(TRAIN_BOARDS_DIR, "board15.jpg"): START_BOARD,
     }
 
 
