@@ -17,6 +17,7 @@ IMGS_CORNERS = {
     os.path.join(paths.TRAIN_BOARDS_DIR, "board12.png"): ((35, 47), (493, 44), (512, 544), (45, 558)),
     os.path.join(paths.TRAIN_BOARDS_DIR, "board13.jpg"): ((1583, 980), (3421, 956), (3462, 2806), (1608, 2827)),
     os.path.join(paths.TRAIN_BOARDS_DIR, "board14.jpg"): ((1594, 976), (3429, 967), (3454, 2814), (1602, 2822)),
+    os.path.join(paths.TRAIN_BOARDS_DIR, "board15.jpg"): ((510, 1031), (2723, 981), (2824, 3759), (445, 3756)),
 }
 
 IMGS = [
@@ -34,6 +35,7 @@ IMGS = [
     # os.path.join(paths.TRAIN_BOARDS_DIR, "board12.png"),
     os.path.join(paths.TRAIN_BOARDS_DIR, "board13.jpg"),
     os.path.join(paths.TRAIN_BOARDS_DIR, "board14.jpg"),
+    os.path.join(paths.TRAIN_BOARDS_DIR, "board15.jpg"),
 ]
 
 CATEGORIES_FIGURE_TYPE = [Figure.PAWN, Figure.BISHOP, Figure.ROOK, Figure.LANCE,
