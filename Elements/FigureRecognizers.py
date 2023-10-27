@@ -1,8 +1,8 @@
 import numpy as np
-from figures import Figure, Direction
+from extra.figures import Figure, Direction
 from abc import ABC, abstractmethod
 import tensorflow as tf
-from NN_data.data_info import CATEGORIES_FIGURE_TYPE, CATEGORIES_DIRECTION
+from ShogiNeuralNetwork.data_info import CATEGORIES_FIGURE_TYPE, CATEGORIES_DIRECTION
 import cv2
 from config import config
 

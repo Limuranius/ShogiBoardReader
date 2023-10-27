@@ -12,7 +12,7 @@ class ImageGetter(ABC):
 class Photo(ImageGetter):
     img: np.ndarray
 
-    def __init__(self, img_path: str):
+    def __init__(self, img_path: str = None):
         self.img = cv2.imread(img_path)
 
     def get_image(self) -> np.ndarray:

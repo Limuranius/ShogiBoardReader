@@ -1,4 +1,4 @@
-from figures import Figure, Direction
+from extra.figures import Figure
 
 Board = list[list[Figure]]
 
