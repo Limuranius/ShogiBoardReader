@@ -1,8 +1,7 @@
 from mytypedconfig import section
-from paths import CONFIG_PATH
 
 
-@section(config_path=CONFIG_PATH, section_name="NN data")
+@section(section_name="NN data")
 class NN_data:
     cell_img_size: int
     board_img_size: int
@@ -13,7 +12,7 @@ class NN_data:
     random_rotate_max_angle: int
 
 
-@section(config_path=CONFIG_PATH, section_name="HSV Threshold")
+@section(section_name="HSV Threshold")
 class HSVThreshold:
     h_low: int
     h_high: int
@@ -23,7 +22,7 @@ class HSVThreshold:
     v_high: int
 
 
-@section(config_path=CONFIG_PATH, section_name="Tweaks")
+@section(section_name="Tweaks")
 class Tweaks:
     show_orig_img: bool
     show_hsv_mask: bool
@@ -38,12 +37,7 @@ class Config:
     HSVThreshold: HSVThreshold
     Tweaks: Tweaks
 
-    def __init__(self):
-        self.NN_data = NN_data()
-        self.HSVThreshold = HSVThreshold()
-        self.Tweaks = Tweaks()
-
-        self.NN_data.board_img_size = self.NN_data.cell_img_size * 9
-
-
-config = Config()
+    def __init__(self, config_path: str):
+        self.NN_data = NN_data(config_path)
+        self.HSVThreshold = HSVThreshold(config_path)
+        self.Tweaks = Tweaks(config_path)
