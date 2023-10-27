@@ -1,6 +1,6 @@
 import numpy as np
 from abc import ABC, abstractmethod
-import utils
+from extra import utils
 import cv2
 
 Corners = tuple[tuple[int, int], tuple[int, int], tuple[int, int], tuple[int, int]]
@@ -17,7 +17,7 @@ class CornerDetector(ABC):
 class HardcodedCornerDetector(CornerDetector):
     corners: Corners
 
-    def __init__(self, corners: Corners):
+    def __init__(self, corners: Corners = None):
         self.corners = corners
 
     def get_corners(self, image: np.ndarray) -> Corners:
