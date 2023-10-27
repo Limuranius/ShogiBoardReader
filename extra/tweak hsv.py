@@ -1,9 +1,7 @@
 from config import config
 import cv2
 import numpy as np
-import utils
-import corner_getter
-import image_getter
+from extra import utils
 
 TWEAKS_WIN_NAME = "tweaks"
 HSV_WIN_NAME = "hsv threshold"
@@ -124,7 +122,7 @@ def main():
     setup_windows()
 
     img_get = image_getter.Camera()
-    corn_get = corner_getter.HSVThresholdCornerDetector(None, None)
+    corn_get = CornerGetter.HSVThresholdCornerDetector(None, None)
 
     while True:
         hsv_low = np.array([
@@ -142,7 +140,6 @@ def main():
 
         orig_img = img_get.get_image()
         orig_img = cv2.resize(orig_img, (-1, -1), fx=config.Tweaks.img_scale / 100, fy=config.Tweaks.img_scale / 100)
-
         hsv_mask = get_hsv_mask(orig_img)
         hsv_masked_img = cv2.bitwise_and(orig_img, orig_img, mask=hsv_mask)
         corners = np.array(corn_get.get_corners(orig_img))

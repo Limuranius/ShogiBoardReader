@@ -1,11 +1,7 @@
-from reader import ShogiBoardReader
-import corner_getter
-import image_getter
+from Elements.ShogiBoardReader import ShogiBoardReader
 from config import config
 import numpy as np
-from NN_data import data_info
-import recognizer
-import paths
+from ShogiNeuralNetwork import data_info
 import os
 
 
@@ -15,7 +11,7 @@ def get_hardcoded_reader():
 
     reader = ShogiBoardReader(
         image_getter.Photo(img_path),
-        corner_getter.HardcodedCornerDetector(corners),
+        CornerGetter.HardcodedCornerDetector(corners),
         recognizer.RecognizerNN(
             paths.MODEL_FIGURE_PATH,
             paths.MODEL_DIRECTION_PATH
@@ -38,7 +34,7 @@ def get_camera_reader():
 
     reader = ShogiBoardReader(
         image_getter.Camera(),
-        corner_getter.HSVThresholdCornerDetector(hsv_low, hsv_high),
+        CornerGetter.HSVThresholdCornerDetector(hsv_low, hsv_high),
         recognizer.RecognizerNN(
             paths.MODEL_FIGURE_PATH,
             paths.MODEL_DIRECTION_PATH
@@ -61,7 +57,7 @@ def get_video_reader(video_path: str):
 
     reader = ShogiBoardReader(
         image_getter.Video(video_path),
-        corner_getter.HSVThresholdCornerDetector(hsv_low, hsv_high),
+        CornerGetter.HSVThresholdCornerDetector(hsv_low, hsv_high),
         recognizer.RecognizerNN(
             paths.MODEL_FIGURE_PATH,
             paths.MODEL_DIRECTION_PATH
