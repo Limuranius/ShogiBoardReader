@@ -3,15 +3,15 @@ from .true_boards import TrueFigureTypes, TrueDirections
 from extra import utils, figures
 from extra.image_modes import ImageMode
 from Elements import CornerGetters, ImageGetters, BoardSplitter
-from sklearn.model_selection import train_test_split
+from sklearn.utils import shuffle
 import pandas as pd
 from tqdm import tqdm
 from .Dataset import Dataset
 
 
-def _create_training_data(
+def __create_training_data(
         random_translate_repeat: int,
-        random_translate_max_margin: int,
+        random_translate_max_margin: float,
         random_rotate_repeat: int,
         random_rotate_max_angle: int,
         img_mode: ImageMode,
@@ -20,9 +20,9 @@ def _create_training_data(
     """
     Разбивает тренировочные фотографии досок на клетки
     и возвращает данные в виде таблицы с полями:
-        image:              Изображение фигуры
-        fig_type_label:     Индекс типа фигуры
-        direction_label:    Индекс направления фигуры
+        image:              Изображение фигуры (нормализованное)
+        figure_type:        Индекс типа фигуры
+        direction:          Индекс направления фигуры
     """
 
     total_data_count = (len(IMGS)
@@ -30,7 +30,7 @@ def _create_training_data(
                         * (random_translate_repeat + 1)
                         * (random_rotate_repeat + 1)
                         )
-    training_data = pd.DataFrame(columns=["image", "fig_type_label", "direction_label"],
+    training_data = pd.DataFrame(columns=["image", "figure_type", "direction"],
                                  index=range(total_data_count))
 
     image_getter = ImageGetters.Photo()
@@ -76,34 +76,47 @@ def _create_training_data(
                             cell_variations.append(rot_img)
 
                     figure_label = CATEGORIES_FIGURE_TYPE.index(true_figure)
-                    direction_label = CATEGORIES_DIRECTION.index(true_direction)
+                    direction = CATEGORIES_DIRECTION.index(true_direction)
                     for img in cell_variations:
-                        training_data.loc[training_data_i] = [img, figure_label, direction_label]
+                        normalized_img = img.astype("float32") / 255
+                        training_data.loc[training_data_i] = [
+                            normalized_img,
+                            figure_label,
+                            direction
+                        ]
                         training_data_i += 1
                         pbar.update(1)
     return training_data
 
 
+def equalize_classes(data: pd.DataFrame) -> pd.DataFrame:
+    shuffled_data = shuffle(data)
+    classes_counts = shuffled_data["figure_type"].value_counts()
+    min_count = classes_counts.min()
+    del_indices = []
+    for i, row in shuffled_data.iterrows():
+        if classes_counts[row["figure_type"]] > min_count:
+            del_indices.append(i)
+            classes_counts[row["figure_type"]] -= 1
+    new_data = data.drop(index=del_indices)
+    return new_data
+
+
 def create_dataset(
         random_translate_repeat: int,
-        random_translate_max_margin: int,
+        random_translate_max_margin: float,
         random_rotate_repeat: int,
         random_rotate_max_angle: int,
         img_mode: ImageMode,
-        test_fraction: float) -> Dataset:
-    data = _create_training_data(random_translate_repeat, random_translate_max_margin,
-                                 random_rotate_repeat, random_rotate_max_angle, img_mode)
+        test_fraction: float,
+        cell_img_size: int) -> Dataset:
+    data = __create_training_data(random_translate_repeat, random_translate_max_margin,
+                                  random_rotate_repeat, random_rotate_max_angle, img_mode, cell_img_size)
+    data = equalize_classes(data)
 
-    train, test = train_test_split(data, test_size=test_fraction)
+    dataset = Dataset(data)
 
-    print("Train size:", len(train))
-    print("Test size:", len(test))
+    print("Train size:", len(dataset.y_figure_train))
+    print("Test size:", len(dataset.y_figure_test))
 
-    return Dataset(
-        X_train=train["image"].to_numpy(),
-        X_test=test["image"].to_numpy(),
-        y_figure_train=train["fig_type_label"].to_numpy(),
-        y_figure_test=test["fig_type_label"].to_numpy(),
-        y_direction_train=train["direction_label"].to_numpy(),
-        y_direction_test=test["direction_label"].to_numpy(),
-    )
+    return dataset
