@@ -14,17 +14,17 @@ class ShogiBoardReader:
     recognizer: Recognizer
     analyzer: BoardAnalyzer
 
-    def __init__(self, board_splitter: BoardSplitter, recognizer: Recognizer, analyzer: BoardAnalyzer):
+    def __init__(self, board_splitter: BoardSplitter, recognizer: Recognizer, analyzer: BoardAnalyzer = None):
         self.board_splitter = board_splitter
         self.recognizer = recognizer
         self.analyzer = analyzer
 
     def recognize_board_figures(self) -> list[list[Figure]]:
-        cells = self.board_splitter.get_board_cells()
+        cells = self.board_splitter.get_board_cells(ImageMode.CANNY)
         return self.recognizer.recognize_board_figures(cells)
 
     def recognize_board_directions(self) -> list[list[Direction]]:
-        cells = self.board_splitter.get_board_cells()
+        cells = self.board_splitter.get_board_cells(ImageMode.CANNY)
         return self.recognizer.recognize_board_directions(cells)
 
     def get_str_board(self):
@@ -51,12 +51,16 @@ class ShogiBoardReader:
     def get_full_img(self, show_borders: bool) -> Image:
         return self.board_splitter.get_full_img(show_borders)
 
+    def get_board_image_no_perspective(self) -> Image:
+        return self.board_splitter.get_board_image_no_perspective()
+
     def get_digital_board(self) -> Image:
         figures = self.recognize_board_figures()
         directions = self.recognize_board_directions()
 
-        self.analyzer.update(figures)
-        figures = self.analyzer.get_board()
+        if self.analyzer is not None:
+            self.analyzer.update(figures)
+            figures = self.analyzer.get_board()
 
         BOARD_SIZE = 1000
         FIGURE_SIZE = BOARD_SIZE // 9
