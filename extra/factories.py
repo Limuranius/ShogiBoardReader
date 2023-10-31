@@ -1,9 +1,6 @@
-from Elements.ShogiBoardReader import ShogiBoardReader
-from config import config
+from Elements import *
 import numpy as np
-from ShogiNeuralNetwork import data_info
-import os
-
+from config import Config, Paths
 
 def get_hardcoded_reader():
     img_path = os.path.join(paths.TRAIN_BOARDS_DIR, "board13.jpg")

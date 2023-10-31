@@ -5,7 +5,6 @@ from extra.image_modes import ImageMode
 from extra.types import Image
 import numpy as np
 import cv2
-from config.config import config
 
 
 class BoardSplitter:

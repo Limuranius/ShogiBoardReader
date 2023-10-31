@@ -2,6 +2,7 @@ from tensorflow import keras
 from .Dataset import Dataset
 from dataclasses import dataclass
 from extra.figures import Figure, Direction
+from .data_info import CATEGORIES_DIRECTION, CATEGORIES_FIGURE_TYPE
 
 
 @dataclass

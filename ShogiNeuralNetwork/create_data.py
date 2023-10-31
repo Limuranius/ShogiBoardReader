@@ -1,5 +1,5 @@
-from data_info import *
-from true_boards import TrueFigureTypes, TrueDirections
+from .data_info import *
+from .true_boards import TrueFigureTypes, TrueDirections
 from extra import utils, figures
 from extra.image_modes import ImageMode
 from Elements import CornerGetters, ImageGetters, BoardSplitter
@@ -7,7 +7,6 @@ from sklearn.model_selection import train_test_split
 import pandas as pd
 from tqdm import tqdm
 from .Dataset import Dataset
-from config.config import Config
 
 
 def _create_training_data(
