@@ -10,10 +10,15 @@ import cv2
 class BoardSplitter:
     image_getter: ImageGetter
     corner_getter: CornerDetector
+    board_img_size: int
+    cell_img_size: int
 
-    def __init__(self, image_getter: ImageGetter, corner_getter: CornerDetector):
+    def __init__(self, image_getter: ImageGetter, corner_getter: CornerDetector,
+                 board_img_size: int = 900, cell_img_size: int = 100):
         self.image_getter = image_getter
         self.corner_getter = corner_getter
+        self.board_img_size = board_img_size
+        self.cell_img_size = cell_img_size
 
     def get_board_image_no_perspective(self):
         """Возвращает изображение доски с убранной перспективой и вырезанным фоном"""
@@ -62,8 +67,8 @@ class BoardSplitter:
         return self.__get_board_cells(self.get_board_image_no_perspective())
 
     def __get_board_cells(self, board_img) -> list[list[Image]]:
-        img_size = (config.NN_data.board_img_size, config.NN_data.board_img_size)
-        cell_size = (config.NN_data.cell_img_size, config.NN_data.cell_img_size)
+        img_size = (self.board_img_size, self.board_img_size)
+        cell_size = (self.cell_img_size, self.cell_img_size)
         board_img = cv2.resize(board_img, img_size)
         height = board_img.shape[0]
         width = board_img.shape[1]
