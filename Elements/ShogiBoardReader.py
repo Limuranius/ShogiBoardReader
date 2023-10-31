@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 from extra.figures import Figure, Direction, FIGURE_ICONS_PATHS
-from FigureRecognizers import Recognizer
+from .FigureRecognizers import Recognizer
 from .BoardAnalyzer import BoardAnalyzer
 from .BoardSplitter import BoardSplitter
 from extra import utils

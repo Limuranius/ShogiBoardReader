@@ -4,7 +4,7 @@ from config import Paths
 import pickle
 from collections import defaultdict
 import os
-from data_info import CATEGORIES_FIGURE_TYPE
+from .data_info import CATEGORIES_FIGURE_TYPE
 from extra import figures
 import cv2
 

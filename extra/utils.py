@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 import random
-import figures
+from . import figures
 
 
 def get_black_mask(image: np.ndarray):
