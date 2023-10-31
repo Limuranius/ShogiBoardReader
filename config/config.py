@@ -1,4 +1,4 @@
-from mytypedconfig import section
+from .mytypedconfig import section
 
 
 @section(section_name="NN data")
