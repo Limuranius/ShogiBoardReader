@@ -23,24 +23,24 @@ class Recognizer(ABC):
 class RecognizerNN(Recognizer):
     model_figure: tf.keras.models.Model
     model_direction: tf.keras.models.Model
+    cell_img_size: int
 
-    def __init__(self, model_figure_path: str, model_direction_path: str):
+    def __init__(self, model_figure_path: str, model_direction_path: str, cell_img_size: int):
         self.model_figure = tf.keras.models.load_model(model_figure_path)
         self.model_direction = tf.keras.models.load_model(model_direction_path)
+        self.cell_img_size = cell_img_size
 
     def recognize_cell_figure(self, cell_img: np.ndarray) -> Figure:
-        CELL_IMG_SIZE = config.NN_data.cell_img_size
         cell_img = cell_img.astype("float32") / 255
-        cell_img = cv2.resize(cell_img, (CELL_IMG_SIZE, CELL_IMG_SIZE))
-        inp = np.reshape(cell_img, (1, CELL_IMG_SIZE, CELL_IMG_SIZE, 1))
+        cell_img = cv2.resize(cell_img, (self.cell_img_size, self.cell_img_size))
+        inp = np.reshape(cell_img, (1, self.cell_img_size, self.cell_img_size, 1))
         predictions = self.model_figure.predict(inp, verbose=0)
         index = np.argmax(predictions)
         return CATEGORIES_FIGURE_TYPE[index]
 
     def recognize_board_figures(self, cells_imgs: list[list[np.ndarray]]) -> list[list[Figure]]:
-        CELL_IMG_SIZE = config.NN_data.cell_img_size
         cells_imgs = np.array(cells_imgs).astype("float32") / 255
-        inp = np.reshape(cells_imgs, (81, CELL_IMG_SIZE, CELL_IMG_SIZE, 1))
+        inp = np.reshape(cells_imgs, (81, self.cell_img_size, self.cell_img_size, 1))
         predictions = self.model_figure.predict(inp, verbose=0)
         labels = predictions.argmax(axis=1)
         labels = np.reshape(labels, (9, 9))
@@ -53,9 +53,8 @@ class RecognizerNN(Recognizer):
         return result
 
     def recognize_board_directions(self, cells_imgs: list[list[np.ndarray]]) -> list[list[Direction]]:
-        CELL_IMG_SIZE = config.NN_data.cell_img_size
         cells_imgs = np.array(cells_imgs).astype("float32") / 255
-        inp = np.reshape(cells_imgs, (81, CELL_IMG_SIZE, CELL_IMG_SIZE, 1))
+        inp = np.reshape(cells_imgs, (81, self.cell_img_size, self.cell_img_size, 1))
         predictions = self.model_direction.predict(inp, verbose=0)
         labels = predictions.argmax(axis=1)
         labels = np.reshape(labels, (9, 9))

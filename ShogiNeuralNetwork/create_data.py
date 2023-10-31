@@ -14,7 +14,8 @@ def _create_training_data(
         random_translate_max_margin: int,
         random_rotate_repeat: int,
         random_rotate_max_angle: int,
-        img_mode: ImageMode
+        img_mode: ImageMode,
+        cell_img_size: int
 ) -> pd.DataFrame:
     """
     Разбивает тренировочные фотографии досок на клетки
@@ -36,7 +37,9 @@ def _create_training_data(
     corner_getter = CornerGetters.HardcodedCornerDetector()
     board_splitter = BoardSplitter.BoardSplitter(
         image_getter,
-        corner_getter
+        corner_getter,
+        board_img_size=cell_img_size * 9,
+        cell_img_size=cell_img_size
     )
 
     training_data_i = 0
