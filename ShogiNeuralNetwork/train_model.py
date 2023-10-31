@@ -5,7 +5,8 @@ from .Dataset import Dataset
 def train_figure_type_model(
         dataset: Dataset,
         cell_img_size: int,
-        epochs: int
+        epochs: int,
+        verbose=0
 ) -> keras.Model:
     model = keras.Sequential(
         [
@@ -27,17 +28,18 @@ def train_figure_type_model(
         metrics=["accuracy"]
     )
 
-    X_train = dataset.X_train.astype("float32") / 255
+    X_train = dataset.X_train
     y_train = dataset.y_figure_train
 
-    model.fit(X_train, y_train, batch_size=32, epochs=epochs)
+    model.fit(X_train, y_train, batch_size=32, epochs=epochs, verbose=verbose)
     return model
 
 
 def train_direction_model(
         dataset: Dataset,
         cell_img_size: int,
-        epochs: int
+        epochs: int,
+        verbose=0
 ) -> keras.Model:
     model = keras.Sequential(
         [
@@ -59,8 +61,8 @@ def train_direction_model(
         metrics=["accuracy"]
     )
 
-    X_train = dataset.X_train.astype("float32") / 255
+    X_train = dataset.X_train
     y_train = dataset.y_direction_train
 
-    model.fit(X_train, y_train, batch_size=32, epochs=epochs)
+    model.fit(X_train, y_train, batch_size=32, epochs=epochs, verbose=verbose)
     return model
