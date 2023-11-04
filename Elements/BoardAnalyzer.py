@@ -1,9 +1,8 @@
+from extra.types import FigureBoard
 from extra.figures import Figure
 
-Board = list[list[Figure]]
 
-
-def get_changed_cells(old_board: Board, new_board: Board) -> list[list[bool]]:
+def get_changed_cells(old_board: FigureBoard, new_board: FigureBoard) -> list[list[bool]]:
     """Возвращает маску доски, где True - клетки, значение которых поменялось"""
     changed = [[False for _ in range(9)] for __ in range(9)]
     for i in range(9):
@@ -13,14 +12,14 @@ def get_changed_cells(old_board: Board, new_board: Board) -> list[list[bool]]:
     return changed
 
 
-def get_changed_count(old_board: Board, new_board: Board) -> int:
+def get_changed_count(old_board: FigureBoard, new_board: FigureBoard) -> int:
     """Возвращает кол-во клеток, значение которых изменилось при переходе с old_board к new_board"""
     changed = get_changed_cells(old_board, new_board)
     changed_count = sum(map(sum, changed))
     return changed_count
 
 
-def get_turn_signature(old_board: Board, new_board: Board) -> str:
+def get_turn_signature(old_board: FigureBoard, new_board: FigureBoard) -> str:
     """Возвращает запись сделанного хода"""
     changed = get_changed_cells(old_board, new_board)
     changed_coords = [(i, j) for i in range(9) for j in range(9) if changed[i][j]]
@@ -28,7 +27,7 @@ def get_turn_signature(old_board: Board, new_board: Board) -> str:
 
 
 class BoardCounter:
-    frames: list[Board]
+    frames: list[FigureBoard]
     memorize_count = 10  # По какому кол-ву последних снимков доски формируется итоговое изображение доски
     counts: list[list[dict[Figure, int]]]  # Для каждой клетки подсчитывает кол-во встреченных фигур
     max_change_count = 2
@@ -38,7 +37,7 @@ class BoardCounter:
         cell_count = {figure: 0 for figure in Figure}
         self.counts = [[cell_count.copy() for _ in range(9)] for __ in range(9)]
 
-    def append_board(self, board: Board):
+    def append_board(self, board: FigureBoard):
         self.frames.append(board)
         for i in range(9):
             for j in range(9):
@@ -52,7 +51,7 @@ class BoardCounter:
                 figure = board[i][j]
                 self.counts[i][j][figure] -= 1
 
-    def get_max_board(self) -> Board:
+    def get_max_board(self) -> FigureBoard:
         max_board = [[Figure.EMPTY for _ in range(9)] for __ in range(9)]
         for i in range(9):
             for j in range(9):
@@ -61,7 +60,7 @@ class BoardCounter:
                 max_board[i][j] = max_figure
         return max_board
 
-    def update(self, board: Board):
+    def update(self, board: FigureBoard):
         if len(self.frames) <= self.memorize_count:
             print("Копим данные...")
             self.append_board(board)
@@ -85,14 +84,14 @@ class BoardAnalyzer:
         self.komadai_higher = []
         self.komadai_lower = []
 
-    def update(self, board: Board):
+    def update(self, board: FigureBoard):
         old_board = self.counter.get_max_board()
         self.counter.update(board)
         new_board = self.counter.get_max_board()
         if old_board != new_board:
             print(get_turn_signature(old_board, new_board))
 
-    def get_board(self) -> Board:
+    def get_board(self) -> FigureBoard:
         return self.counter.get_max_board()
 
 
