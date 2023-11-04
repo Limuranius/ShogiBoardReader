@@ -1,4 +1,5 @@
 from .mytypedconfig import section
+from .Paths import CONFIG_PATH
 
 
 @section(section_name="NN data")
@@ -41,3 +42,6 @@ class Config:
         self.NN_data = NN_data(config_path)
         self.HSVThreshold = HSVThreshold(config_path)
         self.Tweaks = Tweaks(config_path)
+
+
+GLOBAL_CONFIG = Config(CONFIG_PATH)
