@@ -10,21 +10,28 @@ from extra.types import Image
 
 
 class ShogiBoardReader:
+    image_mode: ImageMode
     board_splitter: BoardSplitter
     recognizer: Recognizer
     analyzer: BoardAnalyzer
 
-    def __init__(self, board_splitter: BoardSplitter, recognizer: Recognizer, analyzer: BoardAnalyzer = None):
+    def __init__(
+            self,
+            image_mode: ImageMode,
+            board_splitter: BoardSplitter,
+            recognizer: Recognizer,
+            analyzer: BoardAnalyzer = None):
+        self.image_mode = image_mode
         self.board_splitter = board_splitter
         self.recognizer = recognizer
         self.analyzer = analyzer
 
     def recognize_board_figures(self) -> list[list[Figure]]:
-        cells = self.board_splitter.get_board_cells(ImageMode.CANNY)
+        cells = self.board_splitter.get_board_cells(self.image_mode)
         return self.recognizer.recognize_board_figures(cells)
 
     def recognize_board_directions(self) -> list[list[Direction]]:
-        cells = self.board_splitter.get_board_cells(ImageMode.CANNY)
+        cells = self.board_splitter.get_board_cells(self.image_mode)
         return self.recognizer.recognize_board_directions(cells)
 
     def get_str_board(self):
