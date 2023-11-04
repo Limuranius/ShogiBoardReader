@@ -1,0 +1,1904 @@
+board1.jpg
+425 759
+2871 725
+2981 3508
+381 3522
+------------
+LNSGKGSNL
+.R.....B.
+PPPPPPPPP
+.........
+.........
+.........
+PPPPPPPPP
+.B.....R.
+LNSGKGSNL
+------------
+DDDDDDDDD
+.D.....D.
+DDDDDDDDD
+.........
+.........
+.........
+UUUUUUUUU
+.U.....U.
+UUUUUUUUU
+============
+
+
+board2.jpg
+570 1036
+2759 992
+2962 3526
+442 3561
+------------
+LNSGKGSNL
+.R.....B.
+PPPPPPPPP
+.........
+.........
+.........
+PPPPPPPPP
+.B.....R.
+LNSGKGSNL
+------------
+DDDDDDDDD
+.D.....D.
+DDDDDDDDD
+.........
+.........
+.........
+UUUUUUUUU
+.U.....U.
+UUUUUUUUU
+============
+
+
+board3.jpg
+809 793
+2829 1214
+2700 3340
+821 3859
+------------
+LNSGKGSNL
+.R.....B.
+PPPPPPPPP
+.........
+.........
+.........
+PPPPPPPPP
+.B.....R.
+LNSGKGSNL
+------------
+DDDDDDDDD
+.D.....D.
+DDDDDDDDD
+.........
+.........
+.........
+UUUUUUUUU
+.U.....U.
+UUUUUUUUU
+============
+
+
+board4.jpg
+826 499
+2602 1104
+2590 3132
+755 3366
+------------
+LNSGKGSNL
+.R.....B.
+PPPPPPPPP
+.........
+.........
+.........
+PPPPPPPPP
+.B.....R.
+LNSGKGSNL
+------------
+DDDDDDDDD
+.D.....D.
+DDDDDDDDD
+.........
+.........
+.........
+UUUUUUUUU
+.U.....U.
+UUUUUUUUU
+============
+
+
+board5.jpg
+920 2002
+2620 1930
+3289 3676
+319 3733
+------------
+LNSGKGSNL
+.R.....B.
+PPPPPPPPP
+.........
+.........
+.........
+PPPPPPPPP
+.B.....R.
+LNSGKGSNL
+------------
+DDDDDDDDD
+.D.....D.
+DDDDDDDDD
+.........
+.........
+.........
+UUUUUUUUU
+.U.....U.
+UUUUUUUUU
+============
+
+
+board6.jpg
+49 109
+491 105
+510 593
+52 603
+------------
+LNKG.GSNL
+.RS....B.
+PPPPPP.PP
+......P..
+.......P.
+..P.P..R.
+PP.P.PP.P
+.B...K...
+LNSG.GSNL
+------------
+DDDD.DDDD
+.DD....D.
+DDDDDD.DD
+......D..
+.......U.
+..U.U..U.
+UU.U.UU.U
+.U...U...
+UUUU.UUUU
+============
+
+
+board7.jpg
+68 53
+547 55
+558 592
+52 589
+------------
+LNKG.GSNL
+.RS....B.
+PPPPPP.PP
+......P..
+.......P.
+..P....R.
+PP.PPPP.P
+.B...K...
+LNSG.GSNL
+------------
+DDDD.DDDD
+.DD....D.
+DDDDDD.DD
+......D..
+.......U.
+..U....U.
+UU.UUUU.U
+.U...U...
+UUUU.UUUU
+============
+
+
+board8.jpg
+61 61
+475 50
+504 508
+66 517
+------------
+LNKG.GSNL
+.RS....B.
+.PPPPP.PP
+P.....P..
+....B..P.
+..P.P..R.
+PP.P.PP.P
+.....K...
+LNSG.GSNL
+------------
+DDDD.DDDD
+.DD....D.
+.DDDDD.DD
+D.....D..
+....U..U.
+..U.U..U.
+UU.U.UU.U
+.....U...
+UUUU.UUUU
+============
+
+
+board9.jpg
+51 48
+499 43
+520 534
+61 551
+------------
+LNKG.GSNL
+.RS....B.
+.PPPPP.PP
+P.....P..
+....B..P.
+..P.P..R.
+PP.P.PP.P
+.....K...
+LNSG.GSNL
+------------
+DDDD.DDDD
+.DD....D.
+.DDDDD.DD
+D.....D..
+....U..U.
+..U.U..U.
+UU.U.UU.U
+.....U...
+UUUU.UUUU
+============
+
+
+board10.jpg
+68 69
+456 65
+494 484
+79 506
+------------
+LNKG.GSNL
+.RS....B.
+PPPPPP.PP
+......P..
+.......P.
+..P....R.
+PP.PPPP.P
+.B...K...
+LNSG.GSNL
+------------
+DDDD.DDDD
+.DD....D.
+DDDDDD.DD
+......D..
+.......U.
+..U....U.
+UU.UUUU.U
+.U...U...
+UUUU.UUUU
+============
+
+
+board11.jpg
+50 48
+491 45
+507 531
+52 540
+------------
+LNKG.GSNL
+.RS....B.
+PPPPPP.PP
+......P..
+.......P.
+..P.P..R.
+PP.P.PP.P
+.B...K...
+LNSG.GSNL
+------------
+DDDD.DDDD
+.DD....D.
+DDDDDD.DD
+......D..
+.......U.
+..U.U..U.
+UU.U.UU.U
+.U...U...
+UUUU.UUUU
+============
+
+
+board12.jpg
+35 47
+493 44
+512 544
+45 558
+------------
+LNKG.GSNL
+.RS....B.
+PPPPPP.PP
+......P..
+....B..P.
+..P.P..R.
+PP.P.PP.P
+.....K...
+LNSG.GSNL
+------------
+DDDD.DDDD
+.DD....D.
+DDDDDD.DD
+......D..
+....U..U.
+..U.U..U.
+UU.U.UU.U
+.....U...
+UUUU.UUUU
+============
+
+
+board13.jpg
+1583 980
+3421 956
+3462 2806
+1608 2827
+------------
+....L....
+..S...R..
+....N...L
+.P..N..G.
+.........
+..B.P..S.
+.........
+..K....G.
+.....P...
+------------
+....D....
+..U...D..
+....U...U
+.U..D..U.
+.........
+..U.U..D.
+.........
+..U....U.
+.....U...
+============
+
+
+board14.jpg
+1594 976
+3429 967
+3454 2814
+1602 2822
+------------
+......L..
+.........
+....NL...
+...SN.R..
+...P.....
+.........
+...PG....
+.B..KSG..
+.....P...
+------------
+......D..
+.........
+....UD...
+...UD.D..
+...U.....
+.........
+...UU....
+.U..UDU..
+.....U...
+============
+
+
+board15.jpg
+510 1031
+2723 981
+2824 3759
+445 3756
+------------
+LNSGKGSNL
+.R.....B.
+PPPPPPPPP
+.........
+.........
+.........
+PPPPPPPPP
+.B.....R.
+LNSGKGSNL
+------------
+DDDDDDDDD
+.D.....D.
+DDDDDDDDD
+.........
+.........
+.........
+UUUUUUUUU
+.U.....U.
+UUUUUUUUU
+============
+
+
+board16.jpg
+633 1282
+2585 1218
+2684 3598
+676 3653
+------------
+LNSGKGSNL
+.R.....B.
+PPPPPPPPP
+.........
+.........
+.........
+PPPPPPPPP
+.B.....R.
+LNSGKGSNL
+------------
+DDDDDDDDD
+.D.....D.
+DDDDDDDDD
+.........
+.........
+.........
+UUUUUUUUU
+.U.....U.
+UUUUUUUUU
+============
+
+
+board17.jpg
+463 1370
+2610 1341
+2668 3966
+461 3988
+------------
+LN.....NL
+..G.KSG..
+P.PPS..PP
+....PPB..
+.P....P..
+..P..P.P.
+PPSP..P.P
+...GRKS..
+LN...G.NL
+------------
+DD.....DD
+..D.DDD..
+D.DDD..DD
+....DDD..
+.D....D..
+..U..U.U.
+UUUU..U.U
+...UUUU..
+UU...U.UU
+============
+
+
+board18.jpg
+642 1128
+2692 1086
+2761 3624
+620 3620
+------------
+.....RNNL
+....BSG..
+......K.P
+..PPRPBP.
+.P....P..
+..PS.P.P.
+.P.P..P.P
+...G.KS..
+.L...G.NL
+------------
+.....UDDD
+....UDD..
+......D.D
+..DDUDDD.
+.D....D..
+..UU.U.U.
+.U.U..U.U
+...U.UU..
+.D...U.UU
+============
+
+
+board19.jpg
+647 1491
+2571 1499
+2629 3863
+602 3888
+------------
+.....RNNL
+....BSG..
+......K.P
+..PPRPBP.
+.P....P..
+..PS.P.P.
+.P.P..P.P
+...G.KS..
+.L...G.NL
+------------
+.....UDDD
+....UDD..
+......D.D
+..DDUDDD.
+.D....D..
+..UU.U.U.
+.U.U..U.U
+...U.UU..
+.D...U.UU
+============
+
+
+board20.jpg
+670 1295
+2553 1383
+2467 3659
+558 3581
+------------
+......KNL
+L.G.RSG..
+N.PP..SPP
+P.P.BPP..
+.........
+...B.....
+P.NPPPPPP
+..G...S..
+L.S..GKNL
+------------
+......DDD
+D.D.UDD..
+D.DD..DDD
+D.U.UDD..
+.........
+...U.....
+U.UUUUUUU
+..U...U..
+U.U..UUUU
+============
+
+
+board21.jpg
+431 1281
+2606 1232
+2653 3880
+463 3881
+------------
+........L
+.....S...
+.......RP
+..PP.P...
+.P....P.K
+..PS.P.PP
+.P.P..P..
+...G.KS..
+.L...G.NL
+------------
+........D
+.....U...
+.......UD
+..DD.D...
+.D....D.D
+..UU.U.UU
+.U.U..U..
+...U.UU..
+.D...U.UU
+============
+
+
+board22.jpg
+412 872
+2825 884
+2841 3814
+370 3810
+------------
+LN..K..NL
+...S.SG..
+P.PBPPPP.
+..R.....P
+.P.......
+..PR.....
+PPB.PPPP.
+....GKS..
+..S..G.NL
+------------
+DD..D..DD
+...D.DD..
+D.DUDDDD.
+..D.....U
+.D.......
+..UU.....
+UUD.UUUU.
+....UUU..
+..U..U.UU
+============
+
+
+board23.jpg
+602 1087
+2906 1064
+2932 4017
+458 3901
+------------
+LN..K....
+..GS.SG..
+P.P.PPNPB
+...P..P..
+.R.L.....
+..P......
+PPSPPPPPP
+..G.RG...
+LB..K.SNL
+------------
+DD..D....
+..DD.DD..
+D.D.DDDDU
+...U..D..
+.D.D.....
+..U......
+UUUDUUUUU
+..U.UU...
+UD..U.UUU
+============
+
+
+board24.jpg
+372 842
+2847 783
+2934 3863
+331 3856
+------------
+LN..K..NL
+.....SG..
+P.PRPPPP.
+..R.....P
+.P.......
+..P......
+PPB.PPPP.
+....GKS..
+..S..G.NL
+------------
+DD..D..DD
+.....DD..
+D.DUDDDD.
+..D.....U
+.D.......
+..U......
+UUD.UUUU.
+....UUU..
+..U..U.UU
+============
+
+
+board25.jpg
+574 1166
+2858 1155
+2932 3999
+503 3987
+------------
+LN..K..NL
+.....SG..
+P.PRPPPP.
+..R.....P
+.P.......
+..P......
+PPB.PPPP.
+....GKS..
+..S..G.NL
+------------
+DD..D..DD
+.....DD..
+D.DUDDDD.
+..D.....U
+.D.......
+..U......
+UUD.UUUU.
+....UUU..
+..U..U.UU
+============
+
+
+board26.jpg
+721 1182
+2680 1219
+2675 3674
+572 3588
+------------
+LN.......
+..GSKSG..
+P.PNPPNPB
+...P..P..
+.R.......
+..P.P....
+PP.L.PPPP
+.R...G...
+LB..K.SKL
+------------
+DD.......
+..DDDDD..
+D.DUDDDDU
+...U..D..
+.D.......
+..U.U....
+UU.D.UUUU
+.U...U...
+UD..U.UUU
+============
+
+
+board27.jpg
+635 1438
+2631 1526
+2605 4029
+449 3948
+------------
+LNG......
+....KSG..
+P...PP.P.
+..PP..P..
+.....N...
+..PNP....
+PRG.KPPPP
+..SB.....
+L....GSNL
+------------
+DDD......
+....DDD..
+D...DD.D.
+..DU..D..
+.....D...
+..UDU....
+UDU.UUUUU
+..DU.....
+U....DUUU
+============
+
+
+board28.jpg
+551 1367
+2676 1249
+2833 3898
+612 3976
+------------
+....S....
+.NPK.LRNL
+RPGGP.SPP
+PP.BLGPPL
+RPBPBSPPR
+.PGPPPPSN
+N..B...K.
+.........
+.........
+------------
+....D....
+.DUD.UUDD
+DDDUD.DDU
+DU.UUDUDD
+UUUDUUDUU
+.UUDDUUUU
+U..D...U.
+.........
+.........
+============
+
+
+board29.jpg
+372 1369
+2550 1357
+2583 3967
+402 3997
+------------
+....SL...
+RNPKGSRNL
+.PG.PGPPP
+PPN.LBSPL
+RPBPB.PPK
+...PBPPSN
+.PG.PR...
+.........
+.........
+------------
+....DU...
+DDUDUDUDD
+.DD.DDUDU
+DUU.UUUDD
+UUUDU.DUU
+...DDUUUU
+.UU.DU...
+.........
+.........
+============
+
+
+board30.jpg
+353 1272
+2609 1193
+2689 3956
+404 3981
+------------
+.R.KL.S..
+.NP.GS.NL
+.PGLPGPPP
+PPNB..SPL
+RP.PB.PPK
+.B.P.PPSN
+.PG.P.R..
+..B..R...
+.........
+------------
+.D.DU.D..
+.DU.UD.DD
+.DDUDDUDU
+DUUU..UDD
+UU.DU.DUU
+.U.D.UUUU
+.UU.D.U..
+..D..U...
+.........
+============
+
+
+board31.jpg
+482 1503
+2558 1440
+2636 3976
+524 4006
+------------
+...KL.SR.
+.NPG.SLN.
+BPGLP.PPP
+PP..PSGPK
+RPLPBRPB.
+..NP.P.NP
+.PG.P.S..
+.........
+.BR......
+------------
+...DU.DD.
+.DUU.DDD.
+UDDUD.UDU
+DU..UUDDU
+UUDDUUDU.
+..UD.U.UU
+.UU.D.U..
+.........
+.DU......
+============
+
+
+board32.jpg
+424 746
+2894 708
+3100 3834
+289 3863
+------------
+.....S...
+...SN.SP.
+P.PPPPB..
+KGPL..PP.
+P..PLP..P
+.PB.LNNP.
+PP.GR.PL.
+....KGS..
+.N.G.B...
+------------
+.....D...
+...DD.UU.
+D.DDDDD..
+DDDD..DD.
+U..UDU..U
+.DD.DDDU.
+UU.DD.DD.
+....UDD..
+.U.U.D...
+============
+
+
+board33.jpg
+312 1310
+2617 1195
+2728 4015
+395 4063
+------------
+.....LS..
+RNPKGSRNL
+.PGLPGPPP
+PPNBB.SPL
+RPBP..PPK
+...PBPPSN
+.PG.PR...
+.........
+.........
+------------
+.....UD..
+DDUDUDUDD
+.DDUDDUDU
+DUUUU.UDD
+UUUD..DUU
+...DDUUUU
+.UU.DU...
+.........
+.........
+============
+
+
+board34.jpg
+387 854
+2839 835
+2902 3890
+309 3847
+------------
+...N..S..
+...SSB...
+PKPPPPPPP
+.GP.L....
+.P.PLP...
+.PR.LNNP.
+PP.GB.PLP
+....KGS..
+.N.G.B...
+------------
+...D..U..
+...DDD...
+DDDDDDDDD
+.DD.D....
+.U.UDU...
+.DD.DDDU.
+UU.DD.DDU
+....UDD..
+.U.U.D...
+============
+
+
+board35.jpg
+487 1154
+2628 1158
+2681 3865
+354 3816
+------------
+...N..S..
+...SSB...
+PKPPPPPPP
+.GP.L....
+.P.PLP...
+.PR.LNNP.
+PP.GR.PLP
+....KGS..
+.N.G.B...
+------------
+...D..U..
+...DDD...
+DDDDDDDDD
+.DD.D....
+.U.UDU...
+.DD.DDDU.
+UU.DD.DDU
+....UDD..
+.U.U.D...
+============
+
+
+board36.jpg
+718 1235
+2551 1156
+2762 3482
+599 3528
+------------
+LNSGKGSNL
+.R.....B.
+PPPPPPPPP
+.........
+.........
+.........
+PPPPPPPPP
+.B.....R.
+LNSGKGSNL
+------------
+DDDDDDDDD
+.D.....D.
+DDDDDDDDD
+.........
+.........
+.........
+UUUUUUUUU
+.U.....U.
+UUUUUUUUU
+============
+
+
+board37.jpg
+624 1542
+2554 1502
+2637 3893
+620 3917
+------------
+LNSGKGSNL
+.R.....B.
+PPPPPPPPP
+.........
+.........
+.........
+PPPPPPPPP
+.B.....R.
+LNSGKGSNL
+------------
+DDDDDDDDD
+.D.....D.
+DDDDDDDDD
+.........
+.........
+.........
+UUUUUUUUU
+.U.....U.
+UUUUUUUUU
+============
+
+
+board38.jpg
+520 1247
+2643 1237
+2739 3943
+383 3914
+------------
+...N..S..
+...SSB...
+PKPPPPPPP
+.GP.L....
+.P.PLP...
+.PR.LNNP.
+PP.GR.PLP
+....KGS..
+.N.G.B...
+------------
+...D..U..
+...DDD...
+DDDDDDDDD
+.DD.D....
+.U.UDU...
+.DD.DDDU.
+UU.DD.DDU
+....UDD..
+.U.U.D...
+============
+
+
+board39.jpg
+597 1145
+2607 1134
+2687 3665
+476 3646
+------------
+LNG.K.S..
+..R..G..L
+.P..S.NPP
+P.P.PPP.P
+PP.PP...L
+...BS.PP.
+.GPP.PKRN
+LB..G..S.
+.N.......
+------------
+DDD.D.D..
+..D..D..D
+.D..D.DDD
+D.D.DDD.U
+UU.DU...U
+...DU.UU.
+.UUU.UUUU
+UU..U..U.
+.U.......
+============
+
+
+board40.jpg
+276 1058
+2676 992
+2827 4047
+185 4063
+------------
+..S...S..
+.P.PN.P..
+P..L.PSPN
+KGP.PBP..
+P.RPLP..P
+.PG.LNPPL
+PPNRKG...
+...GB.S..
+.........
+------------
+..D...D..
+.D.DD.U..
+D..D.DUDU
+DDD.DDD..
+U.DUDU..U
+.DD.DDDUD
+UUUDUD...
+...UD.D..
+.........
+============
+
+
+board41.jpg
+684 940
+2988 939
+2924 3569
+783 3633
+------------
+.......N.
+.S..G..BL
+NRKP.PP..
+.PP.SBG..
+L...PP.P.
+P.PPP.PPP
+PPN.S..P.
+L..G..R..
+..S.K.GNL
+------------
+.......D.
+.D..D..DD
+DDDD.DD..
+.DD.DUD..
+D...DU.D.
+D.UUU.UDU
+UUU.U..U.
+U..U..U..
+..U.U.UUU
+============
+
+
+board42.jpg
+339 799
+2852 772
+2941 3988
+155 3917
+------------
+LN..S...B
+..GKSR...
+P.PP.P.PP
+....P....
+.........
+..P......
+PP.PPPP.P
+.R...KS..
+.N.G.G.NL
+------------
+DD..U...D
+..DDDU...
+D.DD.D.DD
+....D....
+.........
+..U......
+UU.UUUU.U
+.D...UU..
+.U.U.U.UU
+============
+
+
+board43.jpg
+417 1139
+2733 1047
+2850 3890
+461 3942
+------------
+......R..
+.NPK.S.NL
+.PGGPLSPP
+PPRBLGP.L
+RP.PBSPPB
+.PGPPPPSR
+N.....P.N
+....B..K.
+.........
+------------
+......U..
+.DUD.D.DD
+.DDUDDDDU
+DUDUUDD.U
+UU.DDUDUU
+.UUDDUUUU
+U.....U.U
+....U..U.
+.........
+============
+
+
+board44.jpg
+559 1215
+2558 1192
+2628 3697
+481 3683
+------------
+LNG...S..
+.....S.NL
+.P.K.....
+PPRPGPPPP
+LPBPPPPPL
+.PG.S.P.R
+..BPGPK.N
+.........
+.N....S..
+------------
+DDD...D..
+.....D.DD
+.D.D.....
+DUDDDDDDU
+UUDDDUDUU
+.UU.U.U.U
+..UUUUU.U
+.........
+.U....U..
+============
+
+
+board45.jpg
+489 1148
+2719 1074
+2807 3891
+450 3870
+------------
+LNG...S..
+.....S.NL
+.P.K..P.P
+PPRPGP..P
+LPBPPPPPL
+.PG.S.PR.
+..BPGPK.N
+.........
+.N....S..
+------------
+DDD...D..
+.....D.DD
+.D.D..D.D
+DUDDDD..U
+UUDDDUDUU
+.UU.U.UU.
+..UUUUU.U
+.........
+.U....U..
+============
+
+
+board46.jpg
+409 1050
+2579 1020
+2636 3648
+425 3678
+------------
+..S...S..
+.P.PN.P..
+P..L.PSPN
+KGP.PBP..
+P.RPLP..P
+.PG.LNPPL
+PPNRKG...
+...GB.S..
+.........
+------------
+..D...D..
+.D.DD.U..
+D..D.DUDU
+DDD.DDD..
+U.DUDU..U
+.DD.DDDUD
+UUUDUD...
+...UD.D..
+.........
+============
+
+
+board47.jpg
+465 1166
+2739 1058
+2934 3918
+477 3984
+------------
+....SL...
+RNPK.SRNL
+.PGGPGPPP
+PPNBL.SPL
+RPBPB.PP.
+...PBPPSN
+.PG.P..KR
+.........
+.........
+------------
+....DU...
+DDUD.DUDD
+.DDUDDUDU
+DUUUU.UDD
+UUUDU.DU.
+...DDUUUU
+.UU.D..UU
+.........
+.........
+============
+
+
+board48.jpg
+557 1564
+2570 1525
+2655 4051
+520 4046
+------------
+...KL.SR.
+.NPG.SLN.
+BPGLP.PPP
+PP..PSGPK
+RPLPBRPB.
+..NP.P.NP
+.PG.P.S..
+.........
+.BR......
+------------
+...DU.DD.
+.DUU.DDD.
+UDDUD.UDU
+DU..UUDDU
+UUDDUUDU.
+..UD.U.UU
+.UU.D.U..
+.........
+.DU......
+============
+
+
+board49.jpg
+824 1040
+2940 1016
+2885 3478
+904 3480
+------------
+LNSGKGSNL
+.R.....B.
+PPPPPPPPP
+.........
+.........
+.........
+PPPPPPPPP
+.B.....R.
+LNSGKGSNL
+------------
+DDDDDDDDD
+.D.....D.
+DDDDDDDDD
+.........
+.........
+.........
+UUUUUUUUU
+.U.....U.
+UUUUUUUUU
+============
+
+
+board50.jpg
+368 1070
+2710 1001
+2856 3963
+307 3988
+------------
+...N..S..
+.L.S.B...
+PK.PSPPPP
+.GPLP.R..
+.PBPLPG.N
+.PR.PSPP.
+PP...K.LP
+.........
+.N.G.G.N.
+------------
+...D..U..
+.D.D.D...
+DD.DDDDDD
+.DDDD.U..
+.UDUDUU.D
+.DD.UUUU.
+UU...U.UU
+.........
+.U.U.U.U.
+============
+
+
+board51.jpg
+485 1244
+2586 1164
+2693 3742
+535 3785
+------------
+.....L...
+...G.S.NL
+.PNKP.SPP
+PPRPLGP.L
+.P.P.SPP.
+.PGBPPPSR
+N.BPGPK.N
+.......B.
+..B.R.R..
+------------
+.....D...
+...D.D.DD
+.DDDD.DDU
+DUDDUDD.U
+.U.D.UDU.
+.UUDDUUUU
+U.UUUUU.U
+.......U.
+..U.U.U..
+============
+
+
+board52.jpg
+380 1123
+2632 1042
+2713 3793
+443 3812
+------------
+LNG...S..
+.......NL
+.P.KP.SPP
+PPRP.GP..
+LP.P.SPPL
+.PGBPPP.R
+..BPGPK.N
+.........
+.N....S..
+------------
+DDD...D..
+.......DD
+.D.DD.DDU
+DUDD.DD..
+UU.D.UDUU
+.UUDDUU.U
+..UUUUU.U
+.........
+.U....U.U
+============
+
+
+board53.jpg
+545 1002
+2641 944
+2726 3564
+494 3554
+------------
+LNG.K.S..
+..B....NL
+.P..S.GPP
+PPP.PPP.P
+.PBP.P.PL
+..G.S.P.R
+..PPGPK.N
+LB.......
+.N....S..
+------------
+DDD.D.D..
+..D....DD
+.D..D.DDD
+DUD.DDD.U
+.UDD.U.UU
+..U.U.U.U
+..UUUUU.U
+UU.......
+.U....U..
+============
+
+
+board54.jpg
+437 739
+2910 714
+2973 3774
+370 3755
+------------
+.........
+.LN..SB..
+PGKPSPRPP
+..P.P....
+.....P...
+..PPPSP..
+PP...K.LP
+....R....
+.N.G.G.N.
+------------
+.........
+.DD..UD..
+DDDDDDUDD
+..D.D....
+.....U...
+..UUUUU..
+UU...U.UU
+....D....
+.U.U.U.U.
+============
+
+
+board55.jpg
+335 1009
+2681 918
+2762 3774
+402 3809
+------------
+.....L...
+...G.S.NL
+.PNKP.SPP
+PPRPLGP.L
+.P.P.SPP.
+.PGBPPPSR
+N.BPGPK.N
+.........
+.........
+------------
+.....D...
+...D.D.DD
+.DDDD.DDU
+DUDDUDD.U
+.U.D.UDU.
+.UUDDUUUU
+U.UUUUU.U
+.........
+.........
+============
+
+
+board56.jpg
+400 1174
+2668 1050
+2812 3906
+429 3933
+------------
+.....L...
+...G.S.NL
+.PNKP.SPP
+PPR.LGP.L
+.P.P.SPP.
+.PGPPPPSR
+N.B.B.P.N
+.B.PGR.K.
+..R...B..
+------------
+.....D...
+...D.D.DD
+.DDDD.DDU
+DUD.UDD.U
+.U.D.UDU.
+.UUDDUUUU
+U.U.D.U.U
+.U.UUU.U.
+..U...U..
+============
+
+
+board57.jpg
+462 1228
+2639 1186
+2689 3846
+459 3857
+------------
+...KL.SR.
+.NPG.S.NL
+.PGLPGPPP
+PPBB.S.P.
+RP.PLPPPK
+..NP.PR..
+.PG.PBS..
+.......N.
+.BR......
+------------
+...DU.DD.
+.DUU.D.DD
+.DDUDDUDU
+DUUU.U.D.
+UU.DDUDUU
+..UD.UU..
+.UU.DUU..
+.......U.
+.DU......
+============
+
+
+board58.jpg
+563 1271
+2760 1204
+2839 3937
+567 3938
+------------
+LNG...S..
+..R.KS.NL
+.P.P.G.PP
+PP...PPPP
+.PBPPP..L
+..G.S.PR.
+..PPGPK.N
+LB.......
+.N....S..
+------------
+DDD...D..
+..D.DD.DD
+.D.D.D.DD
+DU...DDUU
+.UDDDU..U
+..U.U.UU.
+..UUUUU.U
+UU.......
+.U....U..
+============
+
+
+board59.jpg
+631 1226
+2597 1191
+2730 3699
+487 3693
+------------
+LNG.K.S.L
+.R.SG....
+PPPPPPNPP
+......P..
+....B....
+....P..PP
+PPPP.PPRL
+.BGSK....
+LN...GSN.
+------------
+DDD.D.D.D
+.D.DD....
+DDDDDDDDD
+......D..
+....D....
+....U..UU
+UUUU.UUUU
+.UUUU....
+UU...UUU.
+============
+
+
+board60.jpg
+402 1254
+2588 1227
+2659 3915
+380 3940
+------------
+...KLS...
+.NPG.SLNR
+BPGLPSPPP
+PP..P.GPK
+RPP..RP.B
+.PN.PPBNP
+..G.P.S..
+.........
+.BRL.....
+------------
+...DUD...
+.DUU.DDDD
+UDDUDUUDU
+DU..U.DDU
+UUD..UD.U
+.UU.DUUUU
+..U.D.U..
+.........
+.DUD.....
+============
+
+
+board61.jpg
+540 1360
+2551 1321
+2619 3790
+545 3811
+------------
+LNG.K.S.L
+..RSG....
+PPP.PPNPP
+...P..P..
+.........
+...BP.PPP
+PPPPSP.RL
+.BG.K....
+LN...GSN.
+------------
+DDD.D.D.D
+..DDD....
+DDD.DDDDD
+...D..D..
+.........
+...DU.UUU
+UUUUUU.UU
+.UU.U....
+UU...UUU.
+============
+
+
+board62.jpg
+601 1062
+2649 1047
+2703 3580
+538 3568
+------------
+LNG.K.S..
+..R..G..L
+.PP.S.NPP
+P..PPPP.P
+PP..P...L
+...B..PP.
+.GPPSPKRN
+LB.......
+.N...GS..
+------------
+DDD.D.D..
+..D..D..D
+.DD.D.DDD
+D..DDDD.U
+UU..U...U
+...D..UU.
+.UUUUUUUU
+UU.......
+.U...UU..
+============
+
+
+board63.jpg
+575 1272
+2474 1226
+2586 3635
+466 3648
+------------
+LNG.K.S.L
+..RSG....
+PPP.PPNPP
+...P..P.P
+....P...L
+PP.B..PP.
+.GPPSPKR.
+LB.......
+.N...GSN.
+------------
+DDD.D.D.D
+..DDD....
+DDD.DDDDD
+...D..D.U
+....U...U
+UU.D..UU.
+.UUUUUUU.
+UU.......
+.U...UUU.
+============
+
+
+board64.jpg
+372 1175
+2634 1174
+2655 3924
+342 3927
+------------
+.R.KL.S..
+.NP.GS.NL
+.PGLPGPPP
+PP....SPL
+RPBPB.PPK
+..NPBPPSN
+.PG.P.R..
+.........
+.BR......
+------------
+.D.DU.D..
+.DU.UD.DD
+.DDUDDUDU
+DU....UDD
+UUUDU.DUU
+..UDUUUUU
+.UU.D.U..
+.........
+.DU......
+============
+
+
+board65.jpg
+529 1281
+2480 1263
+2489 3671
+483 3634
+------------
+LNG.K.S..
+..R..G..L
+PPP.S.NPP
+...PPPP.P
+....P...L
+PP.B..PP.
+.GPPSPKRN
+LB.......
+.N...GS..
+------------
+DDD.D.D..
+..D..D..D
+DDD.D.DDD
+...DDDD.U
+....U...U
+UU.D..UU.
+.UUUUUUUU
+UU.......
+.U...UU..
+============
+
+
+board66.jpg
+266 1066
+2763 988
+2985 4181
+179 4240
+------------
+.........
+.LNS.SB..
+PGKPSPRPP
+..PLP..PN
+..B.LPGP.
+..PPPSPP.
+PP...K.LP
+....R....
+.N.G.G.N.
+------------
+.........
+.DDD.UD..
+DDDDDDUDD
+..DDD..DD
+..D.DUUD.
+..UUUUUU.
+UU...U.UU
+....D....
+.U.U.U.U.
+============
+
+
+board67.jpg
+596 1143
+2818 1136
+2812 3873
+543 3809
+------------
+LNG...S..
+.....S.NL
+.P.K.....
+PPRPGPPPP
+LPBPPPPPL
+.PG.S.P.R
+..BPGPK.N
+.........
+.N....S..
+------------
+DDD...D..
+.....D.DD
+.D.D.....
+DUDDDDDDU
+UUDDDUDUU
+.UU.U.U.U
+..UUUUU.U
+.........
+.U....U..
+============
+
+
+board68.jpg
+513 1221
+2486 1228
+2560 3690
+410 3688
+------------
+LNG.K.S.L
+..R..G...
+PPP.S.NPP
+...PPPP.P
+....P...L
+PP.B..PP.
+.GPPSPKRN
+LB.......
+.N...GS..
+------------
+DDD.D.D.D
+..D..D...
+DDD.D.DDD
+...DDDD.U
+....U...U
+UU.D..UU.
+.UUUUUUUU
+UU.......
+.U...UU..
+============
+
+
