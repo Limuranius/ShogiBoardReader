@@ -34,13 +34,23 @@ class ShogiBoardReader:
         cells = self.board_splitter.get_board_cells(self.image_mode)
         return self.recognizer.recognize_board_directions(cells)
 
-    def get_str_board(self):
+    def get_str_figures(self):
         board = self.recognize_board_figures()
         s = ""
         for i in range(9):
             for j in range(9):
                 figure = board[i][j]
                 s += figure.value
+            s += "\n"
+        return s
+
+    def get_str_directions(self):
+        board = self.recognize_board_directions()
+        s = ""
+        for i in range(9):
+            for j in range(9):
+                direction = board[i][j]
+                s += direction.value
             s += "\n"
         return s
 
@@ -58,8 +68,8 @@ class ShogiBoardReader:
     def get_full_img(self, show_borders: bool) -> Image:
         return self.board_splitter.get_full_img(show_borders)
 
-    def get_board_image_no_perspective(self) -> Image:
-        return self.board_splitter.get_board_image_no_perspective()
+    def get_board_image_no_perspective(self, img_mode: ImageMode = ImageMode.ORIGINAL) -> Image:
+        return self.board_splitter.get_board_image_no_perspective(img_mode)
 
     def get_digital_board(self) -> Image:
         figures = self.recognize_board_figures()

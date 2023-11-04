@@ -1,13 +1,16 @@
 import numpy as np
 import cv2
 import random
-from . import figures
+from .types import Image
 
 
 def get_black_mask(image: np.ndarray):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     min_value = 100
     ret, thresh = cv2.threshold(gray, min_value, 255, cv2.THRESH_BINARY)
+    black_mask = thresh == 0
+    thresh[black_mask] = 255
+    thresh[~black_mask] = 0
     return thresh
 
 
@@ -125,3 +128,12 @@ def overlay_image_on_image(img: np.ndarray, img_overlay: np.ndarray, x: int, y: 
     y1 = y + img_overlay.shape[0]
     img[y: y1, x: x1] = img_overlay
     return img
+
+
+def gray_to_3d(img: Image):
+    h, w = img.shape
+    new_img = np.ndarray(shape=(h, w, 3), dtype=np.uint8)
+    new_img[:, :, 0] = img
+    new_img[:, :, 1] = img
+    new_img[:, :, 2] = img
+    return new_img
