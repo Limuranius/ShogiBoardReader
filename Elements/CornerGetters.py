@@ -2,8 +2,7 @@ import numpy as np
 from abc import ABC, abstractmethod
 from extra import utils
 import cv2
-
-Corners = tuple[tuple[int, int], tuple[int, int], tuple[int, int], tuple[int, int]]
+from extra.types import Corners
 
 
 class CornerDetector(ABC):
@@ -31,9 +30,9 @@ class HSVThresholdCornerDetector(CornerDetector):
     hsv_low: np.ndarray
     hsv_high: np.ndarray
 
-    def __init__(self, hsv_low: np.ndarray, hsv_high: np.ndarray):
-        self.hsv_low = hsv_low
-        self.hsv_high = hsv_high
+    def __init__(self, hsv_low: tuple[int, int, int], hsv_high: tuple[int, int, int]):
+        self.hsv_low = np.array(hsv_low)
+        self.hsv_high = np.array(hsv_high)
 
     def get_corners(self, image: np.ndarray) -> Corners:
         image_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
