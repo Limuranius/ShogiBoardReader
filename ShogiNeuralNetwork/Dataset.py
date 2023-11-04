@@ -1,23 +1,36 @@
 import numpy as np
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from config import Paths
 import pickle
 from collections import defaultdict
 import os
+
+from extra.image_modes import ImageMode
 from .data_info import CATEGORIES_FIGURE_TYPE
 from extra import figures
 import cv2
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from keras.src.preprocessing.image import ImageDataGenerator
 
 
 @dataclass
 class Dataset:
     _full_data: pd.DataFrame
-    _train: pd.DataFrame = None
-    _test: pd.DataFrame = None
+    """
+    Dataframe columns:
+        image: np.ndarray
+        figure_type: int
+        direction: int
+    """
+    img_mode: ImageMode
+
+    _train: pd.DataFrame = field(init=False)
+    _test: pd.DataFrame = field(init=False)
+    cell_img_size: int = field(init=False)
 
     def __post_init__(self):
+        self.cell_img_size = self._full_data.iloc[0]["image"].shape[0]
         self.reshuffle(0.2)
 
     def reshuffle(self, test_size: float):
@@ -25,8 +38,8 @@ class Dataset:
 
     def save_to_pickle(self):
         paths = {
-            Paths.X_TRAIN_PATH: self.X_train,
-            Paths.X_TEST_PATH: self.X_test,
+            Paths.X_TRAIN_PATH: self.x_train,
+            Paths.X_TEST_PATH: self.x_test,
             Paths.Y_FIGURE_TRAIN_PATH: self.y_figure_train,
             Paths.Y_FIGURE_TEST_PATH: self.y_figure_test,
             Paths.Y_DIRECTION_TRAIN_PATH: self.y_direction_train,
@@ -37,12 +50,14 @@ class Dataset:
                 pickle.dump(paths[path], f)
 
     @property
-    def X_train(self):
-        return np.array(self._train["image"].to_list())
+    def x_train(self):
+        return (np.array(self._train["image"].to_list())
+                .reshape((-1, self.cell_img_size, self.cell_img_size, 1)))
 
     @property
-    def X_test(self):
-        return np.array(self._test["image"].to_list())
+    def x_test(self):
+        return (np.array(self._test["image"].to_list())
+                .reshape((-1, self.cell_img_size, self.cell_img_size, 1)))
 
     @property
     def y_figure_train(self):
@@ -69,7 +84,35 @@ class Dataset:
         return self._test
 
     def save_to_img(self):
-        save_data_to_imgs(self.X_test, self.y_figure_test)
+        save_data_to_imgs(self.x_test, self.y_figure_test)
+
+    def show_examples(self):
+        import cv2
+        for fig_type in self._full_data["figure_type"].unique():
+            img = self._full_data[self._full_data["figure_type"] == fig_type].iloc[0]["image"]
+            cv2.imshow(str(fig_type), img)
+        cv2.waitKey(0)
+
+    def get_augmented_data_generator(
+            self,
+            y_type: str,
+            rotation_range: int,
+            width_shift_range: float,
+            height_shift_range: float,
+    ):
+        datagen = ImageDataGenerator(
+            rotation_range=rotation_range,
+            width_shift_range=width_shift_range,
+            height_shift_range=height_shift_range,
+        )
+        datagen.fit(self.x_train)
+        match y_type:
+            case "figure":
+                return datagen.flow(self.x_train, self.y_figure_train)
+            case "direction":
+                return datagen.flow(self.x_train, self.y_direction_train)
+            case _:
+                raise Exception("Unknown y_type")
 
 
 def save_data_to_imgs(X, y):

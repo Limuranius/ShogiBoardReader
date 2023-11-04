@@ -48,7 +48,7 @@ def test_figure_type_model(
     result = FigureTypeTestResult()
 
     # Test data
-    X_test = dataset.X_test
+    X_test = dataset.x_test
     y_test = dataset.y_figure_test
     result.test_total_accuracy = model.evaluate(X_test, y_test, batch_size=32, return_dict=True,
                                                 verbose=0)["accuracy"]
@@ -60,7 +60,7 @@ def test_figure_type_model(
         result.test_each_figure_acc[fig_type] = fig_res["accuracy"]
 
     # Train data
-    X_train = dataset.X_train
+    X_train = dataset.x_train
     y_train = dataset.y_figure_train
     result.train_total_accuracy = model.evaluate(X_train, y_train, batch_size=32, return_dict=True,
                                                  verbose=0)["accuracy"]
@@ -81,7 +81,7 @@ def test_direction_model(
     result = DirectionTestResult()
 
     # Test data
-    X_test = dataset.X_test
+    X_test = dataset.x_test
     y_test = dataset.y_direction_test
     result.test_total_accuracy = model.evaluate(X_test, y_test, batch_size=32, return_dict=True,
                                                 verbose=0)["accuracy"]
@@ -93,7 +93,7 @@ def test_direction_model(
         result.test_each_direction_acc[direction_type] = direction_res["accuracy"]
 
     # Train data
-    X_train = dataset.X_train
+    X_train = dataset.x_train
     y_train = dataset.y_direction_train
     result.train_total_accuracy = model.evaluate(X_train, y_train, batch_size=32, return_dict=True,
                                                  verbose=0)["accuracy"]

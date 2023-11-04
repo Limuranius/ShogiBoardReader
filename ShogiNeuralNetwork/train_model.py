@@ -4,10 +4,13 @@ from .Dataset import Dataset
 
 def train_figure_type_model(
         dataset: Dataset,
-        cell_img_size: int,
         epochs: int,
-        verbose=0
+        rotation_range: int,
+        width_shift_range: float,
+        height_shift_range: float,
+        verbose=0,
 ) -> keras.Model:
+    cell_img_size = dataset.cell_img_size
     model = keras.Sequential(
         [
             keras.Input(shape=(cell_img_size, cell_img_size, 1)),
@@ -28,19 +31,31 @@ def train_figure_type_model(
         metrics=["accuracy"]
     )
 
-    X_train = dataset.X_train
-    y_train = dataset.y_figure_train
+    datagen = dataset.get_augmented_data_generator(
+        y_type="figure",
+        rotation_range=rotation_range,
+        width_shift_range=width_shift_range,
+        height_shift_range=height_shift_range,
+    )
 
-    model.fit(X_train, y_train, batch_size=32, epochs=epochs, verbose=verbose)
+    model.fit(
+        datagen,
+        epochs=epochs,
+        verbose=verbose,
+        validation_data=(dataset.x_test, dataset.y_figure_test)
+    )
     return model
 
 
 def train_direction_model(
         dataset: Dataset,
-        cell_img_size: int,
         epochs: int,
+        rotation_range: int,
+        width_shift_range: float,
+        height_shift_range: float,
         verbose=0
 ) -> keras.Model:
+    cell_img_size = dataset.cell_img_size
     model = keras.Sequential(
         [
             keras.Input(shape=(cell_img_size, cell_img_size, 1)),
@@ -61,8 +76,17 @@ def train_direction_model(
         metrics=["accuracy"]
     )
 
-    X_train = dataset.X_train
-    y_train = dataset.y_direction_train
+    datagen = dataset.get_augmented_data_generator(
+        y_type="direction",
+        rotation_range=rotation_range,
+        width_shift_range=width_shift_range,
+        height_shift_range=height_shift_range,
+    )
 
-    model.fit(X_train, y_train, batch_size=32, epochs=epochs, verbose=verbose)
+    model.fit(
+        datagen,
+        epochs=epochs,
+        verbose=verbose,
+        validation_data=(dataset.x_test, dataset.y_direction_test)
+    )
     return model
