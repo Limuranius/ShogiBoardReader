@@ -20,11 +20,16 @@ class BoardSplitter:
         self.board_img_size = board_img_size
         self.cell_img_size = cell_img_size
 
-    def get_board_image_no_perspective(self):
+    def get_board_image_no_perspective(self, img_mode: ImageMode = ImageMode.ORIGINAL):
         """Возвращает изображение доски с убранной перспективой и вырезанным фоном"""
         full_img = self.image_getter.get_image()
         corners = self.corner_getter.get_corners(full_img)
-        return utils.remove_perspective(full_img, np.array(corners))
+        img_no_persp = utils.remove_perspective(full_img, np.array(corners))
+        match img_mode:
+            case ImageMode.ORIGINAL:
+                return img_no_persp
+            case ImageMode.GRAYSCALE_BLACK_THRESHOLD:
+                return utils.get_black_mask(img_no_persp)
 
     def get_board_cells(self, image_mode: ImageMode) -> list[list[Image]]:
         match image_mode:
@@ -87,7 +92,7 @@ class BoardSplitter:
                 result[y - 1][x - 1] = cell_img
         return result
 
-    def get_full_img(self, show_borders: bool) -> Image:
+    def get_full_img(self, show_borders: bool = False) -> Image:
         full_img = self.image_getter.get_image()
         if show_borders:
             corners = np.array(self.corner_getter.get_corners(full_img))
