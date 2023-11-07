@@ -1,18 +1,26 @@
+from __future__ import annotations
 from enum import Enum
 from config import Paths
 import os
 
 
 class Figure(Enum):
-    PAWN = "P"
+    PAWN = "p"
     KING = "K"
-    LANCE = "L"
-    KNIGHT = "N"
-    SILVER = "S"
+    LANCE = "l"
+    KNIGHT = "n"
+    SILVER = "s"
     GOLD = "G"
-    BISHOP = "B"
-    ROOK = "R"
+    BISHOP = "b"
+    ROOK = "r"
     EMPTY = "."
+
+    PAWN_PROM = "P"
+    LANCE_PROM = "L"
+    KNIGHT_PROM = "N"
+    SILVER_PROM = "S"
+    BISHOP_PROM = "B"
+    ROOK_PROM = "R"
 
     def to_jp(self) -> str:
         translate_table = {
@@ -24,8 +32,37 @@ class Figure(Enum):
             self.GOLD: "金",
             self.BISHOP: "角",
             self.ROOK: "飛",
+
+            self.PAWN_PROM: "と",
+            self.LANCE_PROM: "成香",
+            self.KNIGHT_PROM: "成桂",
+            self.SILVER_PROM: "成銀",
+            self.BISHOP_PROM: "馬",
+            self.ROOK_PROM: "龍",
         }
         return translate_table[self]
+
+    def promoted(self) -> Figure:
+        promotion_table = {
+            self.PAWN: self.PAWN_PROM,
+            self.LANCE: self.LANCE_PROM,
+            self.KNIGHT: self.KNIGHT_PROM,
+            self.SILVER: self.SILVER_PROM,
+            self.BISHOP: self.BISHOP_PROM,
+            self.ROOK: self.ROOK_PROM,
+        }
+        return promotion_table[self]
+
+    def unpromoted(self) -> Figure:
+        promotion_table = {
+            self.PAWN_PROM: self.PAWN,
+            self.LANCE_PROM: self.LANCE,
+            self.KNIGHT_PROM: self.KNIGHT,
+            self.SILVER_PROM: self.SILVER,
+            self.BISHOP_PROM: self.BISHOP,
+            self.ROOK_PROM: self.ROOK,
+        }
+        return promotion_table[self]
 
 
 class Direction(Enum):

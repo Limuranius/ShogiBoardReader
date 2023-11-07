@@ -73,7 +73,26 @@ def get_move(old_board: FigureBoard, new_board: FigureBoard) -> Move | None:
             y_destination = i1 + 1
             move_type = MoveType.MOVE
 
-        # TODO: promotion moves
+        # PIECE-EMPTY -> EMPTY-PIECE_PROM
+        # PIECE1-PIECE2 -> EMPTY-PIECE1_PROM
+        elif cell_1_new == Figure.EMPTY and cell_2_new != Figure.EMPTY and cell_2_new == cell_1_old.promoted():
+            moved_figure = cell_1_old
+            x_origin = j1 + 1
+            y_origin = i1 + 1
+            x_destination = j2 + 1
+            y_destination = i2 + 1
+            move_type = MoveType.MOVE_AND_PROMOTE
+
+        # EMPTY - PIECE -> PIECE_PROM - EMPTY
+        # PIECE1 - PIECE2 -> PIECE2_PROM - EMPTY
+        elif cell_2_new == Figure.EMPTY and cell_1_new != Figure.EMPTY and cell_1_new == cell_2_old.promoted():
+            moved_figure = cell_2_old
+            x_origin = j2 + 1
+            y_origin = i2 + 1
+            x_destination = j1 + 1
+            y_destination = i1 + 1
+            move_type = MoveType.MOVE_AND_PROMOTE
+
         else:
             return None
 
