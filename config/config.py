@@ -2,15 +2,16 @@ from .mytypedconfig import section
 from .Paths import CONFIG_PATH
 
 
-@section(section_name="NN data")
-class NN_data:
+@section(section_name="Neural Network")
+class NeuralNetwork:
     cell_img_size: int
-    board_img_size: int
     test_fraction: float
-    random_translate_repeat: int
-    random_translate_max_margin: float
-    random_rotate_repeat: int
-    random_rotate_max_angle: int
+    width_shift_range: float
+    height_shift_range: float
+    rotation_range: int
+    figure_epochs: int
+    direction_epochs: int
+    image_mode: str
 
 
 @section(section_name="HSV Threshold")
@@ -34,12 +35,12 @@ class Tweaks:
 
 
 class Config:
-    NN_data: NN_data
+    NeuralNetwork: NeuralNetwork
     HSVThreshold: HSVThreshold
     Tweaks: Tweaks
 
     def __init__(self, config_path: str):
-        self.NN_data = NN_data(config_path)
+        self.NeuralNetwork = NeuralNetwork(config_path)
         self.HSVThreshold = HSVThreshold(config_path)
         self.Tweaks = Tweaks(config_path)
 

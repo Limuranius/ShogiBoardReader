@@ -2,28 +2,28 @@ import ShogiNeuralNetwork.create_data as create_data
 import ShogiNeuralNetwork.train_model as train_model
 import ShogiNeuralNetwork.test_model as test_model
 from extra.image_modes import ImageMode
-from config import Paths
+from config import Paths, GLOBAL_CONFIG
 
 dataset = create_data.create_dataset(
-    img_mode=ImageMode.GRAYSCALE_BLACK_THRESHOLD,
-    cell_img_size=80
+    img_mode=ImageMode(GLOBAL_CONFIG.NeuralNetwork.image_mode),
+    cell_img_size=GLOBAL_CONFIG.NeuralNetwork.cell_img_size
 )
 
 model_figure = train_model.train_figure_type_model(
     dataset=dataset,
-    epochs=80,
-    rotation_range=15,
-    width_shift_range=0.1,
-    height_shift_range=0.1,
+    epochs=GLOBAL_CONFIG.NeuralNetwork.figure_epochs,
+    rotation_range=GLOBAL_CONFIG.NeuralNetwork.rotation_range,
+    width_shift_range=GLOBAL_CONFIG.NeuralNetwork.width_shift_range,
+    height_shift_range=GLOBAL_CONFIG.NeuralNetwork.height_shift_range,
     verbose=1,
 )
 
 model_direction = train_model.train_direction_model(
     dataset=dataset,
-    epochs=80,
-    rotation_range=15,
-    width_shift_range=0.1,
-    height_shift_range=0.1,
+    epochs=GLOBAL_CONFIG.NeuralNetwork.direction_epochs,
+    rotation_range=GLOBAL_CONFIG.NeuralNetwork.rotation_range,
+    width_shift_range=GLOBAL_CONFIG.NeuralNetwork.width_shift_range,
+    height_shift_range=GLOBAL_CONFIG.NeuralNetwork.height_shift_range,
     verbose=1,
 )
 

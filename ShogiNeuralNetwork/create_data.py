@@ -1,7 +1,7 @@
 from data_info import *
 from extra import figures
 from extra.image_modes import ImageMode
-from Elements import ImageGetters, BoardSplitter
+from Elements import *
 from sklearn.utils import shuffle
 import pandas as pd
 from tqdm import tqdm
@@ -19,11 +19,10 @@ def load_boards(
                         index=range(total_data_count))
 
     image_getter = ImageGetters.Photo()
-    corner_getter = CornerGetters.HardcodedCornerDetector()
-    board_splitter = BoardSplitter.BoardSplitter(
+    corner_getter = CornerDetectors.HardcodedCornerDetector()
+    board_splitter = BoardSplitter(
         image_getter,
         corner_getter,
-        board_img_size=cell_img_size * 9,
         cell_img_size=cell_img_size
     )
 
