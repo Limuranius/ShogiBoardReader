@@ -1,5 +1,5 @@
 from .ImageGetters import ImageGetter
-from .CornerGetters import CornerDetector
+from Elements.CornerDetectors.CornerDetector import CornerDetector
 from extra import utils
 from extra.image_modes import ImageMode
 from extra.types import Image

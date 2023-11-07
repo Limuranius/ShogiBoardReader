@@ -1,7 +1,7 @@
 from data_info import *
-from extra import utils, figures
+from extra import figures
 from extra.image_modes import ImageMode
-from Elements import CornerGetters, ImageGetters, BoardSplitter
+from Elements import ImageGetters, BoardSplitter
 from sklearn.utils import shuffle
 import pandas as pd
 from tqdm import tqdm
