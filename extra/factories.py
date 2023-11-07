@@ -21,9 +21,9 @@ def get_camera_reader(image_mode: ImageMode, cam_id: int):
 
     reader = ShogiBoardReader(
         image_mode,
-        BoardSplitter.BoardSplitter(
+        BoardSplitter(
             ImageGetters.Camera(cam_id),
-            CornerGetters.HSVThresholdCornerDetector(hsv_low, hsv_high),
+            CornerDetectors.HSVThresholdCornerDetector(hsv_low, hsv_high),
             board_img_size=config.NN_data.board_img_size,
             cell_img_size=config.NN_data.cell_img_size
         ),
@@ -32,7 +32,7 @@ def get_camera_reader(image_mode: ImageMode, cam_id: int):
             Paths.MODEL_DIRECTION_PATH,
             cell_img_size=config.NN_data.cell_img_size
         ),
-        analyzer=None
+        memorizer=None
     )
     return reader
 
@@ -44,9 +44,9 @@ def get_hardcoded_reader(image_mode: ImageMode, img_name: str):
 
     reader = ShogiBoardReader(
         image_mode,
-        BoardSplitter.BoardSplitter(
+        BoardSplitter(
             ImageGetters.Photo(img_path),
-            CornerGetters.HardcodedCornerDetector(corners),
+            CornerDetectors.HardcodedCornerDetector(corners),
             board_img_size=config.NN_data.board_img_size,
             cell_img_size=config.NN_data.cell_img_size
         ),
@@ -55,12 +55,12 @@ def get_hardcoded_reader(image_mode: ImageMode, img_name: str):
             Paths.MODEL_DIRECTION_PATH,
             cell_img_size=config.NN_data.cell_img_size
         ),
-        analyzer=None
+        memorizer=None
     )
     return reader
 
 
-def get_video_reader(image_mode: ImageMode, video_path: str):
+def get_video_reader(image_mode: ImageMode, video_path: str, use_memorizer: bool):
     config = Config(Paths.CONFIG_PATH)
     hsv_low = np.array([
         config.HSVThreshold.h_low,
@@ -73,11 +73,16 @@ def get_video_reader(image_mode: ImageMode, video_path: str):
         config.HSVThreshold.v_high,
     ])
 
+    if use_memorizer:
+        memorizer = BoardMemorizer()
+    else:
+        memorizer = None
+
     reader = ShogiBoardReader(
         image_mode,
-        BoardSplitter.BoardSplitter(
+        BoardSplitter(
             ImageGetters.Video(video_path),
-            CornerGetters.HSVThresholdCornerDetector(hsv_low, hsv_high),
+            CornerDetectors.HSVThresholdCornerDetector(hsv_low, hsv_high),
             board_img_size=config.NN_data.board_img_size,
             cell_img_size=config.NN_data.cell_img_size
         ),
@@ -86,6 +91,6 @@ def get_video_reader(image_mode: ImageMode, video_path: str):
             Paths.MODEL_DIRECTION_PATH,
             cell_img_size=config.NN_data.cell_img_size
         ),
-        analyzer=None
+        memorizer=memorizer
     )
     return reader

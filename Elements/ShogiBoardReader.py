@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from extra.figures import Figure, Direction, FIGURE_ICONS_PATHS
 from .FigureRecognizers import Recognizer
-from .BoardAnalyzer import BoardAnalyzer
+from .BoardMemorizer import BoardMemorizer
 from .BoardSplitter import BoardSplitter
 from extra import utils
 from extra.image_modes import ImageMode
@@ -13,18 +13,18 @@ class ShogiBoardReader:
     image_mode: ImageMode
     board_splitter: BoardSplitter
     recognizer: Recognizer
-    analyzer: BoardAnalyzer
+    memorizer: BoardMemorizer
 
     def __init__(
             self,
             image_mode: ImageMode,
             board_splitter: BoardSplitter,
             recognizer: Recognizer,
-            analyzer: BoardAnalyzer = None):
+            memorizer: BoardMemorizer = None):
         self.image_mode = image_mode
         self.board_splitter = board_splitter
         self.recognizer = recognizer
-        self.analyzer = analyzer
+        self.memorizer = memorizer
 
     def recognize_board_figures(self) -> list[list[Figure]]:
         cells = self.board_splitter.get_board_cells(self.image_mode)
@@ -75,9 +75,9 @@ class ShogiBoardReader:
         figures = self.recognize_board_figures()
         directions = self.recognize_board_directions()
 
-        if self.analyzer is not None:
-            self.analyzer.update(figures)
-            figures = self.analyzer.get_board()
+        if self.memorizer is not None:
+            self.memorizer.update(figures)
+            figures = self.memorizer.get_board()
 
         BOARD_SIZE = 1000
         FIGURE_SIZE = BOARD_SIZE // 9
