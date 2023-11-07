@@ -2,8 +2,8 @@ from enum import Enum
 
 
 class ImageMode(Enum):
-    ORIGINAL = "original"
-    CANNY = "canny"
-    GRAYSCALE = "grayscale"
-    GRAYSCALE_BLACK_THRESHOLD = "grayscale_black_threshold"
-    LAB_THRESHOLD = "lab_threshold"
+    ORIGINAL = "ORIGINAL"
+    CANNY = "CANNY"
+    GRAYSCALE = "GRAYSCALE"
+    GRAYSCALE_BLACK_THRESHOLD = "GRAYSCALE_BLACK_THRESHOLD"
+    LAB_THRESHOLD = "LAB_THRESHOLD"

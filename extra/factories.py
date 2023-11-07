@@ -1,7 +1,7 @@
 import os.path
 from Elements import *
 import numpy as np
-from config import Config, Paths
+from config import Config, Paths, GLOBAL_CONFIG
 from ShogiNeuralNetwork import data_info
 from extra.image_modes import ImageMode
 
@@ -24,13 +24,12 @@ def get_camera_reader(image_mode: ImageMode, cam_id: int):
         BoardSplitter(
             ImageGetters.Camera(cam_id),
             CornerDetectors.HSVThresholdCornerDetector(hsv_low, hsv_high),
-            board_img_size=config.NN_data.board_img_size,
-            cell_img_size=config.NN_data.cell_img_size
+            cell_img_size=config.NeuralNetwork.cell_img_size
         ),
         FigureRecognizers.RecognizerNN(
             Paths.MODEL_FIGURE_PATH,
             Paths.MODEL_DIRECTION_PATH,
-            cell_img_size=config.NN_data.cell_img_size
+            cell_img_size=config.NeuralNetwork.cell_img_size
         ),
         memorizer=None
     )
@@ -47,13 +46,12 @@ def get_hardcoded_reader(image_mode: ImageMode, img_name: str):
         BoardSplitter(
             ImageGetters.Photo(img_path),
             CornerDetectors.HardcodedCornerDetector(corners),
-            board_img_size=config.NN_data.board_img_size,
-            cell_img_size=config.NN_data.cell_img_size
+            cell_img_size=config.NeuralNetwork.cell_img_size
         ),
         FigureRecognizers.RecognizerNN(
             Paths.MODEL_FIGURE_PATH,
             Paths.MODEL_DIRECTION_PATH,
-            cell_img_size=config.NN_data.cell_img_size
+            cell_img_size=config.NeuralNetwork.cell_img_size
         ),
         memorizer=None
     )
@@ -83,14 +81,21 @@ def get_video_reader(image_mode: ImageMode, video_path: str, use_memorizer: bool
         BoardSplitter(
             ImageGetters.Video(video_path),
             CornerDetectors.HSVThresholdCornerDetector(hsv_low, hsv_high),
-            board_img_size=config.NN_data.board_img_size,
-            cell_img_size=config.NN_data.cell_img_size
+            cell_img_size=config.NeuralNetwork.cell_img_size
         ),
         FigureRecognizers.RecognizerNN(
             Paths.MODEL_FIGURE_PATH,
             Paths.MODEL_DIRECTION_PATH,
-            cell_img_size=config.NN_data.cell_img_size
+            cell_img_size=config.NeuralNetwork.cell_img_size
         ),
         memorizer=memorizer
     )
     return reader
+
+
+def default_nn_recognizer():
+    return FigureRecognizers.RecognizerNN(
+        Paths.MODEL_FIGURE_PATH,
+        Paths.MODEL_DIRECTION_PATH,
+        GLOBAL_CONFIG.NeuralNetwork.cell_img_size
+    )
