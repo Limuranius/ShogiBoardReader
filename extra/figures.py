@@ -14,6 +14,19 @@ class Figure(Enum):
     ROOK = "R"
     EMPTY = "."
 
+    def to_jp(self) -> str:
+        translate_table = {
+            self.PAWN: "歩",
+            self.KING: "玉",
+            self.LANCE: "香",
+            self.KNIGHT: "桂",
+            self.SILVER: "銀",
+            self.GOLD: "金",
+            self.BISHOP: "角",
+            self.ROOK: "飛",
+        }
+        return translate_table[self]
+
 
 class Direction(Enum):
     UP = "U"
