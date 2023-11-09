@@ -9,7 +9,7 @@ import cv2
 
 class BoardSplitter:
     image_getter: ImageGetter
-    corner_getter: CornerDetector
+    corner_detector: CornerDetector
     cell_img_size: int
     board_img_size: int
 
@@ -18,14 +18,14 @@ class BoardSplitter:
                  corner_getter: CornerDetector,
                  cell_img_size: int):
         self.image_getter = image_getter
-        self.corner_getter = corner_getter
+        self.corner_detector = corner_getter
         self.cell_img_size = cell_img_size
         self.board_img_size = cell_img_size * 9
 
     def get_board_image_no_perspective(self, img_mode: ImageMode = ImageMode.ORIGINAL):
         """Return image of board without perspective and surroundings"""
         full_img = self.image_getter.get_image()
-        corners = self.corner_getter.get_corners(full_img)
+        corners = self.corner_detector.get_corners(full_img)
         img_no_persp = utils.remove_perspective(full_img, np.array(corners))
         match img_mode:
             case ImageMode.ORIGINAL:
@@ -97,6 +97,6 @@ class BoardSplitter:
     def get_full_img(self, show_borders: bool = False) -> Image:
         full_img = self.image_getter.get_image()
         if show_borders:
-            corners = np.array(self.corner_getter.get_corners(full_img))
+            corners = np.array(self.corner_detector.get_corners(full_img))
             cv2.polylines(full_img, [corners], True, [0, 255, 0], thickness=3)
         return full_img
