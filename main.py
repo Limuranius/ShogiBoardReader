@@ -2,13 +2,14 @@ from extra import factories
 import cv2
 from extra import utils
 from extra.image_modes import ImageMode
-
-
-IMAGE_MODE = ImageMode.GRAYSCALE
+from config import GLOBAL_CONFIG
 
 
 def camera():
-    reader = factories.get_camera_reader(IMAGE_MODE, cam_id=0)
+    reader = factories.get_camera_reader(
+        ImageMode(GLOBAL_CONFIG.NeuralNetwork.image_mode),
+        cam_id=0
+    )
     size = 700
 
     while True:
@@ -33,7 +34,10 @@ def camera():
 
 
 def photo():
-    reader = factories.get_hardcoded_reader(IMAGE_MODE, "board20.jpg")
+    reader = factories.get_hardcoded_reader(
+        ImageMode(GLOBAL_CONFIG.NeuralNetwork.image_mode),
+        "board20.jpg"
+    )
     board_img = reader.get_board_image_no_perspective()
     predicted_board_img = reader.get_digital_board()
     board_img = cv2.resize(board_img, (600, 600))
@@ -46,8 +50,9 @@ def photo():
 
 def video():
     reader = factories.get_video_reader(
-        IMAGE_MODE,
-        "temp/VID_20231103_163606.mp4"
+        ImageMode(GLOBAL_CONFIG.NeuralNetwork.image_mode),
+        "temp/VID_20231103_163606.mp4",
+        use_memorizer=True
     )
 
     while True:
@@ -73,6 +78,7 @@ def video():
 
         cv2.imshow("", img)
         if cv2.waitKey(1) & 0xFF == ord('q'):
+            reader.memorizer.save_to_kifu("/home/gleb/ShogiBoardReader/temp/kifu.kif")
             break
     cv2.destroyAllWindows()
 

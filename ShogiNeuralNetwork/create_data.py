@@ -1,14 +1,14 @@
-from data_info import *
 from extra import figures
 from extra.image_modes import ImageMode
 from Elements import *
 from sklearn.utils import shuffle
 import pandas as pd
 from tqdm import tqdm
+from ShogiNeuralNetwork.data_info import *
 from ShogiNeuralNetwork.Dataset import Dataset
+from ShogiNeuralNetwork import true_boards
 import os
 from config import Paths
-import true_boards
 
 
 def load_boards(

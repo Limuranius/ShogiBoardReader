@@ -7,6 +7,7 @@ CONFIG_PATH = path.join(ROOT_DIR, "config.ini")
 
 SHOGI_NN_DIR = path.join(ROOT_DIR, "ShogiNeuralNetwork")
 DATASETS_DIR = path.join(SHOGI_NN_DIR, "datasets")
+TRUE_BOARDS_FILE_PATH = path.join(SHOGI_NN_DIR, "true_boards.txt")
 X_TRAIN_PATH = path.join(DATASETS_DIR, "x_train.pickle")
 X_TEST_PATH = path.join(DATASETS_DIR, "x_test.pickle")
 Y_FIGURE_TRAIN_PATH = path.join(DATASETS_DIR, "y_figure_train.pickle")
