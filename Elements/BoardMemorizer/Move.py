@@ -1,6 +1,7 @@
 from enum import Enum
 from dataclasses import dataclass
 from extra.types import Figure
+from typing import Callable
 
 jp_digits = {
     1: "一",
@@ -32,10 +33,22 @@ class Move:
         if self.origin is None and self.move_type != MoveType.DROP:
             raise Exception("Invalid move")
 
-    def get_signature(self) -> str:
+    def get_signature(self, notation_transform_func: Callable[[int, int], tuple[int, int]]) -> str:
+        """
+        Return signature of move
+
+        notation_transform_func:
+            Function that converts coordinates in screen coordinates system
+            to coordinates in notation coordinates system
+        """
+        x_dest_notation, y_dest_notation = notation_transform_func(
+            self.destination[0],
+            self.destination[1],
+        )
+
         dest_coords_str = "{x}{y_jp}".format(
-            x=self.destination[0],
-            y_jp=jp_digits[self.destination[1]]
+            x=x_dest_notation,
+            y_jp=jp_digits[y_dest_notation]
         )
         match self.move_type:
             case MoveType.DROP:
@@ -45,9 +58,13 @@ class Move:
                 )
                 return s
             case MoveType.MOVE | MoveType.MOVE_AND_PROMOTE:
+                x_orig_notation, y_orig_notation = notation_transform_func(
+                    self.origin[0],
+                    self.origin[1],
+                )
                 origin_coords_str = "{x}{y}".format(
-                    x=self.origin[0],
-                    y=self.origin[1]
+                    x=x_orig_notation,
+                    y=y_orig_notation
                 )
                 prom_str = "成" if self.move_type == MoveType.MOVE_AND_PROMOTE else ""
                 s = "{dest}{fig_jp}{prom}({origin})".format(
