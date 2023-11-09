@@ -1,6 +1,4 @@
 from extra.figures import Figure, Direction
-from config import Paths
-import os
 
 IMGS = [
     "board1.jpg",
@@ -71,6 +69,36 @@ IMGS = [
     "board66.jpg",
     "board67.jpg",
     "board68.jpg",
+    "board69.jpg",
+    "board70.jpg",
+    "board71.jpg",
+    "board72.jpg",
+    "board73.jpg",
+    "board74.jpg",
+    "board75.jpg",
+    "board76.jpg",
+    "board77.jpg",
+    "board78.jpg",
+    "board79.jpg",
+    "board80.jpg",
+    "board81.jpg",
+    "board82.jpg",
+    "board83.jpg",
+    "board84.jpg",
+    "board85.jpg",
+    "board86.jpg",
+    "board87.jpg",
+    "board88.jpg",
+    "board89.jpg",
+    "board90.jpg",
+    "board91.jpg",
+    "board92.jpg",
+    "board93.jpg",
+    "board94.jpg",
+    "board95.jpg",
+    "board96.jpg",
+    "board97.jpg",
+    "board98.jpg",
 ]
 
 CATEGORIES_FIGURE_TYPE = [
