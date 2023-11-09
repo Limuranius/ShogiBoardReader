@@ -57,7 +57,7 @@ def section(section_name: str):
             with open(self._config_path, "w") as fileconfig:
                 self._config.write(fileconfig)
 
-        # Для каждого поля типа a: int создаёт сеттер и геттер
+        # Each field (e.g. a: int) gets getter and setter created
         for name, name_type in cls.__annotations__.items():
             setattr(cls, name, create_property(name, name_type))
 
