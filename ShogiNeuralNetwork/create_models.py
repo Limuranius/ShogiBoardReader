@@ -15,6 +15,7 @@ model_figure = train_model.train_figure_type_model(
     rotation_range=GLOBAL_CONFIG.NeuralNetwork.rotation_range,
     width_shift_range=GLOBAL_CONFIG.NeuralNetwork.width_shift_range,
     height_shift_range=GLOBAL_CONFIG.NeuralNetwork.height_shift_range,
+    zoom_range=GLOBAL_CONFIG.NeuralNetwork.zoom_range,
     verbose=1,
 )
 
@@ -24,6 +25,7 @@ model_direction = train_model.train_direction_model(
     rotation_range=GLOBAL_CONFIG.NeuralNetwork.rotation_range,
     width_shift_range=GLOBAL_CONFIG.NeuralNetwork.width_shift_range,
     height_shift_range=GLOBAL_CONFIG.NeuralNetwork.height_shift_range,
+    zoom_range=GLOBAL_CONFIG.NeuralNetwork.zoom_range,
     verbose=1,
 )
 

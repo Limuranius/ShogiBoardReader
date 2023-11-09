@@ -1,5 +1,6 @@
 from tensorflow import keras
 from .Dataset import Dataset
+from .data_info import CATEGORIES_FIGURE_TYPE
 
 
 def train_figure_type_model(
@@ -8,6 +9,7 @@ def train_figure_type_model(
         rotation_range: int,
         width_shift_range: float,
         height_shift_range: float,
+        zoom_range: float,
         verbose=0,
 ) -> keras.Model:
     cell_img_size = dataset.cell_img_size
@@ -21,7 +23,7 @@ def train_figure_type_model(
             keras.layers.Conv2D(256, 3, activation="relu"),
             keras.layers.Flatten(),
             keras.layers.Dense(128, activation="relu"),
-            keras.layers.Dense(9, activation="softmax"),
+            keras.layers.Dense(len(CATEGORIES_FIGURE_TYPE), activation="softmax"),
         ]
     )
 
@@ -36,13 +38,13 @@ def train_figure_type_model(
         rotation_range=rotation_range,
         width_shift_range=width_shift_range,
         height_shift_range=height_shift_range,
+        zoom_range=zoom_range,
     )
 
     model.fit(
         datagen,
         epochs=epochs,
         verbose=verbose,
-        validation_data=(dataset.x_test, dataset.y_figure_test)
     )
     return model
 
@@ -53,6 +55,7 @@ def train_direction_model(
         rotation_range: int,
         width_shift_range: float,
         height_shift_range: float,
+        zoom_range: float,
         verbose=0
 ) -> keras.Model:
     cell_img_size = dataset.cell_img_size
@@ -81,12 +84,12 @@ def train_direction_model(
         rotation_range=rotation_range,
         width_shift_range=width_shift_range,
         height_shift_range=height_shift_range,
+        zoom_range=zoom_range
     )
 
     model.fit(
         datagen,
         epochs=epochs,
         verbose=verbose,
-        validation_data=(dataset.x_test, dataset.y_direction_test)
     )
     return model

@@ -9,6 +9,7 @@ class NeuralNetwork:
     width_shift_range: float
     height_shift_range: float
     rotation_range: int
+    zoom_range: float
     figure_epochs: int
     direction_epochs: int
     image_mode: str

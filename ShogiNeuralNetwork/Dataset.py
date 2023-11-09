@@ -99,11 +99,13 @@ class Dataset:
             rotation_range: int,
             width_shift_range: float,
             height_shift_range: float,
+            zoom_range: float,
     ):
         datagen = ImageDataGenerator(
             rotation_range=rotation_range,
             width_shift_range=width_shift_range,
             height_shift_range=height_shift_range,
+            zoom_range=zoom_range,
         )
         datagen.fit(self.x_train)
         match y_type:
