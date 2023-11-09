@@ -1,11 +1,11 @@
 from extra.figures import Figure, Direction
 
 IMGS = [
-    "board1.jpg",
-    "board2.jpg",
-    "board3.jpg",
-    "board4.jpg",
-    "board5.jpg",
+    # "board1.jpg",
+    # "board2.jpg",
+    # "board3.jpg",
+    # "board4.jpg",
+    # "board5.jpg",
     # "board6.jpg",
     # "board7.jpg",
     # "board8.jpg",
@@ -13,8 +13,8 @@ IMGS = [
     # "board10.jpg",
     # "board11.jpg",
     # "board12.jpg",
-    "board13.jpg",
-    "board14.jpg",
+    # "board13.jpg",
+    # "board14.jpg",
     "board15.jpg",
     "board16.jpg",
     "board17.jpg",
