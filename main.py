@@ -52,7 +52,9 @@ def video():
 
     while True:
         board_img = reader.get_full_img(show_borders=True)
-        predicted_board_img = reader.get_digital_board()
+
+        board = reader.get_board()
+        predicted_board_img = board.to_image()
 
         no_persp = reader.get_board_image_no_perspective(img_mode=ImageMode.GRAYSCALE_BLACK_THRESHOLD)
         no_persp = utils.gray_to_3d(no_persp)

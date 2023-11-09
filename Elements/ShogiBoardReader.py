@@ -1,12 +1,10 @@
 import cv2
-import numpy as np
-from extra.figures import Figure, Direction, FIGURE_ICONS_PATHS
 from .FigureRecognizers import Recognizer
 from .BoardMemorizer import BoardMemorizer
 from .BoardSplitter import BoardSplitter
-from extra import utils
 from extra.image_modes import ImageMode
-from extra.types import Image
+from extra.types import Image, FigureBoard, DirectionBoard
+from .Board import Board
 
 
 class ShogiBoardReader:
@@ -14,6 +12,9 @@ class ShogiBoardReader:
     board_splitter: BoardSplitter
     recognizer: Recognizer
     memorizer: BoardMemorizer
+
+    __figures: FigureBoard
+    __directions: DirectionBoard
 
     def __init__(
             self,
@@ -25,34 +26,17 @@ class ShogiBoardReader:
         self.board_splitter = board_splitter
         self.recognizer = recognizer
         self.memorizer = memorizer
+        self.update()
 
-    def recognize_board_figures(self) -> list[list[Figure]]:
+    def recognize_board_figures(self) -> FigureBoard:
         cells = self.board_splitter.get_board_cells(self.image_mode)
-        return self.recognizer.recognize_board_figures(cells)
+        predicted_figures = self.recognizer.recognize_board_figures(cells)
+        return predicted_figures
 
-    def recognize_board_directions(self) -> list[list[Direction]]:
+    def recognize_board_directions(self) -> DirectionBoard:
         cells = self.board_splitter.get_board_cells(self.image_mode)
-        return self.recognizer.recognize_board_directions(cells)
-
-    def get_str_figures(self):
-        board = self.recognize_board_figures()
-        s = ""
-        for i in range(9):
-            for j in range(9):
-                figure = board[i][j]
-                s += figure.value
-            s += "\n"
-        return s
-
-    def get_str_directions(self):
-        board = self.recognize_board_directions()
-        s = ""
-        for i in range(9):
-            for j in range(9):
-                direction = board[i][j]
-                s += direction.value
-            s += "\n"
-        return s
+        predicted_directions = self.recognizer.recognize_board_directions(cells)
+        return predicted_directions
 
     def show_board(self):
         img = self.board_splitter.get_board_image_no_perspective()
@@ -71,39 +55,12 @@ class ShogiBoardReader:
     def get_board_image_no_perspective(self, img_mode: ImageMode = ImageMode.ORIGINAL) -> Image:
         return self.board_splitter.get_board_image_no_perspective(img_mode)
 
-    def get_digital_board(self) -> Image:
-        figures = self.recognize_board_figures()
-        directions = self.recognize_board_directions()
+    def update(self):
+        self.__figures = self.recognize_board_figures()
+        self.__directions = self.recognize_board_directions()
 
         if self.memorizer is not None:
-            self.memorizer.update(figures)
-            figures = self.memorizer.get_board()
+            self.memorizer.update(self.__figures)
 
-        BOARD_SIZE = 1000
-        FIGURE_SIZE = BOARD_SIZE // 9
-        board = np.full((BOARD_SIZE, BOARD_SIZE, 3), [255, 255, 255], dtype=np.uint8)
-
-        # Рисуем сетку
-        grid_step = BOARD_SIZE // 9
-        for i in range(10):
-            y = i * grid_step
-            cv2.line(board, (0, y), (BOARD_SIZE, y), 0, thickness=5)
-        for j in range(10):
-            x = j * grid_step
-            cv2.line(board, (x, 0), (x, BOARD_SIZE), 0, thickness=5)
-
-        # Добавляем фигуры
-        figure_step = BOARD_SIZE // 9
-        for i in range(9):
-            for j in range(9):
-                y = figure_step * i
-                x = figure_step * j
-                figure = figures[i][j]
-                direction = directions[i][j]
-                if figure != Figure.EMPTY:
-                    figure_img = cv2.imread(FIGURE_ICONS_PATHS[figure])
-                    figure_img = cv2.resize(figure_img, (FIGURE_SIZE, FIGURE_SIZE))
-                    if direction == Direction.DOWN:
-                        figure_img = np.flip(figure_img, axis=0)
-                    utils.overlay_image_on_image(board, figure_img, x, y)
-        return board
+    def get_board(self) -> Board:
+        return Board(self.__figures, self.__directions)
