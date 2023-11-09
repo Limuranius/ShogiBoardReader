@@ -40,46 +40,6 @@ def show_grayscale(img):
     cv2.waitKey(0)
 
 
-def translate_img(img, dx, dy, fill=255):
-    """Сдвигает изображение img на (dx, dy) пикселей и заполняет освободившиеся пиксели значением fill"""
-    height, width = img.shape[:2]
-    T = np.float32([[1, 0, dx], [0, 1, dy]])
-    img_translation = cv2.warpAffine(img, T, (width, height))
-    if dx >= 0:
-        img_translation[:, :dx] = fill
-    else:
-        img_translation[:, dx:] = fill
-    if dy >= 0:
-        img_translation[:dy, :] = fill
-    else:
-        img_translation[dy:, :] = fill
-    return img_translation
-
-
-def rotate_img(img, angle, fill):
-    height, width = img.shape[:2]
-    center = (width // 2, height // 2)
-    M = cv2.getRotationMatrix2D(center, angle, 1)
-    rotated_img = cv2.warpAffine(img, M, (width, height), borderMode=cv2.BORDER_CONSTANT, borderValue=fill)
-    return rotated_img
-
-
-def random_translate_img(img, sx: float, sy: float, fill=255):
-    """Сдвигает изображение в случайном направлении максимум на sx по оси OX и на sy по оси OY
-    sx, sy: [0, 1] и заполняет освободившиеся пиксели значением fill"""
-    height, width = img.shape[:2]
-    max_dx = int(width * sx)
-    max_dy = int(height * sy)
-    dx = random.randint(-max_dx, max_dx)
-    dy = random.randint(-max_dy, max_dy)
-    return translate_img(img, dx, dy, fill)
-
-
-def random_rotate_img(img, max_angle, fill):
-    angle = random.randint(-max_angle, max_angle)
-    return rotate_img(img, angle, fill)
-
-
 def order_points(pts: np.ndarray):
     rect = np.zeros((4, 2), dtype=pts.dtype)
     s = pts.sum(axis=1)
