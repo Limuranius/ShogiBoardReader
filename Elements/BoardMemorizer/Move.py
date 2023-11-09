@@ -26,8 +26,12 @@ class MoveType(Enum):
 class Move:
     move_type: MoveType
     figure: Figure
-    destination: tuple[int, int]  # (x, y), 1 <= x, y <= 9
-    origin: tuple[int, int] | None = None  # (x, y), 1 <= x, y <= 9
+
+    # x, y are stored in screen coordinate system
+    # (0,0 is in upper-left corner, X-axis pointing right, Y-axis pointing down)
+    # (x, y), 1 <= x, y <= 9
+    destination: tuple[int, int]
+    origin: tuple[int, int] | None = None
 
     def __post_init__(self):
         if self.origin is None and self.move_type != MoveType.DROP:

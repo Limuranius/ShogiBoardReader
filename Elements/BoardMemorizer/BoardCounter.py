@@ -3,7 +3,7 @@ from extra.types import Figure, FigureBoard
 
 class BoardCounter:
     frames: list[FigureBoard]
-    memorize_count = 10  # How much frames of board is memorized and calculated statistics on
+    memorize_count = 10  # How many frames of board are memorized and calculated statistics on
     counts: list[list[dict[Figure, int]]]  # Frequencies of figures in each cell based on previous frames
     filled: bool
 

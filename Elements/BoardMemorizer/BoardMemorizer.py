@@ -19,7 +19,7 @@ class BoardMemorizer:
     def update(self, board: FigureBoard):
         if not self.counter.filled:
             self.counter.update(board)
-            print("Копим данные...")
+            print("Accumulating data. Don't move anything")
             return
         curr_board = self.counter.get_max_board()
         new_board = board

@@ -1,6 +1,5 @@
 import numpy as np
 import cv2
-import random
 from .types import Image, FigureBoard, DirectionBoard
 
 
@@ -71,7 +70,7 @@ def remove_perspective(img: np.ndarray, corners: np.ndarray):
 
 
 def find_clusters_centers(mask: np.ndarray, k_clusters: int) -> np.ndarray:
-    """Применяет кластеризацию k-means к маске mask, чтобы найти центры k_clusters кластеров"""
+    """Applies k-means clustering to mask and returns coordinates of each cluster"""
     nz = cv2.findNonZero(mask)
     if nz is None or len(nz) < k_clusters:
         return np.array([(0, 0)] * k_clusters)
@@ -83,7 +82,7 @@ def find_clusters_centers(mask: np.ndarray, k_clusters: int) -> np.ndarray:
 
 
 def overlay_image_on_image(img: np.ndarray, img_overlay: np.ndarray, x: int, y: int):
-    """Накладывает изображение img_overlay на изображение img в координате (x, y)"""
+    """Overlays 'img_overlay' on 'image' at coordinates (x, y)"""
     x1 = x + img_overlay.shape[1]
     y1 = y + img_overlay.shape[0]
     img[y: y1, x: x1] = img_overlay

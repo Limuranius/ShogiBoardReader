@@ -23,7 +23,7 @@ class BoardSplitter:
         self.board_img_size = cell_img_size * 9
 
     def get_board_image_no_perspective(self, img_mode: ImageMode = ImageMode.ORIGINAL):
-        """Возвращает изображение доски с убранной перспективой и вырезанным фоном"""
+        """Return image of board without perspective and surroundings"""
         full_img = self.image_getter.get_image()
         corners = self.corner_getter.get_corners(full_img)
         img_no_persp = utils.remove_perspective(full_img, np.array(corners))
