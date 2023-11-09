@@ -2,6 +2,8 @@ import cv2
 from .FigureRecognizers import Recognizer
 from .BoardMemorizer import BoardMemorizer
 from .BoardSplitter import BoardSplitter
+from .ImageGetters import ImageGetter
+from .CornerDetectors import CornerDetector
 from extra.image_modes import ImageMode
 from extra.types import Image, FigureBoard, DirectionBoard
 from .Board import Board
@@ -26,7 +28,6 @@ class ShogiBoardReader:
         self.board_splitter = board_splitter
         self.recognizer = recognizer
         self.memorizer = memorizer
-        self.update()
 
     def recognize_board_figures(self) -> FigureBoard:
         cells = self.board_splitter.get_board_cells(self.image_mode)
@@ -64,3 +65,21 @@ class ShogiBoardReader:
 
     def get_board(self) -> Board:
         return Board(self.__figures, self.__directions)
+
+    def set(self,
+            image_getter: ImageGetter = None,
+            corner_detector: CornerDetector = None,
+            board_splitter: BoardSplitter = None,
+            recognizer: Recognizer = None,
+            memorizer: BoardMemorizer = None
+            ):
+        if image_getter:
+            self.board_splitter.image_getter = image_getter
+        if corner_detector:
+            self.board_splitter.corner_detector = corner_detector
+        if board_splitter:
+            self.board_splitter = board_splitter
+        if recognizer:
+            self.recognizer = recognizer
+        if memorizer:
+            self.memorizer = memorizer
