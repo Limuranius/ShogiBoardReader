@@ -1,6 +1,7 @@
 from extra.types import FigureBoard, DirectionBoard, Corners
 from extra.figures import Figure, Direction
 from dataclasses import dataclass
+from config import Paths
 
 
 @dataclass(frozen=True)
@@ -13,7 +14,7 @@ class BoardPhotoInfo:
 
 # Loading file with info
 __boards: dict[str, BoardPhotoInfo] = dict()
-with open("true_boards.txt", "r") as f:
+with open(Paths.TRUE_BOARDS_FILE_PATH, "r") as f:
     while line := f.readline():
         if line.strip() == "":
             continue

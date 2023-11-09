@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 import random
-from .types import Image
+from .types import Image, FigureBoard, DirectionBoard
 
 
 def get_black_mask(image: np.ndarray):
@@ -137,3 +137,14 @@ def gray_to_3d(img: Image):
     new_img[:, :, 1] = img
     new_img[:, :, 2] = img
     return new_img
+
+
+def board_to_str(board: FigureBoard | DirectionBoard) -> str:
+    s = ""
+    for i in range(9):
+        for j in range(9):
+            figure = board[i][j]
+            s += figure.value
+        s += "\n"
+    return s
+
