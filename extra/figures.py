@@ -93,6 +93,13 @@ FIGURE_ICONS_PATHS = {
     Figure.GOLD: os.path.join(Paths.FIGURE_ICONS_DIR, "gold.png"),
     Figure.KING: os.path.join(Paths.FIGURE_ICONS_DIR, "king.png"),
     Figure.EMPTY: os.path.join(Paths.FIGURE_ICONS_DIR, "empty.png"),
+
+    Figure.PAWN_PROM: os.path.join(Paths.FIGURE_ICONS_DIR, "promoted pawn.png"),
+    Figure.BISHOP_PROM: os.path.join(Paths.FIGURE_ICONS_DIR, "promoted bishop.png"),
+    Figure.ROOK_PROM: os.path.join(Paths.FIGURE_ICONS_DIR, "promoted rook.png"),
+    Figure.LANCE_PROM: os.path.join(Paths.FIGURE_ICONS_DIR, "promoted lance.png"),
+    Figure.KNIGHT_PROM: os.path.join(Paths.FIGURE_ICONS_DIR, "promoted knight.png"),
+    Figure.SILVER_PROM: os.path.join(Paths.FIGURE_ICONS_DIR, "promoted silver.png"),
 }
 
 Paths.create_folders(list(FIGURE_FOLDERS.values()))
