@@ -5,6 +5,7 @@ from extra.types import Image
 from config import GLOBAL_CONFIG
 from extra.image_modes import ImageMode
 from extra import factories
+from config.Paths import KIFU_PATH
 
 
 class Worker(QObject):
@@ -13,6 +14,9 @@ class Worker(QObject):
     # Signal that sends created images in following order:
     # Full image, No perspective image, Predicted board image
     images_created = pyqtSignal(Image, Image, Image)
+
+    # Signal that tells if the board is visible or obstructed
+    board_is_visible = pyqtSignal(bool)
 
     show_original: bool = False
     show_no_perspective: bool = False
@@ -40,7 +44,6 @@ class Worker(QObject):
         if self.show_no_perspective:
             no_perspective = self.reader.get_board_image_no_perspective()
         if self.show_predicted:
-            self.reader.update()
             predicted_board_img = self.reader.get_board().to_image()
         self.images_created.emit(full_img, no_perspective, predicted_board_img)
 
@@ -96,9 +99,18 @@ class Worker(QObject):
             image_getter=ImageGetters.Camera()
         )
 
+    def save_kifu(self):
+        self.reader.memorizer.save_to_kifu(KIFU_PATH)
+
     def main_loop(self):
+        if self.show_predicted:
+            board_is_visible = self.reader.update()
+        else:
+            board_is_visible = True
         self.send_images()
+        self.board_is_visible.emit(board_is_visible)
 
     def run(self):
+        self.reader.update()
         while True:
             self.main_loop()

@@ -1,7 +1,8 @@
-from extra.types import FigureBoard
+from extra.types import FigureBoard, DirectionBoard
 from .BoardCounter import BoardCounter
 from .Move import *
 from .utils import get_move
+from ..Board import Board
 
 
 class BoardMemorizer:
@@ -16,29 +17,33 @@ class BoardMemorizer:
         self.move_history = []
         self.lower_moves_first = lower_moves_first
 
-    def update(self, board: FigureBoard):
+    def update(self, figures: FigureBoard, directions: DirectionBoard) -> bool:
+        """Updates board and returns True if the update is possible"""
         if not self.counter.filled:
-            self.counter.update(board)
             print("Accumulating data. Don't move anything")
-            return
+            self.counter.update(figures, directions)
+            return True
         curr_board = self.counter.get_max_board()
-        new_board = board
-        move = get_move(curr_board, new_board)
-        if curr_board == new_board:
-            self.counter.update(new_board)
+        move = get_move(
+            curr_board,
+            Board(figures, directions)
+        )
+        if curr_board.figures == figures:
+            self.counter.update(figures, directions)
+            return True
         elif move is not None:
-            self.counter.update(new_board)
-
+            self.counter.update(figures, directions)
             new_curr_board = self.counter.get_max_board()
-            if new_curr_board != curr_board:
+            if new_curr_board.figures != curr_board.figures:
                 self.move_history.append(move)
+            return True
         else:
-            print("Invalid view")
+            return False
 
-    def get_board(self) -> FigureBoard:
+    def get_board(self) -> Board:
         return self.counter.get_max_board()
 
-    def save_to_kifu(self, file_path: str):
+    def save_to_kifu(self, file_path: str) -> None:
         s = """手合割：平手
 先手：
 後手：
