@@ -56,22 +56,28 @@ class ShogiBoardReader:
     def get_board_image_no_perspective(self, img_mode: ImageMode = ImageMode.ORIGINAL) -> Image:
         return self.board_splitter.get_board_image_no_perspective(img_mode)
 
-    def update(self):
+    def update(self) -> bool:
         self.__figures = self.recognize_board_figures()
         self.__directions = self.recognize_board_directions()
 
         if self.memorizer is not None:
-            self.memorizer.update(self.__figures)
+            board_recognized = self.memorizer.update(self.__figures, self.__directions)
+            return board_recognized
+        else:
+            return True
 
     def get_board(self) -> Board:
-        return Board(self.__figures, self.__directions)
+        if self.memorizer is None:
+            return Board(self.__figures, self.__directions)
+        else:
+            return self.memorizer.get_board()
 
     def set(self,
             image_getter: ImageGetter = None,
             corner_detector: CornerDetector = None,
             board_splitter: BoardSplitter = None,
             recognizer: Recognizer = None,
-            memorizer: BoardMemorizer = None
+            memorizer: BoardMemorizer = False
             ):
         if image_getter:
             self.board_splitter.image_getter = image_getter
@@ -81,5 +87,5 @@ class ShogiBoardReader:
             self.board_splitter = board_splitter
         if recognizer:
             self.recognizer = recognizer
-        if memorizer:
+        if memorizer != False:
             self.memorizer = memorizer

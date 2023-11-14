@@ -1,45 +1,67 @@
-from extra.types import Figure, FigureBoard
+from extra.types import Figure, FigureBoard, DirectionBoard, Direction
+from Elements.Board import Board
 
 
 class BoardCounter:
-    frames: list[FigureBoard]
-    memorize_count = 10  # How many frames of board are memorized and calculated statistics on
-    counts: list[list[dict[Figure, int]]]  # Frequencies of figures in each cell based on previous frames
-    filled: bool
+    __memorize_count = 10  # How many frames of board are memorized and calculated statistics on
+
+    __figure_frames: list[FigureBoard]
+    __direction_frames: list[DirectionBoard]
+
+    __figure_counts: list[list[dict[Figure, int]]]  # Frequencies of figures in each cell based on previous frames
+    __direction_counts: list[list[dict[Direction, int]]]  # Frequencies of directions
+
+    filled: bool  # Whether memorizer finished accumulating frames
 
     def __init__(self):
-        self.frames = []
-        cell_count = {figure: 0 for figure in Figure}
-        self.counts = [[cell_count.copy() for _ in range(9)] for __ in range(9)]
+        self.__figure_frames = []
+        self.__direction_frames = []
+
+        figure_count = {figure: 0 for figure in Figure}
+        self.__figure_counts = [[figure_count.copy() for _ in range(9)] for __ in range(9)]
+
+        direction_count = {direction: 0 for direction in Direction}
+        self.__direction_counts = [[direction_count.copy() for _ in range(9)] for __ in range(9)]
+
         self.filled = False
 
-    def append_board(self, board: FigureBoard):
-        self.frames.append(board)
+    def __append_board(self, figures: FigureBoard, directions: DirectionBoard):
+        self.__figure_frames.append(figures)
+        self.__direction_frames.append(directions)
         for i in range(9):
             for j in range(9):
-                figure = board[i][j]
-                self.counts[i][j][figure] += 1
+                figure = figures[i][j]
+                direction = directions[i][j]
+                self.__figure_counts[i][j][figure] += 1
+                self.__direction_counts[i][j][direction] += 1
 
-    def pop_last(self):
-        board = self.frames.pop(0)
+    def __pop_last(self):
+        figures = self.__figure_frames.pop(0)
+        directions = self.__direction_frames.pop(0)
         for i in range(9):
             for j in range(9):
-                figure = board[i][j]
-                self.counts[i][j][figure] -= 1
+                figure = figures[i][j]
+                direction = directions[i][j]
+                self.__figure_counts[i][j][figure] -= 1
+                self.__direction_counts[i][j][direction] -= 1
 
-    def get_max_board(self) -> FigureBoard:
-        max_board = [[Figure.EMPTY for _ in range(9)] for __ in range(9)]
+    def get_max_board(self) -> Board:
+        max_figures = [[Figure.EMPTY for _ in range(9)] for __ in range(9)]
+        max_directions = [[Direction.NONE for _ in range(9)] for __ in range(9)]
         for i in range(9):
             for j in range(9):
-                cell_count = self.counts[i][j]
-                max_figure = max(cell_count, key=cell_count.get)
-                max_board[i][j] = max_figure
-        return max_board
+                figure_count = self.__figure_counts[i][j]
+                direction_count = self.__direction_counts[i][j]
+                max_figure = max(figure_count, key=figure_count.get)
+                max_direction = max(direction_count, key=direction_count.get)
+                max_figures[i][j] = max_figure
+                max_directions[i][j] = max_direction
+        return Board(max_figures, max_directions)
 
-    def update(self, board: FigureBoard):
-        if len(self.frames) <= self.memorize_count:
-            self.append_board(board)
+    def update(self, figures: FigureBoard, directions: DirectionBoard):
+        if len(self.__figure_frames) <= self.__memorize_count:
+            self.__append_board(figures, directions)
         else:
             self.filled = True
-            self.append_board(board)
-            self.pop_last()
+            self.__append_board(figures, directions)
+            self.__pop_last()

@@ -24,6 +24,8 @@ IMGS_DIR = path.join(ROOT_DIR, "img")
 TRAIN_BOARDS_DIR = path.join(IMGS_DIR, "boards")
 FIGURE_ICONS_DIR = path.join(IMGS_DIR, "figures icons")
 
+KIFU_PATH = path.join(ROOT_DIR, "kifu.kif")
+
 
 def create_folders(paths: list[str]):
     for dir_path in paths:

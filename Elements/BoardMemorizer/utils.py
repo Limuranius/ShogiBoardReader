@@ -1,18 +1,24 @@
 from extra.types import Figure, FigureBoard
 from .Move import *
+from ..Board import Board
 
 
-def get_changed_cells(old_board: FigureBoard, new_board: FigureBoard) -> list[tuple[int, int]]:
+def get_changed_cells(old_board: Board, new_board: Board) -> list[tuple[int, int]]:
     """Returns list of cells that changed from old_board to new_board"""
     changed = []
     for i in range(9):
         for j in range(9):
-            if old_board[i][j] != new_board[i][j]:
+            figures_match = old_board.figures[i][j] == new_board.figures[i][j]
+            directions_match = old_board.directions[i][j] == new_board.directions[i][j]
+            cells_empty = old_board.figures[i][j] == new_board.figures[i][j] == Figure.EMPTY
+            if cells_empty:
+                continue
+            elif not figures_match or not directions_match:
                 changed.append((i, j))
     return changed
 
 
-def get_move(old_board: FigureBoard, new_board: FigureBoard) -> Move | None:
+def get_move(old_board: Board, new_board: Board) -> Move | None:
     """
     Returns move taken between old_board and new_board
     or None if change from old_board to new_board is impossible in 1 move
@@ -26,8 +32,8 @@ def get_move(old_board: FigureBoard, new_board: FigureBoard) -> Move | None:
             piece dropped (EMPTY -> PIECE)
         """
         i, j = changed_cells[0]
-        if old_board[i][j] == Figure.EMPTY and new_board[i][j] != Figure.EMPTY:
-            dropped_fig = new_board[i][j]
+        if old_board.figures[i][j] == Figure.EMPTY and new_board.figures[i][j] != Figure.EMPTY:
+            dropped_fig = new_board.figures[i][j]
             x = j + 1
             y = i + 1
             return Move(
@@ -48,10 +54,10 @@ def get_move(old_board: FigureBoard, new_board: FigureBoard) -> Move | None:
         i1, j1 = changed_cells[0]
         i2, j2 = changed_cells[1]
 
-        cell_1_old = old_board[i1][j1]
-        cell_2_old = old_board[i2][j2]
-        cell_1_new = new_board[i1][j1]
-        cell_2_new = new_board[i2][j2]
+        cell_1_old = old_board.figures[i1][j1]
+        cell_2_old = old_board.figures[i2][j2]
+        cell_1_new = new_board.figures[i1][j1]
+        cell_2_new = new_board.figures[i2][j2]
 
         # PIECE-EMPTY -> EMPTY-PIECE
         # PIECE1-PIECE2 -> EMPTY-PIECE1
@@ -73,9 +79,14 @@ def get_move(old_board: FigureBoard, new_board: FigureBoard) -> Move | None:
             y_destination = i1 + 1
             move_type = MoveType.MOVE
 
-        # PIECE-EMPTY -> EMPTY-PIECE_PROM
-        # PIECE1-PIECE2 -> EMPTY-PIECE1_PROM
-        elif cell_1_new == Figure.EMPTY and cell_2_new != Figure.EMPTY and cell_2_new == cell_1_old.promoted():
+        # PIECE-EMPTY -> EMPTY-PIECE_PROM (PIECE != Gold / King)
+        # PIECE1-PIECE2 -> EMPTY-PIECE1_PROM (PIECE1 != Gold / King)
+        elif (
+                cell_1_new == Figure.EMPTY
+                and cell_2_new != Figure.EMPTY
+                and cell_2_old not in [Figure.GOLD, Figure.KING]
+                and cell_2_new == cell_1_old.promoted()
+        ):
             moved_figure = cell_1_old
             x_origin = j1 + 1
             y_origin = i1 + 1
@@ -83,9 +94,14 @@ def get_move(old_board: FigureBoard, new_board: FigureBoard) -> Move | None:
             y_destination = i2 + 1
             move_type = MoveType.MOVE_AND_PROMOTE
 
-        # EMPTY - PIECE -> PIECE_PROM - EMPTY
-        # PIECE1 - PIECE2 -> PIECE2_PROM - EMPTY
-        elif cell_2_new == Figure.EMPTY and cell_1_new != Figure.EMPTY and cell_1_new == cell_2_old.promoted():
+        # EMPTY - PIECE -> PIECE_PROM - EMPTY (PIECE != Gold / King)
+        # PIECE1 - PIECE2 -> PIECE2_PROM - EMPTY (PIECE2 != Gold / King)
+        elif (
+                cell_2_new == Figure.EMPTY
+                and cell_1_new != Figure.EMPTY
+                and cell_2_old not in [Figure.GOLD, Figure.KING]
+                and cell_1_new == cell_2_old.promoted()
+        ):
             moved_figure = cell_2_old
             x_origin = j2 + 1
             y_origin = i2 + 1
