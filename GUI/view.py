@@ -8,8 +8,8 @@ from PyQt5.QtWidgets import (
 )
 
 from config import Paths
-from main_window import Ui_MainWindow
-from worker import Worker
+from .main_window import Ui_MainWindow
+from .worker import Worker
 from extra.types import Image
 import multiprocessing
 
