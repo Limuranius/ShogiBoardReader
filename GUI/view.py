@@ -6,9 +6,12 @@ from PyQt5.QtWidgets import (
     QRadioButton,
     QLabel,
 )
+
+from config import Paths
 from main_window import Ui_MainWindow
 from worker import Worker
 from extra.types import Image
+import multiprocessing
 
 
 def show_image_on_label(image: Image, label: QLabel):
@@ -16,6 +19,12 @@ def show_image_on_label(image: Image, label: QLabel):
     bytes_per_line = 3 * width
     q_img = QImage(image.data, width, height, bytes_per_line, QImage.Format_BGR888)
     label.setPixmap(QPixmap(q_img))
+
+
+def play_sound_in_repeat(sound_path: str):
+    import playsound
+    while True:
+        playsound.playsound(sound_path)
 
 
 class View(QMainWindow):
@@ -35,6 +44,9 @@ class View(QMainWindow):
     s_updated_memorizer = pyqtSignal(bool)
 
     s_updated_first_side = pyqtSignal(str)
+
+    worker_thread: QThread
+    sound_thread: multiprocessing.Process = multiprocessing.Process()
 
     def __init__(self):
         super().__init__()
@@ -60,7 +72,7 @@ class View(QMainWindow):
         self.s_updated_corner_detector.connect(self.worker.update_corner_detector)
         self.s_updated_memorizer.connect(self.worker.set_use_memorizer)
 
-        # self.s_updated_first_side.connect(self.worker.set_first_side)
+        self.s_updated_first_side.connect(self.worker.set_first_side)
         self.ui.comboBox_first_side.currentTextChanged.connect(self.worker.set_first_side)
 
         self.ui.checkBox_img_original.clicked.connect(self.worker.set_show_original)
@@ -69,6 +81,10 @@ class View(QMainWindow):
 
         self.ui.lineEdit_photo_path.textChanged.connect(self.worker.set_photo_imgetter)
         self.ui.lineEdit_video_path.textChanged.connect(self.worker.set_video_imgetter)
+
+        self.ui.pushButton_save_kifu.clicked.connect(self.worker.save_kifu)
+
+        self.worker.board_is_visible.connect(self.board_visible)
 
     def hide_widgets(self):
         self.ui.frame_ig_photo.setHidden(True)
@@ -136,6 +152,23 @@ class View(QMainWindow):
         self.worker.moveToThread(self.worker_thread)
         self.worker_thread.started.connect(self.worker.run)
         self.worker_thread.start()
+
+    def start_alarm(self):
+        if not self.sound_thread.is_alive():
+            self.sound_thread = multiprocessing.Process(target=play_sound_in_repeat,
+                                                        args=[Paths.ALARM_PATH])
+            self.sound_thread.start()
+
+    def stop_alarm(self):
+        if self.sound_thread.is_alive():
+            self.sound_thread.terminate()
+
+    def board_visible(self, is_board_visible: bool):
+        print("Visible" if is_board_visible else "Not visible")
+        if is_board_visible:
+            self.stop_alarm()
+        else:
+            self.start_alarm()
 
     def connect_widgets(self):
         self.ui.checkBox_use_memorizer.clicked.connect(self.memorizer_checked)
