@@ -26,6 +26,8 @@ FIGURE_ICONS_DIR = path.join(IMGS_DIR, "figures icons")
 
 KIFU_PATH = path.join(ROOT_DIR, "kifu.kif")
 
+SOUNDS_DIR_PATH = path.join(ROOT_DIR, "sounds")
+ALARM_PATH = path.join(SOUNDS_DIR_PATH, "alarm.mp4")
 
 def create_folders(paths: list[str]):
     for dir_path in paths:
