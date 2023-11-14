@@ -59,7 +59,7 @@ def load_boards(
 def equalize_classes(data: pd.DataFrame) -> pd.DataFrame:
     shuffled_data = shuffle(data)
     classes_counts = shuffled_data["figure_type"].value_counts()
-    min_count = classes_counts.min()
+    min_count = classes_counts.min() * 3
     del_indices = []
     for i, row in shuffled_data.iterrows():
         if classes_counts[row["figure_type"]] > min_count:

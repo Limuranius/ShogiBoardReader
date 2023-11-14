@@ -1,9 +1,9 @@
 from PyQt5.QtWidgets import QApplication
-
 from GUI.view import View
 import os
 
 os.environ.pop("QT_QPA_PLATFORM_PLUGIN_PATH")
+
 
 if __name__ == "__main__":
     app = QApplication([])

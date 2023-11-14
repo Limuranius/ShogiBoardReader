@@ -1,35 +1,36 @@
 import os.path
 from Elements import *
-import numpy as np
 from config import Config, Paths, GLOBAL_CONFIG
 from ShogiNeuralNetwork import true_boards
 from extra.image_modes import ImageMode
 
 
-def get_camera_reader(image_mode: ImageMode, cam_id: int):
-    config = Config(Paths.CONFIG_PATH)
-    hsv_low = np.array([
-        config.HSVThreshold.h_low,
-        config.HSVThreshold.s_low,
-        config.HSVThreshold.v_low,
-    ])
-    hsv_high = np.array([
-        config.HSVThreshold.h_high,
-        config.HSVThreshold.s_high,
-        config.HSVThreshold.v_high,
-    ])
+def hsv_corner_detector():
+    hsv_low = (
+        GLOBAL_CONFIG.HSVThreshold.h_low,
+        GLOBAL_CONFIG.HSVThreshold.s_low,
+        GLOBAL_CONFIG.HSVThreshold.v_low,
+    )
+    hsv_high = (
+        GLOBAL_CONFIG.HSVThreshold.h_high,
+        GLOBAL_CONFIG.HSVThreshold.s_high,
+        GLOBAL_CONFIG.HSVThreshold.v_high,
+    )
+    return CornerDetectors.HSVThresholdCornerDetector(hsv_low, hsv_high)
 
+
+def get_camera_reader(image_mode: ImageMode, cam_id: int):
     reader = ShogiBoardReader(
         image_mode,
         BoardSplitter(
             ImageGetters.Camera(cam_id),
-            CornerDetectors.HSVThresholdCornerDetector(hsv_low, hsv_high),
-            cell_img_size=config.NeuralNetwork.cell_img_size
+            hsv_corner_detector(),
+            cell_img_size=GLOBAL_CONFIG.NeuralNetwork.cell_img_size
         ),
         FigureRecognizers.RecognizerNN(
             Paths.MODEL_FIGURE_PATH,
             Paths.MODEL_DIRECTION_PATH,
-            cell_img_size=config.NeuralNetwork.cell_img_size
+            cell_img_size=GLOBAL_CONFIG.NeuralNetwork.cell_img_size
         ),
         memorizer=None
     )
@@ -59,17 +60,6 @@ def get_hardcoded_reader(image_mode: ImageMode, img_name: str):
 
 
 def get_video_reader(image_mode: ImageMode, video_path: str, use_memorizer: bool):
-    hsv_low = np.array([
-        GLOBAL_CONFIG.HSVThreshold.h_low,
-        GLOBAL_CONFIG.HSVThreshold.s_low,
-        GLOBAL_CONFIG.HSVThreshold.v_low,
-    ])
-    hsv_high = np.array([
-        GLOBAL_CONFIG.HSVThreshold.h_high,
-        GLOBAL_CONFIG.HSVThreshold.s_high,
-        GLOBAL_CONFIG.HSVThreshold.v_high,
-    ])
-
     if use_memorizer:
         memorizer = BoardMemorizer()
     else:
@@ -79,7 +69,8 @@ def get_video_reader(image_mode: ImageMode, video_path: str, use_memorizer: bool
         image_mode,
         BoardSplitter(
             ImageGetters.Video(video_path),
-            CornerDetectors.HSVThresholdCornerDetector(hsv_low, hsv_high),
+            # hsv_corner_detector(),
+            CornerDetectors.CoolCornerDetector(),
             cell_img_size=GLOBAL_CONFIG.NeuralNetwork.cell_img_size
         ),
         FigureRecognizers.RecognizerNN(
