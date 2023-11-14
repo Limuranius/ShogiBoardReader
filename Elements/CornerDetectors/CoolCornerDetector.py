@@ -7,13 +7,21 @@ from .CornerDetector import *
 
 class CoolCornerDetector(CornerDetector):
     def get_corners(self, image: Image) -> Corners:
-        corners = detect_corners(image)
-        corners = (
-            (corners[0, 0], corners[0, 1]),
-            (corners[1, 0], corners[1, 1]),
-            (corners[2, 0], corners[2, 1]),
-            (corners[3, 0], corners[3, 1])
-        )
+        try:
+            corners = detect_corners(image)
+            corners = (
+                (corners[0, 0], corners[0, 1]),
+                (corners[1, 0], corners[1, 1]),
+                (corners[2, 0], corners[2, 1]),
+                (corners[3, 0], corners[3, 1])
+            )
+        except Exception as e:
+            corners = (
+                (0, 0),
+                (0, 0),
+                (0, 0),
+                (0, 0),
+            )
         return corners
 
 

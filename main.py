@@ -51,13 +51,17 @@ def photo():
 def video():
     reader = factories.get_video_reader(
         ImageMode(GLOBAL_CONFIG.NeuralNetwork.image_mode),
-        "temp/VID_20231103_163606.mp4",
-        use_memorizer=True
+        "/home/gleb/ShogiBoardReader/temp/VID_20231110_170554.mp4",
+        use_memorizer=False
     )
-
+    from time import time
     while True:
-        board_img = reader.get_full_img(show_borders=True)
 
+        s = time()
+        reader.update()
+        print("FPS:", 1 / (time() - s))
+
+        board_img = reader.get_full_img(show_borders=True)
         board = reader.get_board()
         predicted_board_img = board.to_image()
 
@@ -78,7 +82,7 @@ def video():
 
         cv2.imshow("", img)
         if cv2.waitKey(1) & 0xFF == ord('q'):
-            reader.memorizer.save_to_kifu("/home/gleb/ShogiBoardReader/temp/kifu.kif")
+            # reader.memorizer.save_to_kifu("/home/gleb/ShogiBoardReader/temp/kifu.kif")
             break
     cv2.destroyAllWindows()
 

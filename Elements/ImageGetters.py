@@ -25,7 +25,7 @@ class Photo(ImageGetter):
 class Camera(ImageGetter):
     video: cv2.VideoCapture
 
-    def __init__(self, cam_id: int = 1):
+    def __init__(self, cam_id: int = 0):
         self.video = cv2.VideoCapture(cam_id)
 
     def get_image(self) -> np.ndarray:
