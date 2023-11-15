@@ -1,7 +1,7 @@
 # ShogiBoardReader
 Program that can recognize image/video of shogi board and convert it to digital format (kifu) 
 
-https://github.com/Limuranius/ShogiBoardReader/assets/71573098/7d89584f-e175-4484-b2c1-150fcae8293f
+![shogi](https://github.com/Limuranius/ShogiBoardReader/assets/71573098/684ee640-cd8a-4a13-8150-7fd9b4c7d2aa)
 
 ## How to use
 ### Requirements
