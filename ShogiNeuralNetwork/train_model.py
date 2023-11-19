@@ -6,11 +6,8 @@ from .data_info import CATEGORIES_FIGURE_TYPE
 def train_figure_type_model(
         dataset: Dataset,
         epochs: int,
-        rotation_range: int,
-        width_shift_range: float,
-        height_shift_range: float,
-        zoom_range: float,
         verbose=0,
+        **data_augmentation_params
 ) -> keras.Model:
     cell_img_size = dataset.cell_img_size
     model = keras.Sequential(
@@ -35,10 +32,7 @@ def train_figure_type_model(
 
     datagen = dataset.get_augmented_data_generator(
         y_type="figure",
-        rotation_range=rotation_range,
-        width_shift_range=width_shift_range,
-        height_shift_range=height_shift_range,
-        zoom_range=zoom_range,
+        **data_augmentation_params
     )
 
     model.fit(
@@ -52,11 +46,8 @@ def train_figure_type_model(
 def train_direction_model(
         dataset: Dataset,
         epochs: int,
-        rotation_range: int,
-        width_shift_range: float,
-        height_shift_range: float,
-        zoom_range: float,
-        verbose=0
+        verbose=0,
+        **data_augmentation_params
 ) -> keras.Model:
     cell_img_size = dataset.cell_img_size
     model = keras.Sequential(
@@ -81,10 +72,7 @@ def train_direction_model(
 
     datagen = dataset.get_augmented_data_generator(
         y_type="direction",
-        rotation_range=rotation_range,
-        width_shift_range=width_shift_range,
-        height_shift_range=height_shift_range,
-        zoom_range=zoom_range
+        **data_augmentation_params
     )
 
     model.fit(

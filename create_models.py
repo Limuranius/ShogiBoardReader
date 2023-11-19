@@ -12,21 +12,29 @@ dataset = create_data.create_dataset(
 model_figure = train_model.train_figure_type_model(
     dataset=dataset,
     epochs=GLOBAL_CONFIG.NeuralNetwork.figure_epochs,
+    verbose=1,
     rotation_range=GLOBAL_CONFIG.NeuralNetwork.rotation_range,
     width_shift_range=GLOBAL_CONFIG.NeuralNetwork.width_shift_range,
     height_shift_range=GLOBAL_CONFIG.NeuralNetwork.height_shift_range,
     zoom_range=GLOBAL_CONFIG.NeuralNetwork.zoom_range,
-    verbose=1,
+    brightness_range=(
+        GLOBAL_CONFIG.NeuralNetwork.brightness_range_low,
+        GLOBAL_CONFIG.NeuralNetwork.brightness_range_high
+    )
 )
 
 model_direction = train_model.train_direction_model(
     dataset=dataset,
     epochs=GLOBAL_CONFIG.NeuralNetwork.direction_epochs,
+    verbose=1,
     rotation_range=GLOBAL_CONFIG.NeuralNetwork.rotation_range,
     width_shift_range=GLOBAL_CONFIG.NeuralNetwork.width_shift_range,
     height_shift_range=GLOBAL_CONFIG.NeuralNetwork.height_shift_range,
     zoom_range=GLOBAL_CONFIG.NeuralNetwork.zoom_range,
-    verbose=1,
+    brightness_range=(
+        GLOBAL_CONFIG.NeuralNetwork.brightness_range_low,
+        GLOBAL_CONFIG.NeuralNetwork.brightness_range_high
+    )
 )
 
 print(test_model.test_figure_type_model(model_figure, dataset))

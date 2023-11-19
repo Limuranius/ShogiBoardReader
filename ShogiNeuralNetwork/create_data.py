@@ -45,9 +45,8 @@ def load_boards(
                     cell_img = cells[i][j]
                     figure_label = CATEGORIES_FIGURE_TYPE.index(true_figure)
                     direction = CATEGORIES_DIRECTION.index(true_direction)
-                    normalized_img = cell_img.astype("float32") / 255
                     data.loc[data_i] = [
-                        normalized_img,
+                        cell_img,
                         figure_label,
                         direction
                     ]
