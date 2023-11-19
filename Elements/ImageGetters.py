@@ -30,6 +30,7 @@ class Camera(ImageGetter):
 
     def get_image(self) -> np.ndarray:
         _, frame = self.video.read()
+        frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
         return frame
 
 
