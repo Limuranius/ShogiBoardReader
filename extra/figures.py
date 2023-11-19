@@ -43,26 +43,23 @@ class Figure(Enum):
         return translate_table[self]
 
     def promoted(self) -> Figure:
-        promotion_table = {
-            self.PAWN: self.PAWN_PROM,
-            self.LANCE: self.LANCE_PROM,
-            self.KNIGHT: self.KNIGHT_PROM,
-            self.SILVER: self.SILVER_PROM,
-            self.BISHOP: self.BISHOP_PROM,
-            self.ROOK: self.ROOK_PROM,
-        }
         return promotion_table[self]
 
     def unpromoted(self) -> Figure:
-        promotion_table = {
-            self.PAWN_PROM: self.PAWN,
-            self.LANCE_PROM: self.LANCE,
-            self.KNIGHT_PROM: self.KNIGHT,
-            self.SILVER_PROM: self.SILVER,
-            self.BISHOP_PROM: self.BISHOP,
-            self.ROOK_PROM: self.ROOK,
-        }
         return promotion_table[self]
+
+    def is_promotable(self) -> bool:
+        return self in promotion_table
+
+
+promotion_table = {
+    Figure.PAWN: Figure.PAWN_PROM,
+    Figure.LANCE: Figure.LANCE_PROM,
+    Figure.KNIGHT: Figure.KNIGHT_PROM,
+    Figure.SILVER: Figure.SILVER_PROM,
+    Figure.BISHOP: Figure.BISHOP_PROM,
+    Figure.ROOK: Figure.ROOK_PROM,
+}
 
 
 class Direction(Enum):

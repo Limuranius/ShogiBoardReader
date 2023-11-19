@@ -84,7 +84,7 @@ def get_move(old_board: Board, new_board: Board) -> Move | None:
         elif (
                 cell_1_new == Figure.EMPTY
                 and cell_2_new != Figure.EMPTY
-                and cell_2_old not in [Figure.GOLD, Figure.KING]
+                and cell_1_old.is_promotable()
                 and cell_2_new == cell_1_old.promoted()
         ):
             moved_figure = cell_1_old
@@ -99,7 +99,7 @@ def get_move(old_board: Board, new_board: Board) -> Move | None:
         elif (
                 cell_2_new == Figure.EMPTY
                 and cell_1_new != Figure.EMPTY
-                and cell_2_old not in [Figure.GOLD, Figure.KING]
+                and cell_2_old.is_promotable()
                 and cell_1_new == cell_2_old.promoted()
         ):
             moved_figure = cell_2_old
