@@ -4,7 +4,6 @@ from config import Paths
 import pickle
 from collections import defaultdict
 import os
-
 from extra.image_modes import ImageMode
 from .data_info import CATEGORIES_FIGURE_TYPE
 from extra import figures
@@ -96,16 +95,11 @@ class Dataset:
     def get_augmented_data_generator(
             self,
             y_type: str,
-            rotation_range: int,
-            width_shift_range: float,
-            height_shift_range: float,
-            zoom_range: float,
+            **data_augmentation_params
     ):
         datagen = ImageDataGenerator(
-            rotation_range=rotation_range,
-            width_shift_range=width_shift_range,
-            height_shift_range=height_shift_range,
-            zoom_range=zoom_range,
+            rescale=1/255,
+            **data_augmentation_params
         )
         datagen.fit(self.x_train)
         match y_type:

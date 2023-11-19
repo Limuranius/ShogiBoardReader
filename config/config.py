@@ -13,6 +13,8 @@ class NeuralNetwork:
     figure_epochs: int
     direction_epochs: int
     image_mode: str
+    brightness_range_low: float
+    brightness_range_high: float
 
 
 @section(section_name="HSV Threshold")
