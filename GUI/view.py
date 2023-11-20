@@ -47,6 +47,7 @@ class View(QMainWindow):
 
     worker_thread: QThread
     sound_thread: multiprocessing.Process = multiprocessing.Process()
+    use_alarm: bool = False
 
     def __init__(self):
         super().__init__()
@@ -154,6 +155,8 @@ class View(QMainWindow):
         self.worker_thread.start()
 
     def start_alarm(self):
+        if not self.use_alarm:
+            return
         if not self.sound_thread.is_alive():
             self.sound_thread = multiprocessing.Process(target=play_sound_in_repeat,
                                                         args=[Paths.ALARM_PATH])
@@ -170,6 +173,10 @@ class View(QMainWindow):
         else:
             self.start_alarm()
 
+    def alarm_switched(self, use_alarm: bool):
+        self.use_alarm = use_alarm
+        print(use_alarm)
+
     def connect_widgets(self):
         self.ui.checkBox_use_memorizer.clicked.connect(self.memorizer_checked)
         for radioButton in self.ui.groupBox_image_getter.children():
@@ -179,3 +186,4 @@ class View(QMainWindow):
             if isinstance(radioButton, QRadioButton):
                 radioButton.clicked.connect(self.update_corner_detector)
         self.ui.pushButton_start.clicked.connect(self.start_clicked)
+        self.ui.checkBox_alarm.clicked.connect(self.alarm_switched)
