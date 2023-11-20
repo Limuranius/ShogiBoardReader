@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>939</width>
+    <width>1448</width>
     <height>600</height>
    </rect>
   </property>
@@ -200,6 +200,13 @@
            <widget class="QCheckBox" name="checkBox_use_memorizer">
             <property name="text">
              <string>Use Memorizer</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_alarm">
+            <property name="text">
+             <string>Alarm</string>
             </property>
            </widget>
           </item>

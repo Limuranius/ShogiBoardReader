@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(939, 600)
+        MainWindow.resize(1448, 600)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -121,6 +121,9 @@ class Ui_MainWindow(object):
         self.checkBox_use_memorizer = QtWidgets.QCheckBox(self.frame_5)
         self.checkBox_use_memorizer.setObjectName("checkBox_use_memorizer")
         self.verticalLayout_7.addWidget(self.checkBox_use_memorizer)
+        self.checkBox_alarm = QtWidgets.QCheckBox(self.frame_5)
+        self.checkBox_alarm.setObjectName("checkBox_alarm")
+        self.verticalLayout_7.addWidget(self.checkBox_alarm)
         self.comboBox_first_side = QtWidgets.QComboBox(self.frame_5)
         self.comboBox_first_side.setObjectName("comboBox_first_side")
         self.comboBox_first_side.addItem("")
@@ -184,6 +187,7 @@ class Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "Photo Path"))
         self.label.setText(_translate("MainWindow", "Video Path"))
         self.checkBox_use_memorizer.setText(_translate("MainWindow", "Use Memorizer"))
+        self.checkBox_alarm.setText(_translate("MainWindow", "Alarm"))
         self.comboBox_first_side.setItemText(0, _translate("MainWindow", "Moves first: Lower"))
         self.comboBox_first_side.setItemText(1, _translate("MainWindow", "Moves first: Upper"))
         self.pushButton_start.setText(_translate("MainWindow", "Start"))
