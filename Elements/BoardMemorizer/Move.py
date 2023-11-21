@@ -1,9 +1,8 @@
-from enum import Enum
+from __future__ import annotations
 from dataclasses import dataclass
 from extra.types import Figure
-from typing import Callable
 
-jp_digits = {
+JP_DIGITS = {
     1: "一",
     2: "二",
     3: "三",
@@ -15,29 +14,63 @@ jp_digits = {
     9: "九",
 }
 
+USI_LETTERS = "abcdefghi"
 
-class MoveType(Enum):
-    MOVE = "MOVE"
-    DROP = "DROP"
-    MOVE_AND_PROMOTE = "MOVE_AND_PROMOTE"
+
+def notation_transform_lower_first(x: int, y: int):
+    return 10 - x, y
+
+
+def notation_transform_upper_first(x: int, y: int):
+    return x, 10 - y
 
 
 @dataclass(frozen=True)
 class Move:
-    move_type: MoveType
-    figure: Figure
-
-    # x, y are stored in screen coordinate system
-    # (0,0 is in upper-left corner, X-axis pointing right, Y-axis pointing down)
     # (x, y), 1 <= x, y <= 9
     destination: tuple[int, int]
-    origin: tuple[int, int] | None = None
+    figure: Figure
 
-    def __post_init__(self):
-        if self.origin is None and self.move_type != MoveType.DROP:
-            raise Exception("Invalid move")
+    # (x, y), 1 <= x, y <= 9
+    origin: tuple[int, int] = None
 
-    def get_signature(self, notation_transform_func: Callable[[int, int], tuple[int, int]]) -> str:
+    is_drop: bool = False
+
+    is_promotion: bool = False
+
+    def apply_side_transformation(self, lower_moves_first: bool) -> Move:
+        if lower_moves_first:
+            origin = notation_transform_lower_first(*self.origin)
+            destination = notation_transform_lower_first(*self.destination)
+        else:
+            origin = notation_transform_upper_first(*self.origin)
+            destination = notation_transform_upper_first(*self.destination)
+        return Move(
+            origin=origin,
+            destination=destination,
+            figure=self.figure
+        )
+
+    def to_usi(self) -> str:
+        if self.is_drop:
+            fmt = "{fig_chr}*{x_dest_num}{y_dest_chr}"
+            return fmt.format(
+                x_dest_num=self.destination[0],
+                y_dest_chr=USI_LETTERS[self.destination[1] - 1],
+                fig_chr=self.figure.SILVER.value.upper()
+            )
+        else:
+            fmt = "{x_orig_num}{y_orig_chr}{x_dest_num}{y_dest_chr}"
+            if self.is_promotion:
+                fmt += "+"
+            return fmt.format(
+                x_orig_num=self.origin[0],
+                y_orig_chr=USI_LETTERS[self.origin[1] - 1],
+                x_dest_num=self.destination[0],
+                y_dest_chr=USI_LETTERS[self.destination[1] - 1],
+            )
+
+    def to_kif(self) -> str:
         """
         Return signature of move
 
@@ -45,36 +78,27 @@ class Move:
             Function that converts coordinates in screen coordinates system
             to coordinates in notation coordinates system
         """
-        x_dest_notation, y_dest_notation = notation_transform_func(
-            self.destination[0],
-            self.destination[1],
-        )
 
         dest_coords_str = "{x}{y_jp}".format(
-            x=x_dest_notation,
-            y_jp=jp_digits[y_dest_notation]
+            x=self.destination[0],
+            y_jp=JP_DIGITS[self.destination[1]]
         )
-        match self.move_type:
-            case MoveType.DROP:
-                s = "{dest}{fig_jp}打".format(
-                    dest=dest_coords_str,
-                    fig_jp=self.figure.to_jp()
-                )
-                return s
-            case MoveType.MOVE | MoveType.MOVE_AND_PROMOTE:
-                x_orig_notation, y_orig_notation = notation_transform_func(
-                    self.origin[0],
-                    self.origin[1],
-                )
-                origin_coords_str = "{x}{y}".format(
-                    x=x_orig_notation,
-                    y=y_orig_notation
-                )
-                prom_str = "成" if self.move_type == MoveType.MOVE_AND_PROMOTE else ""
-                s = "{dest}{fig_jp}{prom}({origin})".format(
-                    dest=dest_coords_str,
-                    fig_jp=self.figure.to_jp(),
-                    prom=prom_str,
-                    origin=origin_coords_str
-                )
-                return s
+        if self.is_drop:
+            s = "{dest}{fig_jp}打".format(
+                dest=dest_coords_str,
+                fig_jp=self.figure.to_jp()
+            )
+            return s
+        else:
+            origin_coords_str = "{x}{y}".format(
+                x=self.origin[0],
+                y=self.origin[1]
+            )
+            prom_str = "成" if self.is_promotion else ""
+            s = "{dest}{fig_jp}{prom}({origin})".format(
+                dest=dest_coords_str,
+                fig_jp=self.figure.to_jp(),
+                prom=prom_str,
+                origin=origin_coords_str
+            )
+            return s

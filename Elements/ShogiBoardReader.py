@@ -1,6 +1,7 @@
 import cv2
 from .FigureRecognizers import Recognizer
 from .BoardMemorizer import BoardMemorizer
+from .BoardMemorizer.BoardChangeStatus import BoardChangeStatus
 from .BoardSplitter import BoardSplitter
 from .ImageGetters import ImageGetter
 from .CornerDetectors import CornerDetector
@@ -56,15 +57,18 @@ class ShogiBoardReader:
     def get_board_image_no_perspective(self, img_mode: ImageMode = ImageMode.ORIGINAL) -> Image:
         return self.board_splitter.get_board_image_no_perspective(img_mode)
 
-    def update(self) -> bool:
+    def update(self) -> None:
         self.__figures = self.recognize_board_figures()
         self.__directions = self.recognize_board_directions()
 
         if self.memorizer is not None:
-            board_recognized = self.memorizer.update(self.__figures, self.__directions)
-            return board_recognized
+            self.memorizer.update(self.__figures, self.__directions)
+
+    def get_last_update_status(self) -> BoardChangeStatus:
+        if self.memorizer is not None:
+            return self.memorizer.update_status
         else:
-            return True
+            return BoardChangeStatus.VALID_MOVE
 
     def get_board(self) -> Board:
         if self.memorizer is None:

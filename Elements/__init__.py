@@ -1,4 +1,4 @@
-from .BoardMemorizer import BoardMemorizer
+from .BoardMemorizer import BoardMemorizer, BoardChangeStatus
 from .BoardSplitter import BoardSplitter
 from .ShogiBoardReader import ShogiBoardReader
 from . import FigureRecognizers
