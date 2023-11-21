@@ -16,7 +16,7 @@ class Worker(QObject):
     images_created = pyqtSignal(Image, Image, Image)
 
     # Signal that tells if the board is visible or obstructed
-    board_is_visible = pyqtSignal(bool)
+    memorizer_updated = pyqtSignal(BoardChangeStatus)
 
     show_original: bool = False
     show_no_perspective: bool = False
@@ -104,11 +104,9 @@ class Worker(QObject):
 
     def main_loop(self):
         if self.show_predicted:
-            board_is_visible = self.reader.update()
-        else:
-            board_is_visible = True
+            self.reader.update()
+            self.memorizer_updated.emit(self.reader.get_last_update_status())
         self.send_images()
-        self.board_is_visible.emit(board_is_visible)
 
     def run(self):
         self.reader.update()

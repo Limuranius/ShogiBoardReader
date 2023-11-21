@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import (
     QRadioButton,
     QLabel,
 )
-
+from Elements import BoardChangeStatus
 from config import Paths
 from .main_window import Ui_MainWindow
 from .worker import Worker
@@ -85,7 +85,7 @@ class View(QMainWindow):
 
         self.ui.pushButton_save_kifu.clicked.connect(self.worker.save_kifu)
 
-        self.worker.board_is_visible.connect(self.board_visible)
+        self.worker.memorizer_updated.connect(self.on_memorizer_update)
 
     def hide_widgets(self):
         self.ui.frame_ig_photo.setHidden(True)
@@ -166,16 +166,26 @@ class View(QMainWindow):
         if self.sound_thread.is_alive():
             self.sound_thread.terminate()
 
-    def board_visible(self, is_board_visible: bool):
-        print("Visible" if is_board_visible else "Not visible")
-        if is_board_visible:
-            self.stop_alarm()
-        else:
-            self.start_alarm()
+    def on_memorizer_update(self, update_status: BoardChangeStatus):
+        self.ui.label_memorizer_status.setText(update_status.value)
+        color = "white"
+        match update_status:
+            case BoardChangeStatus.NOTHING_CHANGED:
+                color = "white"
+                self.stop_alarm()
+            case BoardChangeStatus.VALID_MOVE:
+                color = "green"
+                self.stop_alarm()
+            case BoardChangeStatus.INVALID_MOVE:
+                color = "red"
+                self.start_alarm()
+            case BoardChangeStatus.ILLEGAL_MOVE:
+                color = "orange"
+                self.start_alarm()
+        self.ui.label_memorizer_status.setStyleSheet(f"background-color: {color}")
 
     def alarm_switched(self, use_alarm: bool):
         self.use_alarm = use_alarm
-        print(use_alarm)
 
     def connect_widgets(self):
         self.ui.checkBox_use_memorizer.clicked.connect(self.memorizer_checked)
