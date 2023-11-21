@@ -51,6 +51,9 @@ class Figure(Enum):
     def is_promotable(self) -> bool:
         return self in promotion_table
 
+    def is_promoted(self) -> bool:
+        return self in promotion_table.values()
+
 
 promotion_table = {
     Figure.PAWN: Figure.PAWN_PROM,

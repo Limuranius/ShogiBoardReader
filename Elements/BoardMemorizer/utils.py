@@ -32,14 +32,16 @@ def get_move(old_board: Board, new_board: Board) -> Move | None:
             piece dropped (EMPTY -> PIECE)
         """
         i, j = changed_cells[0]
-        if old_board.figures[i][j] == Figure.EMPTY and new_board.figures[i][j] != Figure.EMPTY:
-            dropped_fig = new_board.figures[i][j]
+        dropped_fig = new_board.figures[i][j]
+        if (old_board.figures[i][j] == Figure.EMPTY
+                and dropped_fig not in [Figure.EMPTY, Figure.KING]
+                and not dropped_fig.is_promoted()):
             x = j + 1
             y = i + 1
             return Move(
-                move_type=MoveType.DROP,
-                figure=dropped_fig,
-                destination=(x, y)
+                destination=(x, y),
+                is_drop=True,
+                figure=dropped_fig
             )
         else:
             return None
@@ -59,6 +61,8 @@ def get_move(old_board: Board, new_board: Board) -> Move | None:
         cell_1_new = new_board.figures[i1][j1]
         cell_2_new = new_board.figures[i2][j2]
 
+        is_promotion = False
+
         # PIECE-EMPTY -> EMPTY-PIECE
         # PIECE1-PIECE2 -> EMPTY-PIECE1
         if cell_1_new == Figure.EMPTY and cell_2_new != Figure.EMPTY and cell_2_new == cell_1_old:
@@ -67,7 +71,6 @@ def get_move(old_board: Board, new_board: Board) -> Move | None:
             y_origin = i1 + 1
             x_destination = j2 + 1
             y_destination = i2 + 1
-            move_type = MoveType.MOVE
 
         # EMPTY-PIECE -> PIECE-EMPTY
         # PIECE1-PIECE2 -> PIECE2-EMPTY
@@ -77,7 +80,6 @@ def get_move(old_board: Board, new_board: Board) -> Move | None:
             y_origin = i2 + 1
             x_destination = j1 + 1
             y_destination = i1 + 1
-            move_type = MoveType.MOVE
 
         # PIECE-EMPTY -> EMPTY-PIECE_PROM (PIECE != Gold / King)
         # PIECE1-PIECE2 -> EMPTY-PIECE1_PROM (PIECE1 != Gold / King)
@@ -92,7 +94,7 @@ def get_move(old_board: Board, new_board: Board) -> Move | None:
             y_origin = i1 + 1
             x_destination = j2 + 1
             y_destination = i2 + 1
-            move_type = MoveType.MOVE_AND_PROMOTE
+            is_promotion = True
 
         # EMPTY - PIECE -> PIECE_PROM - EMPTY (PIECE != Gold / King)
         # PIECE1 - PIECE2 -> PIECE2_PROM - EMPTY (PIECE2 != Gold / King)
@@ -107,16 +109,16 @@ def get_move(old_board: Board, new_board: Board) -> Move | None:
             y_origin = i2 + 1
             x_destination = j1 + 1
             y_destination = i1 + 1
-            move_type = MoveType.MOVE_AND_PROMOTE
+            is_promotion = True
 
         else:
             return None
 
         return Move(
-            move_type=move_type,
-            figure=moved_figure,
             destination=(x_destination, y_destination),
-            origin=(x_origin, y_origin)
+            origin=(x_origin, y_origin),
+            is_promotion=is_promotion,
+            figure=moved_figure
         )
 
     else:
