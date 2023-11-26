@@ -50,7 +50,7 @@ class RecognizerNN(Recognizer):
     def recognize_board_figures(self, cells_imgs: list[list[np.ndarray]]) -> list[list[Figure]]:
         cells_imgs = np.array(cells_imgs).astype("float32") / 255
         inp = np.reshape(cells_imgs, (81, self.cell_img_size, self.cell_img_size, 1))
-        predictions = self.model_figure.predict(inp, verbose=0)
+        predictions = self.model_figure(inp).numpy()
         labels = predictions.argmax(axis=1)
         labels = np.reshape(labels, (9, 9))
         result = [[Figure.EMPTY for _ in range(9)] for __ in range(9)]
@@ -64,7 +64,7 @@ class RecognizerNN(Recognizer):
     def recognize_board_directions(self, cells_imgs: list[list[np.ndarray]]) -> list[list[Direction]]:
         cells_imgs = np.array(cells_imgs).astype("float32") / 255
         inp = np.reshape(cells_imgs, (81, self.cell_img_size, self.cell_img_size, 1))
-        predictions = self.model_direction.predict(inp, verbose=0)
+        predictions = self.model_direction(inp).numpy()
         labels = predictions.argmax(axis=1)
         labels = np.reshape(labels, (9, 9))
         result = [[Direction.NONE for _ in range(9)] for __ in range(9)]
