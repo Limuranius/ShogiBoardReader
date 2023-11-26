@@ -39,16 +39,21 @@ class Move:
     is_promotion: bool = False
 
     def apply_side_transformation(self, lower_moves_first: bool) -> Move:
+        origin = None
         if lower_moves_first:
-            origin = notation_transform_lower_first(*self.origin)
+            if self.origin is not None:
+                origin = notation_transform_lower_first(*self.origin)
             destination = notation_transform_lower_first(*self.destination)
         else:
-            origin = notation_transform_upper_first(*self.origin)
+            if self.origin is not None:
+                origin = notation_transform_upper_first(*self.origin)
             destination = notation_transform_upper_first(*self.destination)
         return Move(
             origin=origin,
             destination=destination,
-            figure=self.figure
+            figure=self.figure,
+            is_drop=self.is_drop,
+            is_promotion=self.is_promotion
         )
 
     def to_usi(self) -> str:
