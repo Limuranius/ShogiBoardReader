@@ -39,6 +39,14 @@ class Move:
     is_promotion: bool = False
 
     def apply_side_transformation(self, lower_moves_first: bool) -> Move:
+        """
+        Transforms move coordinates from screen coordinate system (origin in upper left corner)
+        to shogi coordinate system based on which side moved first
+
+        Parameters
+        ----------
+        lower_moves_first - whether player in lower part of board moved first
+        """
         origin = None
         if lower_moves_first:
             if self.origin is not None:
@@ -77,11 +85,7 @@ class Move:
 
     def to_kif(self) -> str:
         """
-        Return signature of move
-
-        notation_transform_func:
-            Function that converts coordinates in screen coordinates system
-            to coordinates in notation coordinates system
+        Returns kif signature of move
         """
 
         dest_coords_str = "{x}{y_jp}".format(
