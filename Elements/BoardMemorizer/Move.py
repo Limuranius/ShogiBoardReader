@@ -62,7 +62,7 @@ class Move:
             return fmt.format(
                 x_dest_num=self.destination[0],
                 y_dest_chr=USI_LETTERS[self.destination[1] - 1],
-                fig_chr=self.figure.SILVER.value.upper()
+                fig_chr=self.figure.value.upper()
             )
         else:
             fmt = "{x_orig_num}{y_orig_chr}{x_dest_num}{y_dest_chr}"
