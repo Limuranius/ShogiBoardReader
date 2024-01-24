@@ -1,7 +1,7 @@
 import numpy as np
 from PyQt5.QtCore import pyqtSignal, QObject
 from Elements import *
-from extra.types import Image
+from extra.types import ImageNP
 from config import GLOBAL_CONFIG
 from extra.image_modes import ImageMode
 from extra import factories
@@ -13,7 +13,7 @@ class Worker(QObject):
 
     # Signal that sends created images in following order:
     # Full image, No perspective image, Predicted board image
-    images_created = pyqtSignal(Image, Image, Image)
+    images_created = pyqtSignal(ImageNP, ImageNP, ImageNP)
 
     # Signal that tells if the board is visible or obstructed
     memorizer_updated = pyqtSignal(BoardChangeStatus)

@@ -10,11 +10,11 @@ from Elements import BoardChangeStatus
 from config import Paths
 from .main_window import Ui_MainWindow
 from .worker import Worker
-from extra.types import Image
+from extra.types import ImageNP
 import multiprocessing
 
 
-def show_image_on_label(image: Image, label: QLabel):
+def show_image_on_label(image: ImageNP, label: QLabel):
     height, width = image.shape[:2]
     bytes_per_line = 3 * width
     q_img = QImage(image.data, width, height, bytes_per_line, QImage.Format_BGR888)
@@ -125,9 +125,9 @@ class View(QMainWindow):
 
     def show_images(
             self,
-            full_img: Image,
-            no_perspective: Image,
-            predicted_board_img: Image):
+            full_img: ImageNP,
+            no_perspective: ImageNP,
+            predicted_board_img: ImageNP):
         img_size = (self.IMGS_SIZE, self.IMGS_SIZE)
 
         full_img = cv2.resize(full_img, img_size)

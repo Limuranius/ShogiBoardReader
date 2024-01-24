@@ -2,6 +2,7 @@ from __future__ import annotations
 from enum import Enum
 from config import Paths
 import os
+import cv2
 
 
 class Figure(Enum):
@@ -101,5 +102,13 @@ FIGURE_ICONS_PATHS = {
     Figure.KNIGHT_PROM: os.path.join(Paths.FIGURE_ICONS_DIR, "promoted knight.png"),
     Figure.SILVER_PROM: os.path.join(Paths.FIGURE_ICONS_DIR, "promoted silver.png"),
 }
+
+
+def get_figure_image(figure: Figure, direction: Direction):
+    figure_img = cv2.imread(FIGURE_ICONS_PATHS[figure])
+    if direction == Direction.DOWN:
+        figure_img = cv2.rotate(figure_img, cv2.ROTATE_180)
+    return figure_img
+
 
 Paths.create_folders(list(FIGURE_FOLDERS.values()))

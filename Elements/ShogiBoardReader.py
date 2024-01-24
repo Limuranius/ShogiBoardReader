@@ -3,10 +3,10 @@ from .FigureRecognizers import Recognizer
 from .BoardMemorizer import BoardMemorizer
 from .BoardMemorizer.BoardChangeStatus import BoardChangeStatus
 from .BoardSplitter import BoardSplitter
-from .ImageGetters import ImageGetter
+from .ImageGetters import ImageGetter, Photo
 from .CornerDetectors import CornerDetector
 from extra.image_modes import ImageMode
-from extra.types import Image, FigureBoard, DirectionBoard
+from extra.types import ImageNP, FigureBoard, DirectionBoard
 from .Board import Board
 
 
@@ -40,22 +40,13 @@ class ShogiBoardReader:
         predicted_directions = self.recognizer.recognize_board_directions(cells)
         return predicted_directions
 
-    def show_board(self):
-        img = self.board_splitter.get_board_image_no_perspective()
-        cv2.imshow("board", img)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+    def get_full_img(self, show_borders: bool, show_grid: bool) -> ImageNP:
+        return self.board_splitter.get_full_img(show_borders, show_grid)
 
-    def show_cell(self, i, j):
-        cells = self.board_splitter.get_board_cells(ImageMode.ORIGINAL)
-        cv2.imshow("cell", cells[i][j])
-        cv2.waitKey(0)
-
-    def get_full_img(self, show_borders: bool) -> Image:
-        return self.board_splitter.get_full_img(show_borders)
-
-    def get_board_image_no_perspective(self, img_mode: ImageMode = ImageMode.ORIGINAL) -> Image:
-        return self.board_splitter.get_board_image_no_perspective(img_mode)
+    def get_board_image_no_perspective(self,
+                                       img_mode: ImageMode = ImageMode.ORIGINAL,
+                                       show_grid: bool = False) -> ImageNP:
+        return self.board_splitter.get_board_image_no_perspective(img_mode, show_grid)
 
     def update(self) -> None:
         self.__figures = self.recognize_board_figures()
@@ -93,3 +84,9 @@ class ShogiBoardReader:
             self.recognizer = recognizer
         if memorizer != False:
             self.memorizer = memorizer
+
+    def set_image(self, img_path: str) -> None:
+        if isinstance(self.board_splitter.image_getter, Photo):
+            self.board_splitter.image_getter.set_image(img_path)
+        else:
+            raise Exception("Can't set image on image getter other than Photo")

@@ -6,7 +6,7 @@ from .CornerDetector import *
 
 
 class CoolCornerDetector(CornerDetector):
-    def get_corners(self, image: Image) -> Corners:
+    def get_corners(self, image: ImageNP) -> Corners:
         try:
             corners = detect_corners(image)
             corners = (

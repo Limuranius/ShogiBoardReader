@@ -89,3 +89,22 @@ def default_nn_recognizer():
         Paths.MODEL_DIRECTION_PATH,
         GLOBAL_CONFIG.NeuralNetwork.cell_img_size
     )
+
+
+def get_image_reader(image_mode: ImageMode):
+    config = Config(Paths.CONFIG_PATH)
+
+    reader = ShogiBoardReader(
+        image_mode,
+        BoardSplitter(
+            ImageGetters.Photo(),
+            CornerDetectors.CoolCornerDetector(),
+            cell_img_size=config.NeuralNetwork.cell_img_size
+        ),
+        FigureRecognizers.RecognizerNN(
+            Paths.MODEL_FIGURE_PATH,
+            Paths.MODEL_DIRECTION_PATH,
+            cell_img_size=config.NeuralNetwork.cell_img_size
+        )
+    )
+    return reader

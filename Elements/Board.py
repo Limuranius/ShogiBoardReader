@@ -1,7 +1,7 @@
 import numpy as np
 
 from extra.figures import Figure, Direction, FIGURE_ICONS_PATHS
-from extra.types import FigureBoard, DirectionBoard, Image
+from extra.types import FigureBoard, DirectionBoard, ImageNP
 from dataclasses import dataclass
 from extra import utils
 import cv2
@@ -26,7 +26,7 @@ class Board:
             s += "".join([cell.value for cell in dir_row])
             s += "\n"
 
-    def to_image(self) -> Image:
+    def to_image(self) -> ImageNP:
         BOARD_SIZE = 1000
         FIGURE_SIZE = BOARD_SIZE // 9
         board = np.full((BOARD_SIZE, BOARD_SIZE, 3), [255, 255, 255], dtype=np.uint8)

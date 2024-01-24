@@ -1,6 +1,6 @@
 import numpy as np
 import cv2
-from .types import Image, FigureBoard, DirectionBoard
+from .types import ImageNP, FigureBoard, DirectionBoard
 
 
 def get_black_mask(image: np.ndarray):
@@ -89,7 +89,7 @@ def overlay_image_on_image(img: np.ndarray, img_overlay: np.ndarray, x: int, y: 
     return img
 
 
-def gray_to_3d(img: Image):
+def gray_to_3d(img: ImageNP):
     h, w = img.shape
     new_img = np.ndarray(shape=(h, w, 3), dtype=np.uint8)
     new_img[:, :, 0] = img
