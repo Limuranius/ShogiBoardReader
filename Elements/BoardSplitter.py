@@ -29,57 +29,18 @@ class BoardSplitter:
         full_img = self.image_getter.get_image()
         corners = self.corner_detector.get_corners(full_img)
         img_no_persp = utils.remove_perspective(full_img, np.array(corners))
-        h, w = img_no_persp.shape[:2]
-        for x in np.linspace(0, w, num=10, dtype=np.int_):
-            cv2.line(img_no_persp, [x, 0], [x, h], color=[0, 255, 0], thickness=3)
-        for y in np.linspace(0, h, num=10, dtype=np.int_):
-            cv2.line(img_no_persp, [0, y], [w, y], color=[0, 255, 0], thickness=3)
-        match img_mode:
-            case ImageMode.ORIGINAL:
-                return img_no_persp
-            case ImageMode.GRAYSCALE_BLACK_THRESHOLD:
-                return utils.get_black_mask(img_no_persp)
+        if draw_grid:
+            h, w = img_no_persp.shape[:2]
+            for x in np.linspace(0, w, num=10, dtype=np.int_):
+                cv2.line(img_no_persp, [x, 0], [x, h], color=[0, 255, 0], thickness=3)
+            for y in np.linspace(0, h, num=10, dtype=np.int_):
+                cv2.line(img_no_persp, [0, y], [w, y], color=[0, 255, 0], thickness=3)
+        return img_mode.convert_image(img_no_persp)
 
     def get_board_cells(self, image_mode: ImageMode) -> list[list[ImageNP]]:
         """Returns 2D 9x9 list with images of cells"""
-        match image_mode:
-            case ImageMode.ORIGINAL:
-                return self.__get_board_cells_original()
-            case ImageMode.CANNY:
-                return self.__get_board_cells_canny()
-            case ImageMode.GRAYSCALE:
-                return self.__get_board_cells_grayscale()
-            case ImageMode.GRAYSCALE_BLACK_THRESHOLD:
-                return self.__get_board_cells_mask()
-            case ImageMode.LAB_THRESHOLD:
-                return self.__get_board_cells_lab_threshold()
-            case _:
-                raise Exception("Unknown image_mode")
-
-    def __get_board_cells_grayscale(self) -> list[list[ImageNP]]:
-        board_img = self.get_board_image_no_perspective()
-        gray = cv2.cvtColor(board_img, cv2.COLOR_BGR2GRAY)
-        return self.__get_board_cells(gray)
-
-    def __get_board_cells_canny(self) -> list[list[ImageNP]]:
-        board_img = self.get_board_image_no_perspective()
-        canny = cv2.Canny(board_img, 250, 255)
-        return self.__get_board_cells(canny)
-
-    def __get_board_cells_mask(self) -> list[list[ImageNP]]:
-        board_img = self.get_board_image_no_perspective()
-        mask = utils.get_black_mask(board_img)
-        return self.__get_board_cells(mask)
-
-    def __get_board_cells_lab_threshold(self):
-        board_img = self.get_board_image_no_perspective()
-        img_lab = cv2.cvtColor(board_img, cv2.COLOR_BGR2LAB)
-        mask = img_lab[:, :, 0] < 100
-        mask = mask.astype(np.uint8) * 255
-        return self.__get_board_cells(mask)
-
-    def __get_board_cells_original(self) -> list[list[ImageNP]]:
-        return self.__get_board_cells(self.get_board_image_no_perspective())
+        board_img = self.get_board_image_no_perspective(image_mode)
+        return self.__get_board_cells(board_img)
 
     def __get_board_cells(self, board_img: ImageNP) -> list[list[ImageNP]]:
         """Splits image into 81 (9x9) images of each cell"""
