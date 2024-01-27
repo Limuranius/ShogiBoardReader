@@ -14,6 +14,7 @@ Y_FIGURE_TRAIN_PATH = path.join(DATASETS_DIR, "y_figure_train.pickle")
 Y_FIGURE_TEST_PATH = path.join(DATASETS_DIR, "y_figure_test.pickle")
 Y_DIRECTION_TRAIN_PATH = path.join(DATASETS_DIR, "y_direction_train.pickle")
 Y_DIRECTION_TEST_PATH = path.join(DATASETS_DIR, "y_direction_test.pickle")
+ORIGINAL_CELLS_DATASET_PATH = path.join(DATASETS_DIR, "original_cells.pickle")
 IMGS_EXAMPLE_DIR = path.join(SHOGI_NN_DIR, "imgs_examples")
 
 MODELS_DIR = path.join(ROOT_DIR, "models")

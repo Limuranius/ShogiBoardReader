@@ -1,15 +1,17 @@
 from tensorflow import keras
-from .Dataset import Dataset
+import tensorflow as tf
 from .data_info import CATEGORIES_FIGURE_TYPE
+from .CellsDataset import CellsDataset
+from .Dataset import Dataset
+from config import GLOBAL_CONFIG
 
 
 def train_figure_type_model(
-        dataset: Dataset,
+        train_ds: tf.data.Dataset,
         epochs: int,
         verbose=0,
-        **data_augmentation_params
 ) -> keras.Model:
-    cell_img_size = dataset.cell_img_size
+    cell_img_size = GLOBAL_CONFIG.NeuralNetwork.cell_img_size
     model = keras.Sequential(
         [
             keras.Input(shape=(cell_img_size, cell_img_size, 1)),
@@ -30,13 +32,8 @@ def train_figure_type_model(
         metrics=["accuracy"]
     )
 
-    datagen = dataset.get_augmented_data_generator(
-        y_type="figure",
-        **data_augmentation_params
-    )
-
     model.fit(
-        datagen,
+        train_ds,
         epochs=epochs,
         verbose=verbose,
     )
@@ -44,12 +41,11 @@ def train_figure_type_model(
 
 
 def train_direction_model(
-        dataset: Dataset,
+        train_ds: tf.data.Dataset,
         epochs: int,
         verbose=0,
-        **data_augmentation_params
 ) -> keras.Model:
-    cell_img_size = dataset.cell_img_size
+    cell_img_size = GLOBAL_CONFIG.NeuralNetwork.cell_img_size
     model = keras.Sequential(
         [
             keras.Input(shape=(cell_img_size, cell_img_size, 1)),
@@ -70,13 +66,8 @@ def train_direction_model(
         metrics=["accuracy"]
     )
 
-    datagen = dataset.get_augmented_data_generator(
-        y_type="direction",
-        **data_augmentation_params
-    )
-
     model.fit(
-        datagen,
+        train_ds,
         epochs=epochs,
         verbose=verbose,
     )

@@ -6,15 +6,15 @@ from .Paths import CONFIG_PATH
 class NeuralNetwork:
     cell_img_size: int
     test_fraction: float
-    width_shift_range: float
-    height_shift_range: float
-    rotation_range: int
-    zoom_range: float
+    width_shift_factor: float
+    height_shift_factor: float
+    rotation_factor: float
+    zoom_factor: float
     figure_epochs: int
+    batch_size: int
     direction_epochs: int
     image_mode: str
-    brightness_range_low: float
-    brightness_range_high: float
+    brightness_factor: float
 
 
 @section(section_name="HSV Threshold")
