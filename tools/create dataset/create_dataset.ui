@@ -26,6 +26,11 @@
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QLabel" name="label">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Loaded</string>
          </property>
@@ -33,6 +38,13 @@
        </item>
        <item>
         <widget class="QListWidget" name="listWidget"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_skip">
+         <property name="text">
+          <string>Skip</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -53,37 +65,51 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_fix_corners">
+         <property name="text">
+          <string>Fix corners</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>
     <item>
-     <widget class="QFrame" name="frame_3">
+     <widget class="QFrame" name="frame_4">
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QComboBox" name="comboBox">
-       <property name="geometry">
-        <rect>
-         <x>50</x>
-         <y>190</y>
-         <width>60</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>9</pointsize>
-        </font>
-       </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <property name="text">
-         <string>fsgsdfgsfdgdsfgfd</string>
-        </property>
+        <widget class="QFrame" name="frame_3">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+        </widget>
        </item>
-      </widget>
+       <item>
+        <widget class="QPushButton" name="pushButton_add">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Add to dataset</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </item>
    </layout>

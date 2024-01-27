@@ -1,5 +1,6 @@
 from PyQt5 import QtWidgets
 
+from config import GLOBAL_CONFIG
 from extra import factories
 from Elements import ShogiBoardReader
 import cv2
@@ -8,13 +9,17 @@ from extra.figures import Figure, Direction
 from extra.image_modes import ImageMode
 
 from create_dataset import Ui_MainWindow
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from Skibidi import Skibidi
+from ShogiNeuralNetwork.CellsDataset import CellsDataset
+from config.Paths import ORIGINAL_CELLS_DATASET_PATH
+
 
 class View(QMainWindow):
     images_paths: list[str]
     reader: ShogiBoardReader
     cells_select = list[list[Skibidi]]
+    cells_dataset: CellsDataset
 
     def __init__(self):
         super().__init__()
@@ -22,18 +27,24 @@ class View(QMainWindow):
         self.ui.setupUi(self)
         self.setAcceptDrops(True)
         self.images_paths = []
-        self.reader = factories.get_image_reader(ImageMode.ORIGINAL)
+        self.reader = factories.get_image_reader(ImageMode(GLOBAL_CONFIG.NeuralNetwork.image_mode))
+        self.cells_dataset = CellsDataset()
+        self.cells_dataset.load_pickle(ORIGINAL_CELLS_DATASET_PATH)
+        self.cells_select = []
         self.setup()
 
     def setup(self) -> None:
-        self.cells_select = [[None for _ in range(9)] for __ in range(9)]
         self.ui.grid = QtWidgets.QGridLayout(self.ui.frame_3)
         for i in range(9):
+            self.cells_select.append([])
             for j in range(9):
                 cell_select = Skibidi(self.ui.frame_3)
                 cell_select.set_cell(Figure.EMPTY, Direction.NONE)
                 self.ui.grid.addWidget(cell_select, i, j)
-                self.cells_select[i][j] = cell_select
+                self.cells_select[i].append(cell_select)
+        self.ui.pushButton_add.clicked.connect(self.on_add_to_dataset_clicked)
+        self.ui.pushButton_skip.clicked.connect(self.on_skip_clicked)
+
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
@@ -44,20 +55,63 @@ class View(QMainWindow):
     def dropEvent(self, event):
         files = [u.toLocalFile() for u in event.mimeData().urls()]
         self.add_images_to_list(files)
-        self.load_image(self.images_paths[0])
 
     def add_images_to_list(self, paths: list[str]):
-        self.images_paths += paths
-        self.update_images_list()
+        for img_path in paths:
+            if self.cells_dataset.is_image_visited(img_path):
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Warning)
+                msg.setText("Warning")
+                msg.setInformativeText(f'This image ({img_path}) has already been used.\nNot adding that.')
+                msg.setWindowTitle("Warning")
+                msg.exec_()
+            else:
+                self.images_paths.append(img_path)
+        self.update()
 
     def load_image(self, img_path: str) -> None:
         self.reader.set_image(img_path)
-        # img = self.reader.get_full_img(show_borders=True, show_grid=True)
+
+        # Showing no perspective image of board
         img = self.reader.get_board_image_no_perspective(show_grid=True)
-        img = cv2.resize(img, (600, 600))
+        img = cv2.resize(img, (800, 800))
         self.ui.full_img_label.set_image(img)
+
+        # Loading each predicted cell into selects
+        self.reader.update()
+        predicted = self.reader.get_board()
+        for i in range(9):
+            for j in range(9):
+                figure = predicted.figures[i][j]
+                direction = predicted.directions[i][j]
+                self.cells_select[i][j].set_cell(figure, direction)
 
     def update_images_list(self) -> None:
         self.ui.listWidget.clear()
         for img_path in self.images_paths:
             self.ui.listWidget.addItem(img_path)
+
+    def on_add_to_dataset_clicked(self):
+        cells_imgs = self.reader.get_cells_imgs(ImageMode.ORIGINAL)
+        for i in range(9):
+            for j in range(9):
+                cell_img = cells_imgs[i][j]
+                figure = self.cells_select[i][j].get_figure()
+                direction = self.cells_select[i][j].get_direction()
+                self.cells_dataset.add_image(cell_img, figure, direction)
+        self.cells_dataset.add_image_hash(self.images_paths[0])
+        self.images_paths.pop(0)
+        self.cells_dataset.save_pickle(ORIGINAL_CELLS_DATASET_PATH)
+        self.update()
+
+    def on_skip_clicked(self):
+        self.images_paths.pop(0)
+        self.update()
+
+    def update(self):
+        self.update_images_list()
+        if self.images_paths:
+            self.load_image(self.images_paths[0])
+            self.ui.pushButton_add.setDisabled(False)
+        else:
+            self.ui.pushButton_add.setDisabled(True)
