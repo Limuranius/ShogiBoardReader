@@ -1,6 +1,5 @@
 import cv2
 from PyQt5 import QtWidgets
-from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QFrame, QDialog
 from ImageLabel import ImageLabel
 from extra.types import Figure, Direction
@@ -9,7 +8,7 @@ from extra.figures import get_figure_image
 
 class CellSelect(QDialog):
     from PyQt5.QtCore import pyqtSignal
-    clicked = pyqtSignal(Figure, Direction)
+    choice_clicked = pyqtSignal(Figure, Direction)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -39,9 +38,8 @@ class CellSelect(QDialog):
                 img_label.set_image(img)
 
                 def img_clicked_func(figure=figure, direction=direction):
-                    print(figure, direction)
-
-                # img_label.clicked.connect(lambda: self.clicked.emit(figure, Direction.DOWN))
+                    self.choice_clicked.emit(figure, direction)
+                    self.close()
                 img_label.clicked.connect(img_clicked_func)
             begin_row += len(group) // width + 1
 
