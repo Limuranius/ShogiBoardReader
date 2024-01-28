@@ -1,5 +1,6 @@
 from .ImageGetters import ImageGetter
 from Elements.CornerDetectors.CornerDetector import CornerDetector
+from Elements.InventoryDetectors import InventoryDetector
 from extra import utils
 from extra.image_modes import ImageMode
 from extra.types import ImageNP
@@ -10,17 +11,20 @@ import cv2
 class BoardSplitter:
     image_getter: ImageGetter
     corner_detector: CornerDetector
+    inventory_detector: InventoryDetector
     cell_img_size: int
     board_img_size: int
 
     def __init__(self,
                  image_getter: ImageGetter,
                  corner_getter: CornerDetector,
-                 cell_img_size: int):
+                 cell_img_size: int,
+                 inventory_detector: InventoryDetector = None):
         self.image_getter = image_getter
         self.corner_detector = corner_getter
         self.cell_img_size = cell_img_size
         self.board_img_size = cell_img_size * 9
+        self.inventory_detector = inventory_detector
 
     def get_board_image_no_perspective(self,
                                        img_mode: ImageMode = ImageMode.ORIGINAL,
@@ -65,8 +69,13 @@ class BoardSplitter:
                 result[y - 1][x - 1] = cell_img
         return result
 
-    def get_full_img(self, show_borders: bool = False, show_grid: bool = False) -> ImageNP:
-        full_img = self.image_getter.get_image()
+    def get_full_img(
+            self,
+            show_borders: bool = False,
+            show_grid: bool = False,
+            show_inventories: bool = False
+    ) -> ImageNP:
+        full_img = self.image_getter.get_image().copy()
         color = [0, 255, 0]
         thickness = max(full_img.shape) // 500 + 1
         corners = np.array(self.corner_detector.get_corners(full_img))
@@ -82,4 +91,16 @@ class BoardSplitter:
                 cv2.line(full_img, p1, p2, color, thickness)
             for p1, p2 in zip(left_points, reversed(right_points)):
                 cv2.line(full_img, p1, p2, color, thickness)
+        if show_inventories and self.inventory_detector is not None:
+            i1_corners, i2_corners = self.inventory_detector.get_inventories_corners(full_img)
+            i1_corners = np.array(i1_corners)
+            i2_corners = np.array(i2_corners)
+            cv2.polylines(full_img, [i1_corners, i2_corners], True, color, thickness=thickness)
         return full_img
+
+    def get_inventory_cells(self, image_mode: ImageMode) -> tuple[list[ImageNP], list[ImageNP]]:
+        img = self.get_full_img()
+        i1_imgs, i2_imgs = self.inventory_detector.get_figure_images(img)
+        i1_imgs = [image_mode.convert_image(image) for image in i1_imgs]
+        i2_imgs = [image_mode.convert_image(image) for image in i2_imgs]
+        return i1_imgs, i2_imgs

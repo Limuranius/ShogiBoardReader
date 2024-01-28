@@ -3,14 +3,13 @@ from PyQt5 import QtWidgets
 from config import GLOBAL_CONFIG
 from extra import factories
 from Elements import ShogiBoardReader, CornerDetectors
-import cv2
 
 from extra.figures import Figure, Direction
 from extra.image_modes import ImageMode
 
-from create_dataset import Ui_MainWindow
+from GUI.UI.create_dataset import Ui_MainWindow
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
-from Skibidi import Skibidi
+from GUI.components.Skibidi import Skibidi
 from ShogiNeuralNetwork.CellsDataset import CellsDataset
 from config.Paths import ORIGINAL_CELLS_DATASET_PATH
 
@@ -47,13 +46,10 @@ class View(QMainWindow):
                 self.cells_select[i].append(cell_select)
         self.ui.pushButton_add.clicked.connect(self.on_add_to_dataset_clicked)
         self.ui.pushButton_skip.clicked.connect(self.on_skip_clicked)
-        self.ui.pushButton_fix_corners.clicked.connect(self.on_fix_corners_clicked)
-        self.ui.full_img_label.set_size((BOARD_IMG_SIZE, BOARD_IMG_SIZE))
 
-        self.ui.comboBox_corner_detector.addItem("Cool")
-        self.ui.comboBox_corner_detector.addItem("HSV")
-        self.ui.comboBox_corner_detector.addItem("Hardcoded")
-        self.ui.comboBox_corner_detector.currentTextChanged.connect(self.corner_detector_changed)
+        self.ui.detector_select.set_size(BOARD_IMG_SIZE)
+        self.ui.detector_select.set_reader(self.reader)
+        self.ui.detector_select.corner_detector_changed.connect(self.on_corner_detector_changed)
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
@@ -81,9 +77,8 @@ class View(QMainWindow):
     def load_image(self, img_path: str) -> None:
         self.reader.set_image(img_path)
 
-        # Showing no perspective image of board
-        img = self.reader.get_board_image_no_perspective(show_grid=True)
-        self.ui.full_img_label.set_image(img)
+        # Showing no-perspective image of board
+        self.ui.detector_select.update()
 
         # Loading each predicted cell into selects
         self.reader.update()
@@ -116,45 +111,8 @@ class View(QMainWindow):
         self.images_paths.pop(0)
         self.update()
 
-    def on_fix_corners_clicked(self):
-        self.ui.full_img_label.presses = []
-        full_img = self.reader.get_full_img()
-        self.ui.full_img_label.set_image(full_img)
-        self.ui.full_img_label.clicked.connect(self.full_img_clicked)
-
-    def full_img_clicked(self):
-        full_img = self.reader.get_full_img()
-        corners = self.ui.full_img_label.presses
-        if len(corners) == 4:
-            orig_h, orig_w = full_img.shape[:2]
-            h_factor = orig_h / BOARD_IMG_SIZE
-            w_factor = orig_w / BOARD_IMG_SIZE
-            orig_corners = []
-            for x, y in corners:
-                orig_x = x * w_factor
-                orig_y = y * h_factor
-                orig_corners.append((orig_x, orig_y))
-
-            # Sending corners to board reader
-            self.reader.set(
-                corner_detector=CornerDetectors.HardcodedCornerDetector(orig_corners)
-            )
-            self.ui.full_img_label.clicked.disconnect(self.full_img_clicked)
-            self.update()
-        else:
-            self.ui.full_img_label.set_image(full_img, show_presses=True)
-
-    def corner_detector_changed(self, name: str):
-        self.ui.pushButton_fix_corners.setDisabled(True)
-        match name:
-            case "Cool":
-                cd = CornerDetectors.CoolCornerDetector()
-            case "Hardcoded":
-                cd = CornerDetectors.HardcodedCornerDetector([(0, 0)] * 4)
-                self.ui.pushButton_fix_corners.setDisabled(False)
-            case "HSV":
-                cd = factories.hsv_corner_detector()
-        self.reader.set(corner_detector=cd)
+    def on_corner_detector_changed(self, new_cd: CornerDetectors.CornerDetector):
+        self.reader.set(corner_detector=new_cd)
         self.update()
 
     def update(self):

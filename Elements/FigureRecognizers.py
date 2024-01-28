@@ -8,7 +8,7 @@ import cv2
 
 class Recognizer(ABC):
     @abstractmethod
-    def recognize_cell_figure(self, cell_img: np.ndarray) -> Figure:
+    def recognize_figure(self, cell_img: np.ndarray) -> Figure:
         pass
 
     @abstractmethod
@@ -30,7 +30,7 @@ class RecognizerNN(Recognizer):
         self.model_direction = tf.keras.models.load_model(model_direction_path)
         self.cell_img_size = cell_img_size
 
-    def recognize_cell_figure(self, cell_img: np.ndarray) -> tuple[Figure, Direction]:
+    def recognize_figure(self, cell_img: np.ndarray) -> Figure:
         cell_img = cell_img.astype("float32") / 255
         cell_img = cv2.resize(cell_img, (self.cell_img_size, self.cell_img_size))
         inp = np.reshape(cell_img, (1, self.cell_img_size, self.cell_img_size, 1))
@@ -40,12 +40,12 @@ class RecognizerNN(Recognizer):
         index = np.argmax(predictions)
         figure = CATEGORIES_FIGURE_TYPE[index]
 
-        # Direction
-        predictions = self.model_direction.predict(inp, verbose=0)
-        index = np.argmax(predictions)
-        direction = CATEGORIES_DIRECTION[index]
+        # # Direction
+        # predictions = self.model_direction.predict(inp, verbose=0)
+        # index = np.argmax(predictions)
+        # direction = CATEGORIES_DIRECTION[index]
 
-        return figure, direction
+        return figure
 
     def recognize_board_figures(self, cells_imgs: list[list[np.ndarray]]) -> list[list[Figure]]:
         cells_imgs = np.array(cells_imgs).astype("float32") / 255

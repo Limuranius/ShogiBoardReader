@@ -1,11 +1,10 @@
 import cv2
 from PyQt5 import QtWidgets
-from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QFrame
-from ImageLabel import ImageLabel
+from GUI.components.ImageLabel import ImageLabel
 from extra.types import Figure, Direction
 from extra.figures import get_figure_image
-from CellSelect import CellSelect
+from GUI.components.CellSelect import CellSelect
 
 
 class Skibidi(QFrame):

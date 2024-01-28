@@ -1,16 +1,16 @@
 import cv2
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QFrame, QDialog
-from ImageLabel import ImageLabel
+from PyQt5.QtWidgets import QDialog
+from GUI.components.ImageLabel import ImageLabel
 from extra.types import Figure, Direction
 from extra.figures import get_figure_image
+from PyQt5.QtCore import pyqtSignal
 
 
 CELL_IMG_SIZE = 70
 
 
 class CellSelect(QDialog):
-    from PyQt5.QtCore import pyqtSignal
     choice_clicked = pyqtSignal(Figure, Direction)
 
     def __init__(self, *args, **kwargs):

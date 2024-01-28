@@ -55,6 +55,9 @@ class Figure(Enum):
     def is_promoted(self) -> bool:
         return self in promotion_table.values()
 
+    def is_droppable(self) -> bool:
+        return self in droppable
+
 
 promotion_table = {
     Figure.PAWN: Figure.PAWN_PROM,
@@ -63,6 +66,16 @@ promotion_table = {
     Figure.SILVER: Figure.SILVER_PROM,
     Figure.BISHOP: Figure.BISHOP_PROM,
     Figure.ROOK: Figure.ROOK_PROM,
+}
+
+droppable = {
+    Figure.PAWN,
+    Figure.LANCE,
+    Figure.KNIGHT,
+    Figure.SILVER,
+    Figure.BISHOP,
+    Figure.ROOK,
+    Figure.GOLD
 }
 
 

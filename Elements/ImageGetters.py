@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 from abc import ABC, abstractmethod
 
+from extra.types import ImageNP
+
 
 class ImageGetter(ABC):
     @abstractmethod
@@ -18,8 +20,11 @@ class Photo(ImageGetter):
     def get_image(self) -> np.ndarray:
         return self.img
 
-    def set_image(self, img_path: str):
-        self.img = cv2.imread(img_path)
+    def set_image(self, img: str | ImageNP):
+        if isinstance(img, str):
+            self.img = cv2.imread(img)
+        else:
+            self.img = img
 
 
 class Camera(ImageGetter):

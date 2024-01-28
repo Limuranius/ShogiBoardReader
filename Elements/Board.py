@@ -1,7 +1,8 @@
 import numpy as np
+import shogi
 
 from extra.figures import Figure, Direction, FIGURE_ICONS_PATHS
-from extra.types import FigureBoard, DirectionBoard, ImageNP
+from extra.types import FigureBoard, DirectionBoard, ImageNP, Inventory
 from dataclasses import dataclass
 from extra import utils
 import cv2
@@ -11,6 +12,8 @@ import cv2
 class Board:
     figures: FigureBoard
     directions: DirectionBoard
+    inventory_black: Inventory = None
+    inventory_white: Inventory = None
 
     def to_str_figures(self):
         return utils.board_to_str(self.figures)
@@ -52,4 +55,53 @@ class Board:
                     if direction == Direction.DOWN:
                         figure_img = np.flip(figure_img, axis=0)
                     utils.overlay_image_on_image(board, figure_img, x, y)
+        return board
+
+    def to_shogi_board(self) -> shogi.Board:
+        board = shogi.Board()
+        board.clear()
+
+        to_shogi_type = {
+            Figure.KING: shogi.KING,
+            Figure.PAWN: shogi.PAWN,
+            Figure.LANCE: shogi.LANCE,
+            Figure.KNIGHT: shogi.KNIGHT,
+            Figure.SILVER: shogi.SILVER,
+            Figure.GOLD: shogi.GOLD,
+            Figure.BISHOP: shogi.BISHOP,
+            Figure.ROOK: shogi.ROOK,
+            Figure.PAWN_PROM: shogi.PROM_PAWN,
+            Figure.LANCE_PROM: shogi.PROM_LANCE,
+            Figure.KNIGHT_PROM: shogi.PROM_KNIGHT,
+            Figure.SILVER_PROM: shogi.PROM_SILVER,
+            Figure.BISHOP_PROM: shogi.PROM_BISHOP,
+            Figure.ROOK_PROM: shogi.PROM_ROOK,
+        }
+
+        to_shogi_color = {
+            Direction.DOWN: shogi.WHITE,
+            Direction.UP: shogi.BLACK,
+        }
+
+        # Adding pieces on board
+        for i in range(9):
+            for j in range(9):
+                square = shogi.SQUARES[i * 9 + j]
+                figure = self.figures[i][j]
+                direction = self.directions[i][j]
+                if figure != Figure.EMPTY and direction != Direction.NONE:
+                    piece_type = to_shogi_type[figure]
+                    color = to_shogi_color[direction]
+                    piece = shogi.Piece(piece_type, color)
+                    board.set_piece_at(square, piece)
+
+        # Adding pieces from inventory
+        if self.inventory_black and self.inventory_white:
+            for figure in Figure:
+                if figure.is_droppable():
+                    count_black = self.inventory_black[figure]
+                    count_white = self.inventory_white[figure]
+                    piece_type = to_shogi_type[figure]
+                    board.add_piece_into_hand(piece_type, shogi.BLACK, count_black)
+                    board.add_piece_into_hand(piece_type, shogi.WHITE, count_white)
         return board

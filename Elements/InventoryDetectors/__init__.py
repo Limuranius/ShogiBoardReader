@@ -1,0 +1,2 @@
+from .BookInventoryDetector import BookInventoryDetector
+from .InventoryDetector import InventoryDetector
