@@ -40,7 +40,7 @@ class ShogiBoardReader:
         predicted_directions = self.recognizer.recognize_board_directions(cells)
         return predicted_directions
 
-    def get_full_img(self, show_borders: bool, show_grid: bool) -> ImageNP:
+    def get_full_img(self, show_borders: bool = False, show_grid: bool = False) -> ImageNP:
         return self.board_splitter.get_full_img(show_borders, show_grid)
 
     def get_board_image_no_perspective(self,
@@ -90,3 +90,6 @@ class ShogiBoardReader:
             self.board_splitter.image_getter.set_image(img_path)
         else:
             raise Exception("Can't set image on image getter other than Photo")
+
+    def get_cells_imgs(self, img_mode: ImageMode) -> list[list[ImageNP]]:
+        return self.board_splitter.get_board_cells(img_mode)

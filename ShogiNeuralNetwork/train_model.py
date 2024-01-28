@@ -2,7 +2,6 @@ from tensorflow import keras
 import tensorflow as tf
 from .data_info import CATEGORIES_FIGURE_TYPE
 from .CellsDataset import CellsDataset
-from .Dataset import Dataset
 from config import GLOBAL_CONFIG
 
 

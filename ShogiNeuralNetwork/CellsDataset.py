@@ -2,14 +2,17 @@ from __future__ import annotations
 
 import os.path
 import pickle
+from collections import defaultdict
+
 import cv2
 import tensorflow as tf
 import numpy as np
 import pandas as pd
+import tqdm
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 from ShogiNeuralNetwork.data_info import CATEGORIES_FIGURE_TYPE, CATEGORIES_DIRECTION
-from config import GLOBAL_CONFIG
+from config import GLOBAL_CONFIG, Paths
 from extra.image_modes import ImageMode
 from extra.types import ImageNP, Figure, Direction
 import imagehash
@@ -185,3 +188,14 @@ class CellsDataset:
         test = self.__chose_column(test, "direction")
 
         return train, test
+
+    def save_images(self):
+        count = defaultdict(int)
+        for _, row in tqdm.tqdm(self.__data.iterrows()):
+            img = row["image"]
+            figure = row["figure_type"]
+            count[figure] += 1
+            img_name = f"{count[figure]}.jpg"
+            os.makedirs(os.path.join(Paths.IMGS_EXAMPLE_DIR, figure.name), exist_ok=True)
+            path = os.path.join(Paths.IMGS_EXAMPLE_DIR, figure.name, img_name)
+            cv2.imwrite(path, img)

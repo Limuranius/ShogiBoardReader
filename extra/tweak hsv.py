@@ -122,8 +122,8 @@ def setup_windows():
 def main():
     setup_windows()
 
-    img_get = ImageGetters.Camera()
-    corn_get = CornerGetters.HSVThresholdCornerDetector(None, None)
+    img_get = ImageGetters.Photo("/home/gleb/ShogiBoardReader/img/boards/board13.jpg")
+    corn_get = CornerDetectors.HSVThresholdCornerDetector(None, None)
 
     while True:
         hsv_low = np.array([
@@ -139,8 +139,10 @@ def main():
         corn_get.hsv_low = hsv_low
         corn_get.hsv_high = hsv_high
 
+        SIZE = 800
+
         orig_img = img_get.get_image()
-        orig_img = cv2.resize(orig_img, (-1, -1), fx=GLOBAL_CONFIG.Tweaks.img_scale / 100, fy=GLOBAL_CONFIG.Tweaks.img_scale / 100)
+        orig_img = cv2.resize(orig_img, (SIZE, SIZE))
         hsv_mask = get_hsv_mask(orig_img)
         hsv_masked_img = cv2.bitwise_and(orig_img, orig_img, mask=hsv_mask)
         corners = np.array(corn_get.get_corners(orig_img))
@@ -149,6 +151,7 @@ def main():
         cv2.polylines(hsv_masked_img, [corners], True, [255, 255, 255], thickness=1)
 
         no_persp = utils.remove_perspective(orig_img, corners)
+
 
         canny = get_canny(orig_img)
         if GLOBAL_CONFIG.Tweaks.show_orig_img:

@@ -39,7 +39,11 @@ def show_grayscale(img):
     cv2.waitKey(0)
 
 
-def order_points(pts: np.ndarray):
+def order_points(pts: np.ndarray) -> np.ndarray:
+    """
+    Orders 4 corners stored in pts in the following order:
+    top-left, top-right, bottom-right, bottom-left
+    """
     rect = np.zeros((4, 2), dtype=pts.dtype)
     s = pts.sum(axis=1)
     rect[0] = pts[np.argmin(s)]
@@ -51,7 +55,12 @@ def order_points(pts: np.ndarray):
 
 
 def remove_perspective(img: np.ndarray, corners: np.ndarray):
-    (tl, tr, br, bl) = order_points(corners)
+    """
+    Takes section of image img surrounded by corners,
+    crops it out, removes perspective and returns this section
+    """
+    corners = order_points(corners)
+    (tl, tr, br, bl) = corners
     widthA = np.sqrt(((br[0] - bl[0]) ** 2) + ((br[1] - bl[1]) ** 2))
     widthB = np.sqrt(((tr[0] - tl[0]) ** 2) + ((tr[1] - tl[1]) ** 2))
     maxWidth = max(int(widthA), int(widthB))

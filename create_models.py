@@ -5,6 +5,7 @@ from config import Paths, GLOBAL_CONFIG
 
 dataset = CellsDataset()
 dataset.load_pickle(Paths.ORIGINAL_CELLS_DATASET_PATH)
+dataset.save_images()
 dataset = dataset.convert(ImageMode(GLOBAL_CONFIG.NeuralNetwork.image_mode))
 
 figure_train, figure_test = dataset.get_figure_tf_dataset()

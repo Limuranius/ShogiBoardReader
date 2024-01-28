@@ -72,18 +72,6 @@ class Direction(Enum):
     NONE = "."
 
 
-FIGURE_FOLDERS = {
-    Figure.PAWN: os.path.join(Paths.IMGS_EXAMPLE_DIR, "pawn"),
-    Figure.BISHOP: os.path.join(Paths.IMGS_EXAMPLE_DIR, "bishop"),
-    Figure.ROOK: os.path.join(Paths.IMGS_EXAMPLE_DIR, "rook"),
-    Figure.LANCE: os.path.join(Paths.IMGS_EXAMPLE_DIR, "lance"),
-    Figure.KNIGHT: os.path.join(Paths.IMGS_EXAMPLE_DIR, "knight"),
-    Figure.SILVER: os.path.join(Paths.IMGS_EXAMPLE_DIR, "silver"),
-    Figure.GOLD: os.path.join(Paths.IMGS_EXAMPLE_DIR, "gold"),
-    Figure.KING: os.path.join(Paths.IMGS_EXAMPLE_DIR, "king"),
-    Figure.EMPTY: os.path.join(Paths.IMGS_EXAMPLE_DIR, "empty"),
-}
-
 FIGURE_ICONS_PATHS = {
     Figure.PAWN: os.path.join(Paths.FIGURE_ICONS_DIR, "pawn.png"),
     Figure.BISHOP: os.path.join(Paths.FIGURE_ICONS_DIR, "bishop.png"),
@@ -109,6 +97,3 @@ def get_figure_image(figure: Figure, direction: Direction):
     if direction == Direction.DOWN:
         figure_img = cv2.rotate(figure_img, cv2.ROTATE_180)
     return figure_img
-
-
-Paths.create_folders(list(FIGURE_FOLDERS.values()))

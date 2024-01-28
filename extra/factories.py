@@ -1,7 +1,6 @@
 import os.path
 from Elements import *
 from config import Config, Paths, GLOBAL_CONFIG
-from ShogiNeuralNetwork import true_boards
 from extra.image_modes import ImageMode
 
 

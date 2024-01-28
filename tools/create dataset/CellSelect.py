@@ -6,6 +6,9 @@ from extra.types import Figure, Direction
 from extra.figures import get_figure_image
 
 
+CELL_IMG_SIZE = 70
+
+
 class CellSelect(QDialog):
     from PyQt5.QtCore import pyqtSignal
     choice_clicked = pyqtSignal(Figure, Direction)
@@ -34,7 +37,7 @@ class CellSelect(QDialog):
                 img_label = ImageLabel(self)
                 self.grid.addWidget(img_label, row, col)
                 img = get_figure_image(figure, direction)
-                img = cv2.resize(img, (50, 50))
+                img = cv2.resize(img, (CELL_IMG_SIZE, CELL_IMG_SIZE))
                 img_label.set_image(img)
 
                 def img_clicked_func(figure=figure, direction=direction):
