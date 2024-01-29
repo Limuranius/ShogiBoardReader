@@ -100,6 +100,14 @@ class CellsDataset:
         new_data["image"] = new_data["image"].apply(func)
         return CellsDataset(new_data)
 
+    def resize(self, size: tuple[int, int]) -> CellsDataset:
+        def func(img):
+            return cv2.resize(img, size)
+
+        new_data = self.__data.copy()
+        new_data["image"] = new_data["image"].apply(func)
+        return CellsDataset(new_data)
+
     def __prepare_1(self) -> pd.DataFrame:
         new_data = self.__data
         # new_data = equalize_classes(new_data)

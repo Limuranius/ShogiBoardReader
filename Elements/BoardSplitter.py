@@ -12,18 +12,13 @@ class BoardSplitter:
     image_getter: ImageGetter
     corner_detector: CornerDetector
     inventory_detector: InventoryDetector
-    cell_img_size: int
-    board_img_size: int
 
     def __init__(self,
                  image_getter: ImageGetter,
                  corner_getter: CornerDetector,
-                 cell_img_size: int,
                  inventory_detector: InventoryDetector = None):
         self.image_getter = image_getter
         self.corner_detector = corner_getter
-        self.cell_img_size = cell_img_size
-        self.board_img_size = cell_img_size * 9
         self.inventory_detector = inventory_detector
 
     def get_board_image_no_perspective(self,
@@ -49,9 +44,6 @@ class BoardSplitter:
     def __get_board_cells(self, board_img: ImageNP) -> list[list[ImageNP]]:
         """Splits image into 81 (9x9) images of each cell"""
 
-        img_size = (self.board_img_size, self.board_img_size)
-        cell_size = (self.cell_img_size, self.cell_img_size)
-        board_img = cv2.resize(board_img, img_size)
         height = board_img.shape[0]
         width = board_img.shape[1]
         x_step = width // 9
@@ -65,7 +57,6 @@ class BoardSplitter:
                 y_start = y_step * (y - 1)
                 y_end = y_step * y
                 cell_img = board_img[y_start: y_end, x_start: x_end]
-                cell_img = cv2.resize(cell_img, cell_size)
                 result[y - 1][x - 1] = cell_img
         return result
 

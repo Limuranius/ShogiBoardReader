@@ -4,6 +4,8 @@ from abc import ABC, abstractmethod
 import tensorflow as tf
 from ShogiNeuralNetwork.data_info import CATEGORIES_FIGURE_TYPE, CATEGORIES_DIRECTION
 import cv2
+from ShogiNeuralNetwork import preprocessing
+from extra.types import ImageNP, CellsImages, FigureBoard
 
 
 class Recognizer(ABC):
@@ -47,9 +49,8 @@ class RecognizerNN(Recognizer):
 
         return figure
 
-    def recognize_board_figures(self, cells_imgs: list[list[np.ndarray]]) -> list[list[Figure]]:
-        cells_imgs = np.array(cells_imgs).astype("float32") / 255
-        inp = np.reshape(cells_imgs, (81, self.cell_img_size, self.cell_img_size, 1))
+    def recognize_board_figures(self, cells_imgs: CellsImages) -> FigureBoard:
+        inp = preprocessing.prepare_cells_imgs(cells_imgs)
         predictions = self.model_figure(inp).numpy()
         labels = predictions.argmax(axis=1)
         labels = np.reshape(labels, (9, 9))
@@ -62,8 +63,7 @@ class RecognizerNN(Recognizer):
         return result
 
     def recognize_board_directions(self, cells_imgs: list[list[np.ndarray]]) -> list[list[Direction]]:
-        cells_imgs = np.array(cells_imgs).astype("float32") / 255
-        inp = np.reshape(cells_imgs, (81, self.cell_img_size, self.cell_img_size, 1))
+        inp = preprocessing.prepare_cells_imgs(cells_imgs)
         predictions = self.model_direction(inp).numpy()
         labels = predictions.argmax(axis=1)
         labels = np.reshape(labels, (9, 9))
