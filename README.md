@@ -16,11 +16,9 @@ Models will be saved to ```models``` folder
 
 ### Using your own dataset
 If you want to train model based on your own data:
-1. Load your images to ```img/boards```
-2. Write info about each loaded picture to ```ShogiNeuralNetwork/true_boards.txt```. 
-Info must include coordinates of each corner, labeled figures types and labeled figures directions.
-3. Add path of each image to list ```IMGS``` in ```ShogiNeuralNetwork/data_info.py```.
-Path must be relative to folder ```img/boards```
+1. Launch ```tools/create dataset/main.py```
+2. Drag images into window and select true cell values for each image
+3. New dataset will be created at ```ShogiNeuralNetwork/datasets/```.
 
 ### Examples
 - [Model](https://drive.google.com/drive/folders/1QTWss5RQerwVI-kkQVF-ml3MvJ0GjDcT?usp=sharing)
