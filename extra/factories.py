@@ -1,4 +1,3 @@
-import os.path
 from Elements import *
 from config import Config, Paths, GLOBAL_CONFIG
 from extra.image_modes import ImageMode
@@ -25,9 +24,9 @@ def get_camera_reader(image_mode: ImageMode, cam_id: int):
             ImageGetters.Camera(cam_id),
             hsv_corner_detector(),
         ),
-        FigureRecognizers.RecognizerNN(
-            Paths.MODEL_FIGURE_PATH,
-            Paths.MODEL_DIRECTION_PATH,
+        FigureRecognizers.RecognizerTF(
+            Paths.MODEL_TF_FIGURE_PATH,
+            Paths.MODEL_TF_DIRECTION_PATH,
             cell_img_size=GLOBAL_CONFIG.NeuralNetwork.cell_img_size
         ),
         memorizer=None
@@ -48,9 +47,9 @@ def get_video_reader(image_mode: ImageMode, video_path: str, use_memorizer: bool
             # hsv_corner_detector(),
             CornerDetectors.CoolCornerDetector(),
         ),
-        FigureRecognizers.RecognizerNN(
-            Paths.MODEL_FIGURE_PATH,
-            Paths.MODEL_DIRECTION_PATH,
+        FigureRecognizers.RecognizerTF(
+            Paths.MODEL_TF_FIGURE_PATH,
+            Paths.MODEL_TF_DIRECTION_PATH,
             cell_img_size=GLOBAL_CONFIG.NeuralNetwork.cell_img_size
         ),
         memorizer=memorizer
@@ -59,9 +58,9 @@ def get_video_reader(image_mode: ImageMode, video_path: str, use_memorizer: bool
 
 
 def default_nn_recognizer():
-    return FigureRecognizers.RecognizerNN(
-        Paths.MODEL_FIGURE_PATH,
-        Paths.MODEL_DIRECTION_PATH,
+    return FigureRecognizers.RecognizerTF(
+        Paths.MODEL_TF_FIGURE_PATH,
+        Paths.MODEL_TF_DIRECTION_PATH,
         GLOBAL_CONFIG.NeuralNetwork.cell_img_size
     )
 
@@ -75,9 +74,9 @@ def get_image_reader(image_mode: ImageMode):
             ImageGetters.Photo(),
             CornerDetectors.CoolCornerDetector(),
         ),
-        FigureRecognizers.RecognizerNN(
-            Paths.MODEL_FIGURE_PATH,
-            Paths.MODEL_DIRECTION_PATH,
+        FigureRecognizers.RecognizerTF(
+            Paths.MODEL_TF_FIGURE_PATH,
+            Paths.MODEL_TF_DIRECTION_PATH,
             cell_img_size=config.NeuralNetwork.cell_img_size
         )
     )

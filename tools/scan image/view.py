@@ -1,16 +1,13 @@
 import cv2
 import numpy as np
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
-
 from Elements.CornerDetectors import CornerDetector
 from Elements.InventoryDetectors import BookInventoryDetector
 from GUI.UI.scan_image import Ui_MainWindow
-from config import GLOBAL_CONFIG
-from extra import factories
-from extra.image_modes import ImageMode
 from extra.types import ImageNP
 from PIL import ImageGrab
 import webbrowser
+from Elements import ShogiBoardReader
 
 IMAGE_SIZE = 700
 
@@ -18,12 +15,12 @@ IMAGE_SIZE = 700
 class View(QMainWindow):
     current_image: ImageNP
 
-    def __init__(self):
+    def __init__(self, reader: ShogiBoardReader):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setAcceptDrops(True)
-        self.reader = factories.get_image_reader(ImageMode(GLOBAL_CONFIG.NeuralNetwork.image_mode))
+        self.reader = reader
         self.setup()
 
     def setup(self):

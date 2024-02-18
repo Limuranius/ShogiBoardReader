@@ -1,35 +1,22 @@
+import keras
 import numpy as np
-from extra.figures import Figure, Direction
-from abc import ABC, abstractmethod
-import tensorflow as tf
-from ShogiNeuralNetwork.data_info import CATEGORIES_FIGURE_TYPE, CATEGORIES_DIRECTION
-import cv2
+
 from ShogiNeuralNetwork import preprocessing
-from extra.types import ImageNP, CellsImages, FigureBoard
+from ShogiNeuralNetwork.data_info import CATEGORIES_FIGURE_TYPE, CATEGORIES_DIRECTION
+from extra.figures import Figure, Direction
+from extra.types import CellsImages, FigureBoard
+from .Recognizer import Recognizer
+import cv2
 
 
-class Recognizer(ABC):
-    @abstractmethod
-    def recognize_figure(self, cell_img: np.ndarray) -> Figure:
-        pass
-
-    @abstractmethod
-    def recognize_board_figures(self, cells_imgs: list[list[np.ndarray]]) -> list[list[Figure]]:
-        pass
-
-    @abstractmethod
-    def recognize_board_directions(self, cells_imgs: list[list[np.ndarray]]) -> list[list[Direction]]:
-        pass
-
-
-class RecognizerNN(Recognizer):
-    model_figure: tf.keras.models.Model
-    model_direction: tf.keras.models.Model
+class RecognizerTF(Recognizer):
+    model_figure: keras.models.Model
+    model_direction: keras.models.Model
     cell_img_size: int
 
     def __init__(self, model_figure_path: str, model_direction_path: str, cell_img_size: int):
-        self.model_figure = tf.keras.models.load_model(model_figure_path)
-        self.model_direction = tf.keras.models.load_model(model_direction_path)
+        self.model_figure = keras.models.load_model(model_figure_path)
+        self.model_direction = keras.models.load_model(model_direction_path)
         self.cell_img_size = cell_img_size
 
     def recognize_figure(self, cell_img: np.ndarray) -> Figure:

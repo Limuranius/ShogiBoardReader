@@ -1,1 +1,1 @@
-pyinstaller main.py --paths ../../ --add-data "../../config.ini:." --add-data "../../models:./models" --add-data "../../img:./img"
+pyinstaller main.py --paths ../../ --add-data "../../config.ini:." --add-data "../../models:./models" --add-data "../../img:./img" --onefile

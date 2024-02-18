@@ -18,6 +18,7 @@ from extra.types import ImageNP, Figure, Direction
 import imagehash
 from PIL import Image
 from . import preprocessing
+from . import augmentation
 
 
 def equalize_classes(data: pd.DataFrame) -> pd.DataFrame:
@@ -151,9 +152,9 @@ class CellsDataset:
             .shuffle(ds.cardinality())
             .batch(GLOBAL_CONFIG.NeuralNetwork.batch_size)
             .map(lambda img, figure, direction:
-                 (preprocessing.resize_and_rescale(img), figure, direction))
+                 (augmentation.resize_and_rescale(img), figure, direction))
             .map(lambda img, figure, direction:
-                 (preprocessing.augment(img), figure, direction))
+                 (augmentation.augment(img), figure, direction))
         )
         return train_ds
 
@@ -162,7 +163,7 @@ class CellsDataset:
             ds
             .batch(GLOBAL_CONFIG.NeuralNetwork.batch_size)
             .map(lambda img, figure, direction:
-                 (preprocessing.resize_and_rescale(img), figure, direction))
+                 (augmentation.resize_and_rescale(img), figure, direction))
         )
         return test_ds
 

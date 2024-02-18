@@ -1,5 +1,5 @@
 from collections import defaultdict
-from .FigureRecognizers import Recognizer
+from Elements.Recognizers import Recognizer
 from .BoardMemorizer import BoardMemorizer
 from .BoardMemorizer.BoardChangeStatus import BoardChangeStatus
 from .BoardSplitter import BoardSplitter
@@ -107,7 +107,7 @@ class ShogiBoardReader:
         if inventory_detector:
             self.board_splitter.inventory_detector = inventory_detector
 
-    def set_image(self, img_path: str) -> None:
+    def set_image(self, img_path: str | ImageNP) -> None:
         if isinstance(self.board_splitter.image_getter, Photo):
             self.board_splitter.image_getter.set_image(img_path)
         else:
