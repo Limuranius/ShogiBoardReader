@@ -131,16 +131,14 @@ class CellsDataset:
         train_tf = tf.data.Dataset.from_tensor_slices(
             (
                 train_images,
-                train_figure_labels,
-                train_direction_labels
+                {"figure": train_figure_labels, "direction": train_direction_labels}
             )
         )
 
         test_tf = tf.data.Dataset.from_tensor_slices(
             (
                 test_images,
-                test_figure_labels,
-                test_direction_labels
+                {"figure": test_figure_labels, "direction": test_direction_labels}
             )
         )
 
@@ -151,10 +149,10 @@ class CellsDataset:
             ds
             .shuffle(ds.cardinality())
             .batch(GLOBAL_CONFIG.NeuralNetwork.batch_size)
-            .map(lambda img, figure, direction:
-                 (augmentation.resize_and_rescale(img), figure, direction))
-            .map(lambda img, figure, direction:
-                 (augmentation.augment(img), figure, direction))
+            .map(lambda img, outputs:
+                 (augmentation.resize_and_rescale(img), outputs))
+            .map(lambda img, outputs:
+                 (augmentation.augment(img), outputs))
         )
         return train_ds
 
@@ -162,40 +160,15 @@ class CellsDataset:
         test_ds = (
             ds
             .batch(GLOBAL_CONFIG.NeuralNetwork.batch_size)
-            .map(lambda img, figure, direction:
-                 (augmentation.resize_and_rescale(img), figure, direction))
+            .map(lambda img, outputs:
+                 (augmentation.resize_and_rescale(img), outputs))
         )
         return test_ds
 
-    def __chose_column(self, ds: tf.data.Dataset, column: str) -> tf.data.Dataset:
-        match column:
-            case "figure_type":
-                return ds.map(lambda img, f, d: (img, f))
-            case "direction":
-                return ds.map(lambda img, f, d: (img, d))
-            case _:
-                raise Exception("WRONG COLUMN!!!")
-
-    def get_figure_tf_dataset(self) -> tuple[tf.data.Dataset, tf.data.Dataset]:
+    def get_tf_dataset(self) -> tuple[tf.data.Dataset, tf.data.Dataset]:
         train, test = self.__to_tf_dataset()
-
         train = self.__prepare_train(train)
-        train = self.__chose_column(train, "figure_type")
-
         test = self.__prepare_test(test)
-        test = self.__chose_column(test, "figure_type")
-
-        return train, test
-
-    def get_direction_tf_dataset(self) -> tuple[tf.data.Dataset, tf.data.Dataset]:
-        train, test = self.__to_tf_dataset()
-
-        train = self.__prepare_train(train)
-        train = self.__chose_column(train, "direction")
-
-        test = self.__prepare_test(test)
-        test = self.__chose_column(test, "direction")
-
         return train, test
 
     def save_images(self):

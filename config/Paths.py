@@ -11,10 +11,8 @@ ORIGINAL_CELLS_DATASET_PATH = path.join(DATASETS_DIR, "original_cells.pickle")
 IMGS_EXAMPLE_DIR = path.join(SHOGI_NN_DIR, "imgs_examples")
 
 MODELS_DIR = path.join(ROOT_DIR, "models")
-MODEL_TF_FIGURE_PATH = path.join(MODELS_DIR, "reader_figure_type.model")
-MODEL_TF_DIRECTION_PATH = path.join(MODELS_DIR, "reader_direction.model")
-MODEL_ONNX_FIGURE_PATH = path.join(MODELS_DIR, "reader_figure_type.onnx")
-MODEL_ONNX_DIRECTION_PATH = path.join(MODELS_DIR, "reader_direction.onnx")
+MODEL_TF_PATH = path.join(MODELS_DIR, "model.keras")
+MODEL_ONNX_PATH = path.join(MODELS_DIR, "model.onnx")
 
 IMGS_DIR = path.join(ROOT_DIR, "img")
 TRAIN_BOARDS_DIR = path.join(IMGS_DIR, "boards")
