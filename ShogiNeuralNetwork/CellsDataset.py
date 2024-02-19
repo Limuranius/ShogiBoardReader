@@ -87,6 +87,37 @@ class CellsDataset:
             pkl_data = [self.__data, self.__visited_images_hashes]
             pickle.dump(pkl_data, f)
 
+    def save(self, path: str):
+        count = defaultdict(int)
+        for _, row in tqdm.tqdm(self.__data.iterrows()):
+            img = row["image"]
+            figure = row["figure_type"]
+            direction = row["direction"]
+            count[(figure, direction)] += 1
+            img_name = f"{count[(figure, direction)]}.jpg"
+            dir_path = os.path.join(path, figure.name, direction.name)
+            img_path = os.path.join(dir_path, img_name)
+            os.makedirs(dir_path, exist_ok=True)
+            cv2.imwrite(img_path, img)
+        img_hash_path = os.path.join(path, "images_hash.pickle")
+        with open(img_hash_path, "wb") as f:
+            pickle.dump(self.__visited_images_hashes, f)
+
+    def load(self, path: str):
+        data = []
+        for figure in Figure:
+            for direction in Direction:
+                folder_path = os.path.join(path, figure.name, direction.name)
+                if os.path.exists(folder_path):
+                    for img_name in os.listdir(folder_path):
+                        img_path = os.path.join(folder_path, img_name)
+                        img = cv2.imread(img_path)
+                        data.append((img, figure, direction))
+        self.__data = pd.DataFrame(data, columns=["image", "figure_type", "direction"])
+        img_hash_path = os.path.join(path, "images_hash.pickle")
+        with open(img_hash_path, "rb") as f:
+            self.__visited_images_hashes = pickle.load(f)
+
     def add_image(self, cell_img: ImageNP, figure: Figure, direction: Direction):
         self.__data.loc[len(self.__data)] = [cell_img, figure, direction]
 
@@ -170,14 +201,3 @@ class CellsDataset:
         train = self.__prepare_train(train)
         test = self.__prepare_test(test)
         return train, test
-
-    def save_images(self):
-        count = defaultdict(int)
-        for _, row in tqdm.tqdm(self.__data.iterrows()):
-            img = row["image"]
-            figure = row["figure_type"]
-            count[figure] += 1
-            img_name = f"{count[figure]}.jpg"
-            os.makedirs(os.path.join(Paths.IMGS_EXAMPLE_DIR, figure.name), exist_ok=True)
-            path = os.path.join(Paths.IMGS_EXAMPLE_DIR, figure.name, img_name)
-            cv2.imwrite(path, img)
