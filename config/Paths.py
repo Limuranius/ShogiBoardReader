@@ -8,10 +8,11 @@ CONFIG_PATH = path.join(ROOT_DIR, "config.ini")
 SHOGI_NN_DIR = path.join(ROOT_DIR, "ShogiNeuralNetwork")
 DATASETS_DIR = path.join(SHOGI_NN_DIR, "datasets")
 ORIGINAL_CELLS_DATASET_PATH = path.join(DATASETS_DIR, "original_cells.pickle")
+DATASET_PATH = path.join(DATASETS_DIR, "dataset")
 IMGS_EXAMPLE_DIR = path.join(SHOGI_NN_DIR, "imgs_examples")
 
 MODELS_DIR = path.join(ROOT_DIR, "models")
-MODEL_TF_PATH = path.join(MODELS_DIR, "model.keras")
+MODEL_TF_PATH = path.join(MODELS_DIR, "model.model")
 MODEL_ONNX_PATH = path.join(MODELS_DIR, "model.onnx")
 
 IMGS_DIR = path.join(ROOT_DIR, "img")

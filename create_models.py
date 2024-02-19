@@ -5,15 +5,14 @@ from config import Paths, GLOBAL_CONFIG
 import os
 
 dataset = CellsDataset()
-dataset.load_pickle(Paths.ORIGINAL_CELLS_DATASET_PATH)
-dataset = dataset.resize((GLOBAL_CONFIG.NeuralNetwork.cell_img_size, GLOBAL_CONFIG.NeuralNetwork.cell_img_size))
-dataset.save_images()
+dataset.load(Paths.DATASET_PATH)
 
+dataset = dataset.resize((GLOBAL_CONFIG.NeuralNetwork.cell_img_size, GLOBAL_CONFIG.NeuralNetwork.cell_img_size))
 dataset = dataset.convert(ImageMode(GLOBAL_CONFIG.NeuralNetwork.image_mode))
 
 train, test = dataset.get_tf_dataset()
 
-model = train_model.train_model(train, GLOBAL_CONFIG.NeuralNetwork.figure_epochs, 0)
+model = train_model.train_model(train, GLOBAL_CONFIG.NeuralNetwork.epochs, 1)
 
 print(model.evaluate(test, return_dict=True, verbose=1))
 

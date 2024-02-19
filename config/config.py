@@ -10,9 +10,8 @@ class NeuralNetwork:
     height_shift_factor: float
     rotation_factor: float
     zoom_factor: float
-    figure_epochs: int
+    epochs: int
     batch_size: int
-    direction_epochs: int
     image_mode: str
     brightness_factor: float
 

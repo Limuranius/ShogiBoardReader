@@ -11,7 +11,7 @@ from GUI.UI.create_dataset import Ui_MainWindow
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from GUI.components.Skibidi import Skibidi
 from ShogiNeuralNetwork.CellsDataset import CellsDataset
-from config.Paths import ORIGINAL_CELLS_DATASET_PATH
+from config import Paths
 
 
 BOARD_IMG_SIZE = 800
@@ -31,7 +31,7 @@ class View(QMainWindow):
         self.images_paths = []
         self.reader = factories.get_image_reader(ImageMode(GLOBAL_CONFIG.NeuralNetwork.image_mode))
         self.cells_dataset = CellsDataset()
-        self.cells_dataset.load_pickle(ORIGINAL_CELLS_DATASET_PATH)
+        self.cells_dataset.load_pickle(Paths.DATASET_PATH)
         self.cells_select = []
         self.setup()
 
@@ -104,7 +104,7 @@ class View(QMainWindow):
                 self.cells_dataset.add_image(cell_img, figure, direction)
         self.cells_dataset.add_image_hash(self.images_paths[0])
         self.images_paths.pop(0)
-        self.cells_dataset.save_pickle(ORIGINAL_CELLS_DATASET_PATH)
+        self.cells_dataset.save(Paths.DATASET_PATH)
         self.update()
 
     def on_skip_clicked(self):
