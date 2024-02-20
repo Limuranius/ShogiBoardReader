@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import (
 from Elements import BoardChangeStatus
 from config import Paths
 from GUI.UI.main_window import Ui_MainWindow
-from .worker import Worker
+from worker import Worker
 from extra.types import ImageNP
 import multiprocessing
 

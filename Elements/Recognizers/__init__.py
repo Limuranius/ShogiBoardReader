@@ -1,3 +1,3 @@
-from . import Recognizer
-# from . import RecognizerTF
-from . import RecognizerONNX
+from .Recognizer import Recognizer
+# from .RecognizerTF import RecognizerTF
+from .RecognizerONNX import RecognizerONNX

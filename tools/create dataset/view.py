@@ -29,9 +29,9 @@ class View(QMainWindow):
         self.ui.setupUi(self)
         self.setAcceptDrops(True)
         self.images_paths = []
-        self.reader = factories.get_image_reader(ImageMode(GLOBAL_CONFIG.NeuralNetwork.image_mode))
+        self.reader = factories.image_reader(ImageMode(GLOBAL_CONFIG.NeuralNetwork.image_mode))
         self.cells_dataset = CellsDataset()
-        self.cells_dataset.load_pickle(Paths.DATASET_PATH)
+        self.cells_dataset.load(Paths.DATASET_PATH)
         self.cells_select = []
         self.setup()
 

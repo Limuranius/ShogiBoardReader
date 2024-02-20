@@ -1,6 +1,13 @@
 from Elements import *
-from config import Config, Paths, GLOBAL_CONFIG
+from config import Paths, GLOBAL_CONFIG
 from extra.image_modes import ImageMode
+
+
+def default_recognizer() -> Recognizers.Recognizer:
+    return RecognizerONNX(
+        model_path=Paths.MODEL_ONNX_PATH,
+        cell_img_size=GLOBAL_CONFIG.NeuralNetwork.cell_img_size
+    )
 
 
 def hsv_corner_detector():
@@ -17,67 +24,26 @@ def hsv_corner_detector():
     return CornerDetectors.HSVThresholdCornerDetector(hsv_low, hsv_high)
 
 
-def get_camera_reader(image_mode: ImageMode, cam_id: int):
-    reader = ShogiBoardReader(
-        image_mode,
-        BoardSplitter(
-            ImageGetters.Camera(cam_id),
-            hsv_corner_detector(),
+def empty_reader(image_mode: ImageMode):
+    return ShogiBoardReader(
+        image_mode=image_mode,
+        board_splitter=BoardSplitter(
+            image_getter=None,
+            corner_getter=None,
+            inventory_detector=None
         ),
-        FigureRecognizers.RecognizerTF(
-            Paths.MODEL_TF_FIGURE_PATH,
-            Paths.MODEL_TF_DIRECTION_PATH,
-            cell_img_size=GLOBAL_CONFIG.NeuralNetwork.cell_img_size
-        ),
+        recognizer=default_recognizer(),
         memorizer=None
     )
-    return reader
 
 
-def get_video_reader(image_mode: ImageMode, video_path: str, use_memorizer: bool):
-    if use_memorizer:
-        memorizer = BoardMemorizer()
-    else:
-        memorizer = None
-
+def image_reader(image_mode: ImageMode):
     reader = ShogiBoardReader(
-        image_mode,
-        BoardSplitter(
-            ImageGetters.Video(video_path),
-            # hsv_corner_detector(),
-            CornerDetectors.CoolCornerDetector(),
-        ),
-        FigureRecognizers.RecognizerTF(
-            Paths.MODEL_TF_FIGURE_PATH,
-            Paths.MODEL_TF_DIRECTION_PATH,
-            cell_img_size=GLOBAL_CONFIG.NeuralNetwork.cell_img_size
-        ),
-        memorizer=memorizer
-    )
-    return reader
-
-
-def default_nn_recognizer():
-    return FigureRecognizers.RecognizerTF(
-        Paths.MODEL_TF_FIGURE_PATH,
-        Paths.MODEL_TF_DIRECTION_PATH,
-        GLOBAL_CONFIG.NeuralNetwork.cell_img_size
-    )
-
-
-def get_image_reader(image_mode: ImageMode):
-    config = Config(Paths.CONFIG_PATH)
-
-    reader = ShogiBoardReader(
-        image_mode,
-        BoardSplitter(
+        image_mode=image_mode,
+        board_splitter=BoardSplitter(
             ImageGetters.Photo(),
             CornerDetectors.CoolCornerDetector(),
         ),
-        FigureRecognizers.RecognizerTF(
-            Paths.MODEL_TF_FIGURE_PATH,
-            Paths.MODEL_TF_DIRECTION_PATH,
-            cell_img_size=config.NeuralNetwork.cell_img_size
-        )
+        recognizer=default_recognizer()
     )
     return reader
