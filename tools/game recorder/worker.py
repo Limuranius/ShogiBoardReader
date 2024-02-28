@@ -24,14 +24,8 @@ class Worker(QObject):
 
     def __init__(self):
         super().__init__()
-        self.reader = ShogiBoardReader(
-            image_mode=ImageMode(GLOBAL_CONFIG.NeuralNetwork.image_mode),
-            board_splitter=BoardSplitter(
-                image_getter=None,
-                corner_getter=None,
-                cell_img_size=GLOBAL_CONFIG.NeuralNetwork.cell_img_size
-            ),
-            recognizer=factories.default_nn_recognizer(),
+        self.reader = factories.empty_reader(
+            image_mode=ImageMode(GLOBAL_CONFIG.NeuralNetwork.image_mode)
         )
 
     def send_images(self):

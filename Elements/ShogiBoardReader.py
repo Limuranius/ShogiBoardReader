@@ -1,5 +1,5 @@
 from collections import defaultdict
-from .FigureRecognizers import Recognizer
+from Elements.Recognizers import Recognizer
 from .BoardMemorizer import BoardMemorizer
 from .BoardMemorizer.BoardChangeStatus import BoardChangeStatus
 from .BoardSplitter import BoardSplitter
@@ -31,16 +31,6 @@ class ShogiBoardReader:
         self.recognizer = recognizer
         self.memorizer = memorizer
 
-    def __recognize_board_figures(self) -> FigureBoard:
-        cells = self.board_splitter.get_board_cells(self.image_mode)
-        predicted_figures = self.recognizer.recognize_board_figures(cells)
-        return predicted_figures
-
-    def __recognize_board_directions(self) -> DirectionBoard:
-        cells = self.board_splitter.get_board_cells(self.image_mode)
-        predicted_directions = self.recognizer.recognize_board_directions(cells)
-        return predicted_directions
-
     def get_full_img(
             self,
             show_borders: bool = False,
@@ -63,9 +53,11 @@ class ShogiBoardReader:
         """
         Runs recognizer and memorizer to update state of board
         """
+        cells = self.board_splitter.get_board_cells(self.image_mode)
+        figures, directions = self.recognizer.recognize_board(cells)
 
-        self.__figures = self.__recognize_board_figures()
-        self.__directions = self.__recognize_board_directions()
+        self.__figures = figures
+        self.__directions = directions
 
         if self.memorizer is not None:
             self.memorizer.update(self.__figures, self.__directions)
@@ -107,7 +99,7 @@ class ShogiBoardReader:
         if inventory_detector:
             self.board_splitter.inventory_detector = inventory_detector
 
-    def set_image(self, img_path: str) -> None:
+    def set_image(self, img_path: str | ImageNP) -> None:
         if isinstance(self.board_splitter.image_getter, Photo):
             self.board_splitter.image_getter.set_image(img_path)
         else:
