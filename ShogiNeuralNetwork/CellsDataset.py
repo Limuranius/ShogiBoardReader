@@ -59,8 +59,9 @@ class CellsDataset:
         direction: Direction
     """
 
-    def __init__(self, data: pd.DataFrame = None):
+    def __init__(self, data: pd.DataFrame = None, visited_hashes=None):
         self.__data = data
+        self.__visited_images_hashes = visited_hashes
 
     def is_image_visited(self, path: str) -> bool:
         img = Image.open(path)
@@ -87,6 +88,37 @@ class CellsDataset:
             pkl_data = [self.__data, self.__visited_images_hashes]
             pickle.dump(pkl_data, f)
 
+    def save(self, path: str):
+        count = defaultdict(int)
+        for _, row in tqdm.tqdm(self.__data.iterrows()):
+            img = row["image"]
+            figure = row["figure_type"]
+            direction = row["direction"]
+            count[(figure, direction)] += 1
+            img_name = f"{count[(figure, direction)]}.jpg"
+            dir_path = os.path.join(path, figure.name, direction.name)
+            img_path = os.path.join(dir_path, img_name)
+            os.makedirs(dir_path, exist_ok=True)
+            cv2.imwrite(img_path, img)
+        img_hash_path = os.path.join(path, "images_hash.pickle")
+        with open(img_hash_path, "wb") as f:
+            pickle.dump(self.__visited_images_hashes, f)
+
+    def load(self, path: str):
+        data = []
+        for figure in Figure:
+            for direction in Direction:
+                folder_path = os.path.join(path, figure.name, direction.name)
+                if os.path.exists(folder_path):
+                    for img_name in os.listdir(folder_path):
+                        img_path = os.path.join(folder_path, img_name)
+                        img = cv2.imread(img_path)
+                        data.append((img, figure, direction))
+        self.__data = pd.DataFrame(data, columns=["image", "figure_type", "direction"])
+        img_hash_path = os.path.join(path, "images_hash.pickle")
+        with open(img_hash_path, "rb") as f:
+            self.__visited_images_hashes = pickle.load(f)
+
     def add_image(self, cell_img: ImageNP, figure: Figure, direction: Direction):
         self.__data.loc[len(self.__data)] = [cell_img, figure, direction]
 
@@ -99,7 +131,7 @@ class CellsDataset:
 
         new_data = self.__data.copy()
         new_data["image"] = new_data["image"].apply(func)
-        return CellsDataset(new_data)
+        return CellsDataset(new_data, self.__visited_images_hashes)
 
     def resize(self, size: tuple[int, int]) -> CellsDataset:
         def func(img):
@@ -107,7 +139,7 @@ class CellsDataset:
 
         new_data = self.__data.copy()
         new_data["image"] = new_data["image"].apply(func)
-        return CellsDataset(new_data)
+        return CellsDataset(new_data, self.__visited_images_hashes)
 
     def __prepare_1(self) -> pd.DataFrame:
         new_data = self.__data
@@ -131,16 +163,14 @@ class CellsDataset:
         train_tf = tf.data.Dataset.from_tensor_slices(
             (
                 train_images,
-                train_figure_labels,
-                train_direction_labels
+                {"figure": train_figure_labels, "direction": train_direction_labels}
             )
         )
 
         test_tf = tf.data.Dataset.from_tensor_slices(
             (
                 test_images,
-                test_figure_labels,
-                test_direction_labels
+                {"figure": test_figure_labels, "direction": test_direction_labels}
             )
         )
 
@@ -151,10 +181,10 @@ class CellsDataset:
             ds
             .shuffle(ds.cardinality())
             .batch(GLOBAL_CONFIG.NeuralNetwork.batch_size)
-            .map(lambda img, figure, direction:
-                 (augmentation.resize_and_rescale(img), figure, direction))
-            .map(lambda img, figure, direction:
-                 (augmentation.augment(img), figure, direction))
+            .map(lambda img, outputs:
+                 (augmentation.resize_and_rescale(img), outputs))
+            .map(lambda img, outputs:
+                 (augmentation.augment(img), outputs))
         )
         return train_ds
 
@@ -162,49 +192,13 @@ class CellsDataset:
         test_ds = (
             ds
             .batch(GLOBAL_CONFIG.NeuralNetwork.batch_size)
-            .map(lambda img, figure, direction:
-                 (augmentation.resize_and_rescale(img), figure, direction))
+            .map(lambda img, outputs:
+                 (augmentation.resize_and_rescale(img), outputs))
         )
         return test_ds
 
-    def __chose_column(self, ds: tf.data.Dataset, column: str) -> tf.data.Dataset:
-        match column:
-            case "figure_type":
-                return ds.map(lambda img, f, d: (img, f))
-            case "direction":
-                return ds.map(lambda img, f, d: (img, d))
-            case _:
-                raise Exception("WRONG COLUMN!!!")
-
-    def get_figure_tf_dataset(self) -> tuple[tf.data.Dataset, tf.data.Dataset]:
+    def get_tf_dataset(self) -> tuple[tf.data.Dataset, tf.data.Dataset]:
         train, test = self.__to_tf_dataset()
-
         train = self.__prepare_train(train)
-        train = self.__chose_column(train, "figure_type")
-
         test = self.__prepare_test(test)
-        test = self.__chose_column(test, "figure_type")
-
         return train, test
-
-    def get_direction_tf_dataset(self) -> tuple[tf.data.Dataset, tf.data.Dataset]:
-        train, test = self.__to_tf_dataset()
-
-        train = self.__prepare_train(train)
-        train = self.__chose_column(train, "direction")
-
-        test = self.__prepare_test(test)
-        test = self.__chose_column(test, "direction")
-
-        return train, test
-
-    def save_images(self):
-        count = defaultdict(int)
-        for _, row in tqdm.tqdm(self.__data.iterrows()):
-            img = row["image"]
-            figure = row["figure_type"]
-            count[figure] += 1
-            img_name = f"{count[figure]}.jpg"
-            os.makedirs(os.path.join(Paths.IMGS_EXAMPLE_DIR, figure.name), exist_ok=True)
-            path = os.path.join(Paths.IMGS_EXAMPLE_DIR, figure.name, img_name)
-            cv2.imwrite(path, img)

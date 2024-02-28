@@ -21,11 +21,10 @@ if __name__ == '__main__':
         image_mode=image_mode,
         board_splitter=Elements.BoardSplitter(
             image_getter=Elements.ImageGetters.Photo(),
-            corner_getter=Elements.CornerDetectors.CoolCornerDetector()
+            corner_getter=Elements.CoolCornerDetector()
         ),
-        recognizer=Elements.Recognizers.RecognizerONNX.RecognizerONNX(
-            model_figure_path=config.Paths.MODEL_ONNX_FIGURE_PATH,
-            model_direction_path=config.Paths.MODEL_ONNX_DIRECTION_PATH,
+        recognizer=Elements.RecognizerONNX(
+            model_path=config.Paths.MODEL_ONNX_PATH,
             cell_img_size=GLOBAL_CONFIG.NeuralNetwork.cell_img_size
         )
     )

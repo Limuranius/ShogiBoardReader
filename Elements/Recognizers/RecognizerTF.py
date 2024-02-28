@@ -4,60 +4,39 @@ import numpy as np
 from ShogiNeuralNetwork import preprocessing
 from ShogiNeuralNetwork.data_info import CATEGORIES_FIGURE_TYPE, CATEGORIES_DIRECTION
 from extra.figures import Figure, Direction
-from extra.types import CellsImages, FigureBoard
+from extra.types import CellsImages, FigureBoard, ImageNP, DirectionBoard
 from .Recognizer import Recognizer
-import cv2
 
 
 class RecognizerTF(Recognizer):
-    model_figure: keras.models.Model
-    model_direction: keras.models.Model
+    model: keras.models.Model
     cell_img_size: int
 
-    def __init__(self, model_figure_path: str, model_direction_path: str, cell_img_size: int):
-        self.model_figure = keras.models.load_model(model_figure_path)
-        self.model_direction = keras.models.load_model(model_direction_path)
+    def __init__(self, model_path: str, cell_img_size: int):
+        self.model = keras.models.load_model(model_path)
         self.cell_img_size = cell_img_size
 
-    def recognize_figure(self, cell_img: np.ndarray) -> Figure:
-        cell_img = cell_img.astype("float32") / 255
-        cell_img = cv2.resize(cell_img, (self.cell_img_size, self.cell_img_size))
-        inp = np.reshape(cell_img, (1, self.cell_img_size, self.cell_img_size, 1))
+    def recognize_cell(self, cell_img: ImageNP) -> tuple[Figure, Direction]:
+        raise Exception("Not implemented")
 
-        # Figure
-        predictions = self.model_figure.predict(inp, verbose=0)
-        index = np.argmax(predictions)
-        figure = CATEGORIES_FIGURE_TYPE[index]
-
-        # # Direction
-        # predictions = self.model_direction.predict(inp, verbose=0)
-        # index = np.argmax(predictions)
-        # direction = CATEGORIES_DIRECTION[index]
-
-        return figure
-
-    def recognize_board_figures(self, cells_imgs: CellsImages) -> FigureBoard:
+    def recognize_board(self, cells_imgs: CellsImages) -> tuple[FigureBoard, DirectionBoard]:
         inp = preprocessing.prepare_cells_imgs(cells_imgs)
-        predictions = self.model_figure(inp).numpy()
-        labels = predictions.argmax(axis=1)
-        labels = np.reshape(labels, (9, 9))
-        result = [[Figure.EMPTY for _ in range(9)] for __ in range(9)]
+        predictions = self.model(inp).numpy()
+        figure_predict = predictions[0].argmax(axis=1)
+        direction_predict = predictions[1].argmax(axis=1)
+        figure_predict = np.reshape(figure_predict, (9, 9))
+        direction_predict = np.reshape(direction_predict, (9, 9))
+
+        figures = [[Figure.EMPTY for _ in range(9)] for __ in range(9)]
+        directions = [[Direction.NONE for _ in range(9)] for __ in range(9)]
+
         for i in range(9):
             for j in range(9):
-                index = labels[i][j]
-                figure = CATEGORIES_FIGURE_TYPE[index]
-                result[i][j] = figure
-        return result
+                figure_label = figure_predict[i][j]
+                direction_label = direction_predict[i][j]
+                figure = CATEGORIES_FIGURE_TYPE[figure_label]
+                direction = CATEGORIES_DIRECTION[direction_label]
+                figures[i][j] = figure
+                directions[i][j] = direction
+        return figures, directions
 
-    def recognize_board_directions(self, cells_imgs: list[list[np.ndarray]]) -> list[list[Direction]]:
-        inp = preprocessing.prepare_cells_imgs(cells_imgs)
-        predictions = self.model_direction(inp).numpy()
-        labels = predictions.argmax(axis=1)
-        labels = np.reshape(labels, (9, 9))
-        result = [[Direction.NONE for _ in range(9)] for __ in range(9)]
-        for i in range(9):
-            for j in range(9):
-                index = labels[i][j]
-                direction = CATEGORIES_DIRECTION[index]
-                result[i][j] = direction
-        return result
