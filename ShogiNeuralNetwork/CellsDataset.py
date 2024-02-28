@@ -59,8 +59,9 @@ class CellsDataset:
         direction: Direction
     """
 
-    def __init__(self, data: pd.DataFrame = None):
+    def __init__(self, data: pd.DataFrame = None, visited_hashes=None):
         self.__data = data
+        self.__visited_images_hashes = visited_hashes
 
     def is_image_visited(self, path: str) -> bool:
         img = Image.open(path)
@@ -130,7 +131,7 @@ class CellsDataset:
 
         new_data = self.__data.copy()
         new_data["image"] = new_data["image"].apply(func)
-        return CellsDataset(new_data)
+        return CellsDataset(new_data, self.__visited_images_hashes)
 
     def resize(self, size: tuple[int, int]) -> CellsDataset:
         def func(img):
@@ -138,7 +139,7 @@ class CellsDataset:
 
         new_data = self.__data.copy()
         new_data["image"] = new_data["image"].apply(func)
-        return CellsDataset(new_data)
+        return CellsDataset(new_data, self.__visited_images_hashes)
 
     def __prepare_1(self) -> pd.DataFrame:
         new_data = self.__data
