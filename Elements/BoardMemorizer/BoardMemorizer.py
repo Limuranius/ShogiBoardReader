@@ -50,7 +50,7 @@ class BoardMemorizer:
     def get_board(self) -> Board:
         return self.__counter.get_max_board()
 
-    def save_to_kifu(self, file_path: str) -> None:
+    def get_kif(self) -> str:
         s = """手合割：平手
 先手：
 後手：
@@ -62,8 +62,7 @@ class BoardMemorizer:
             row_fmt = "{:>4} {}\n"
             s += row_fmt.format(i + 1, signature)
 
-        with open(file_path, "w") as f:
-            f.write(s)
+        return s
 
     def __remake_board(self):
         self.__board = shogi.Board()

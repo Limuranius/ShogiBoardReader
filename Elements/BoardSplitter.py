@@ -1,3 +1,4 @@
+from . import ImageGetters
 from .ImageGetters import ImageGetter
 from Elements.CornerDetectors.CornerDetector import CornerDetector
 from Elements.InventoryDetectors import InventoryDetector
@@ -95,3 +96,9 @@ class BoardSplitter:
         i1_imgs = [image_mode.convert_image(image) for image in i1_imgs]
         i2_imgs = [image_mode.convert_image(image) for image in i2_imgs]
         return i1_imgs, i2_imgs
+
+    def set_image(self, img: str | ImageNP) -> None:
+        if isinstance(self.image_getter, ImageGetters.Photo):
+            self.image_getter.set_image(img)
+        else:
+            raise Exception("Can't set image on image getter other than Photo")

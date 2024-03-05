@@ -116,3 +116,8 @@ def board_to_str(board: FigureBoard | DirectionBoard) -> str:
         s += "\n"
     return s
 
+
+def generate_random_image(*shape) -> ImageNP:
+    return np.random.randint(0, 255, dtype=np.uint8, size=shape)
+
+

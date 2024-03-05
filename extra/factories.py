@@ -3,6 +3,9 @@ from config import Paths, GLOBAL_CONFIG
 from extra.image_modes import ImageMode
 
 
+CONFIG_IMAGE_MODE = ImageMode(GLOBAL_CONFIG.NeuralNetwork.image_mode)
+
+
 def default_recognizer() -> Recognizers.Recognizer:
     return RecognizerONNX(
         model_path=Paths.MODEL_ONNX_PATH,
@@ -24,7 +27,7 @@ def hsv_corner_detector():
     return CornerDetectors.HSVThresholdCornerDetector(hsv_low, hsv_high)
 
 
-def empty_reader(image_mode: ImageMode):
+def empty_reader(image_mode: ImageMode = CONFIG_IMAGE_MODE):
     return ShogiBoardReader(
         image_mode=image_mode,
         board_splitter=BoardSplitter(
@@ -37,12 +40,25 @@ def empty_reader(image_mode: ImageMode):
     )
 
 
-def image_reader(image_mode: ImageMode):
+def image_reader(image_mode: ImageMode = CONFIG_IMAGE_MODE):
     reader = ShogiBoardReader(
         image_mode=image_mode,
         board_splitter=BoardSplitter(
             ImageGetters.Photo(),
             CornerDetectors.CoolCornerDetector(),
+        ),
+        recognizer=default_recognizer()
+    )
+    return reader
+
+
+def book_reader(image_mode: ImageMode = CONFIG_IMAGE_MODE):
+    reader = ShogiBoardReader(
+        image_mode=image_mode,
+        board_splitter=BoardSplitter(
+            image_getter=ImageGetters.Photo(),
+            corner_getter=BookCornerDetector(),
+            inventory_detector=BookInventoryDetector()
         ),
         recognizer=default_recognizer()
     )

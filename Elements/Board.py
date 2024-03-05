@@ -32,6 +32,7 @@ class Board:
     def to_image(self) -> ImageNP:
         BOARD_SIZE = 1000
         FIGURE_SIZE = BOARD_SIZE // 9
+        INVENTORY_FIGURE_SIZE = FIGURE_SIZE // 2
         board = np.full((BOARD_SIZE, BOARD_SIZE, 3), [255, 255, 255], dtype=np.uint8)
 
         grid_step = BOARD_SIZE // 9
@@ -55,6 +56,25 @@ class Board:
                     if direction == Direction.DOWN:
                         figure_img = np.flip(figure_img, axis=0)
                     utils.overlay_image_on_image(board, figure_img, x, y)
+
+        # Drawing inventories
+        inv_fig_step = BOARD_SIZE // 18
+        black_inv, white_inv = self.get_inventory_lists()
+
+        for i, black_inv_fig in enumerate(black_inv):
+            figure_img = cv2.imread(FIGURE_ICONS_PATHS[black_inv_fig])
+            figure_img = cv2.resize(figure_img, (INVENTORY_FIGURE_SIZE, INVENTORY_FIGURE_SIZE))
+            utils.overlay_image_on_image(board, figure_img,
+                                         x=BOARD_SIZE - INVENTORY_FIGURE_SIZE,
+                                         y=BOARD_SIZE - INVENTORY_FIGURE_SIZE - inv_fig_step * i)
+        for i, white_inv_fig in enumerate(white_inv):
+            figure_img = cv2.imread(FIGURE_ICONS_PATHS[white_inv_fig])
+            figure_img = cv2.resize(figure_img, (INVENTORY_FIGURE_SIZE, INVENTORY_FIGURE_SIZE))
+            figure_img = np.flip(figure_img, axis=0)
+            utils.overlay_image_on_image(board, figure_img,
+                                         x=0,
+                                         y=inv_fig_step * i)
+
         return board
 
     def to_shogi_board(self) -> shogi.Board:
@@ -105,3 +125,21 @@ class Board:
                     board.add_piece_into_hand(piece_type, shogi.BLACK, count_black)
                     board.add_piece_into_hand(piece_type, shogi.WHITE, count_white)
         return board
+
+    @classmethod
+    def get_empty_board(cls):
+        figures = [[Figure.EMPTY] * 9 for _ in range(9)]
+        directions = [[Direction.NONE] * 9 for _ in range(9)]
+        return Board(figures, directions)
+
+    def get_inventory_lists(self) -> tuple[list[Figure], list[Figure]]:
+        black = []
+        white = []
+        if self.inventory_black and self.inventory_white:
+            for figure in self.inventory_black:
+                count = self.inventory_black[figure]
+                black += [figure] * count
+            for figure in self.inventory_white:
+                count = self.inventory_white[figure]
+                white += [figure] * count
+        return black, white

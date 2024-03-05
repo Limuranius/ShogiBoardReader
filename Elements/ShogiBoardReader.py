@@ -31,6 +31,10 @@ class ShogiBoardReader:
         self.recognizer = recognizer
         self.memorizer = memorizer
 
+        empty_board = Board.get_empty_board()
+        self.__figures = empty_board.figures
+        self.__directions = empty_board.directions
+
     def get_full_img(
             self,
             show_borders: bool = False,
@@ -79,31 +83,28 @@ class ShogiBoardReader:
             return self.memorizer.get_board()
 
     def set(self,
-            image_getter: ImageGetter = None,
-            corner_detector: CornerDetector = None,
-            board_splitter: BoardSplitter = None,
-            recognizer: Recognizer = None,
-            memorizer: BoardMemorizer = False,
-            inventory_detector: InventoryDetector = None,
+            image_getter: ImageGetter = 0,
+            corner_detector: CornerDetector = 0,
+            board_splitter: BoardSplitter = 0,
+            recognizer: Recognizer = 0,
+            memorizer: BoardMemorizer = 0,
+            inventory_detector: InventoryDetector = 0,
             ):
-        if image_getter:
+        if image_getter != 0:
             self.board_splitter.image_getter = image_getter
-        if corner_detector:
+        if corner_detector != 0:
             self.board_splitter.corner_detector = corner_detector
-        if board_splitter:
+        if board_splitter != 0:
             self.board_splitter = board_splitter
-        if recognizer:
+        if recognizer != 0:
             self.recognizer = recognizer
-        if memorizer != False:
+        if memorizer != 0:
             self.memorizer = memorizer
-        if inventory_detector:
+        if inventory_detector != 0:
             self.board_splitter.inventory_detector = inventory_detector
 
-    def set_image(self, img_path: str | ImageNP) -> None:
-        if isinstance(self.board_splitter.image_getter, Photo):
-            self.board_splitter.image_getter.set_image(img_path)
-        else:
-            raise Exception("Can't set image on image getter other than Photo")
+    def set_image(self, img: str | ImageNP) -> None:
+        self.board_splitter.set_image(img)
 
     def get_cells_imgs(self, img_mode: ImageMode) -> list[list[ImageNP]]:
         return self.board_splitter.get_board_cells(img_mode)
@@ -113,9 +114,15 @@ class ShogiBoardReader:
         i1 = defaultdict(int)
         i2 = defaultdict(int)
         for img in i1_imgs:
-            figure = self.recognizer.recognize_figure(img)
+            figure, direction = self.recognizer.recognize_cell(img)
             i1[figure] += 1
         for img in i2_imgs:
-            figure = self.recognizer.recognize_figure(img)
+            figure, direction = self.recognizer.recognize_cell(img)
             i2[figure] += 1
         return i1, i2
+
+    def get_kif(self) -> str:
+        if self.memorizer is None:
+            return ""
+        else:
+            return self.memorizer.get_kif()

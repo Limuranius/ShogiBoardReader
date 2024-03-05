@@ -4,3 +4,4 @@ from .ShogiBoardReader import ShogiBoardReader
 from . import ImageGetters
 from .CornerDetectors import *
 from .Recognizers import *
+from .InventoryDetectors import *
