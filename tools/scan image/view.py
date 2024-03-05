@@ -64,12 +64,6 @@ class View(QMainWindow):
         self.current_image = np.array(image)
         self.update()
 
-    def on_lishogi_clicked(self):
-        sfen = self.reader.get_board().to_shogi_board().sfen()
-        sfen = sfen.replace(" ", "_")
-        url = f"https://lishogi.org/editor/{sfen}"
-        webbrowser.open(url)
-
     def load_image(self, image: ImageNP):
         self.reader.set_image(image)
         self.reader.update()
@@ -85,12 +79,4 @@ class View(QMainWindow):
 
     def on_corner_detector_changed(self, new_cd: CornerDetector):
         self.reader.set(corner_detector=new_cd)
-        self.update()
-
-    def on_inventory_detector_changed(self, name: str):
-        match name:
-            case "Book":
-                self.reader.set(inventory_detector=BookInventoryDetector())
-            case "None":
-                self.reader.set(inventory_detector=None)
         self.update()

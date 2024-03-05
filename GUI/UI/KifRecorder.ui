@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>kifRecorder</class>
+ <widget class="QWidget" name="kifRecorder">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>404</width>
+    <height>396</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>KifRecorder</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTextEdit" name="textEdit_kif"/>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButton_copy_kif">
+     <property name="text">
+      <string>Copy KIF</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pushButton_copy_kif</sender>
+   <signal>clicked()</signal>
+   <receiver>kifRecorder</receiver>
+   <slot>on_copy_kif_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>157</x>
+     <y>373</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>180</x>
+     <y>-22</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>on_copy_kif_clicked()</slot>
+ </slots>
+</ui>

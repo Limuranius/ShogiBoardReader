@@ -94,7 +94,7 @@ class Worker(QObject):
         )
 
     def save_kifu(self):
-        self.reader.memorizer.save_to_kifu(KIFU_PATH)
+        self.reader.memorizer.get_kif(KIFU_PATH)
 
     def main_loop(self):
         if self.show_predicted:
