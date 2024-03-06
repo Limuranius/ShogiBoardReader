@@ -1,38 +1,29 @@
 from PyQt5.QtCore import pyqtSlot, pyqtSignal, QVariant, QThread
 from PyQt5.QtWidgets import QWidget
 
-from Elements import HardcodedCornerDetector
+from Elements import HardcodedCornerDetector, BoardSplitter, CoolCornerDetector
+from Elements.ImageGetters import Photo
 from GUI.UI.UI_VisualCornerSelect import Ui_visualCornerSelect
 from extra.types import ImageNP
 from GUI.components import combobox_values
-from GUI.workers.SplitterWorker import SplitterWorker
 
 
 class VisualCornerSelect(QWidget):
     __record_corner_clicks: bool
-    __worker: SplitterWorker
-    __worker_thread: QThread
+    __splitter: BoardSplitter
 
     corner_detector_changed = pyqtSignal(QVariant)
     inventory_detector_changed = pyqtSignal(QVariant)
-    __set_image_signal = pyqtSignal(ImageNP)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.ui = Ui_visualCornerSelect()
         self.ui.setupUi(self)
         self.__record_corner_clicks = False
-
-        # Worker setup
-        self.__worker = SplitterWorker()
-        self.__worker_thread = QThread()
-        self.__worker.frame_processed.connect(self.on_splitter_send)
-        self.corner_detector_changed.connect(self.__worker.on_corner_detector_changed)
-        self.inventory_detector_changed.connect(self.__worker.on_inventory_detector_changed)
-        self.__set_image_signal.connect(self.__worker.set_image)
-        self.__worker.moveToThread(self.__worker_thread)
-        self.__worker_thread.start()
-
+        self.__splitter = BoardSplitter(
+            image_getter=Photo(),
+            corner_getter=CoolCornerDetector()
+        )
         self.ui.corner_detector_select.set_values(
             combobox_values.corner_detector()
         )
@@ -40,8 +31,36 @@ class VisualCornerSelect(QWidget):
             combobox_values.inventory_detector()
         )
 
-    @pyqtSlot(ImageNP, ImageNP)
-    def on_splitter_send(self, full_img: ImageNP, no_persp: ImageNP):
+    @pyqtSlot(QVariant)
+    def on_corner_detector_changed(self, corner_detector_factory):
+        corner_detector = corner_detector_factory()
+        if isinstance(corner_detector, HardcodedCornerDetector):
+            self.ui.pushButton_set_corners.setVisible(True)
+        else:
+            self.ui.pushButton_set_corners.setVisible(False)
+            self.__splitter.corner_detector = corner_detector
+            self.corner_detector_changed.emit(QVariant(corner_detector_factory))
+
+    @pyqtSlot()
+    def on_set_corners_clicked(self):
+        self.ui.image_label_original.clear_clicks()
+        self.__record_corner_clicks = True
+
+    @pyqtSlot(QVariant)
+    def on_inventory_detector_changed(self, inventory_detector_factory):
+        self.inventory_detector_changed.emit(QVariant(inventory_detector_factory))
+
+    @pyqtSlot()
+    def on_image_clicked(self):
+        if self.__record_corner_clicks:
+            corners = self.ui.image_label_original.original_presses
+            if len(corners) == 4:
+                corner_detector_factory = lambda: HardcodedCornerDetector(corners)
+                self.__splitter.corner_detector = HardcodedCornerDetector(corners)
+                self.corner_detector_changed.emit(QVariant(corner_detector_factory))
+                self.__record_corner_clicks = False
+
+    def __show_images(self, full_img: ImageNP, no_persp: ImageNP):
         self.ui.image_label_original.set_image(
             full_img,
             show_presses=self.__record_corner_clicks
@@ -51,35 +70,14 @@ class VisualCornerSelect(QWidget):
             show_presses=False
         )
 
-    def set_image(self, image: ImageNP):
-        self.__set_image_signal.emit(image)
+    def set_images_fast(self, full_image: ImageNP, no_persp: ImageNP):
+        self.__show_images(full_image, no_persp)
 
-    @pyqtSlot(QVariant)
-    def on_corner_detector_changed(self, corner_detector_factory):
-        corner_detector = corner_detector_factory()
-        if isinstance(corner_detector, HardcodedCornerDetector):
-            self.ui.pushButton_set_corners.setVisible(True)
-        else:
-            self.ui.pushButton_set_corners.setVisible(False)
-            self.corner_detector_changed.emit(QVariant(corner_detector_factory))
-
-    @pyqtSlot(QVariant)
-    def on_inventory_detector_changed(self, inventory_detector_factory):
-        self.inventory_detector_changed.emit(QVariant(inventory_detector_factory))
-
-    @pyqtSlot()
-    def on_set_corners_clicked(self):
-        self.ui.image_label_original.clear_clicks()
-        self.__record_corner_clicks = True
-
-    @pyqtSlot()
-    def on_image_clicked(self):
-        if self.__record_corner_clicks:
-            corners = self.ui.image_label_original.original_presses
-            if len(corners) == 4:
-                corner_detector_factory = lambda: HardcodedCornerDetector(corners)
-                self.corner_detector_changed.emit(QVariant(corner_detector_factory))
-                self.__record_corner_clicks = False
+    def set_images_by_splitter(self, image: ImageNP):
+        self.__splitter.set_image(image)
+        full_img = self.__splitter.get_full_img(show_borders=True)
+        no_persp = self.__splitter.get_board_image_no_perspective(draw_grid=True)
+        self.__show_images(full_img, no_persp)
 
     def set_size(self, size: tuple[int, int]):
         self.ui.image_label_original.set_size(size)

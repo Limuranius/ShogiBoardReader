@@ -1,4 +1,4 @@
-from PyQt5.QtCore import pyqtSlot, QVariant, QThread
+from PyQt5.QtCore import pyqtSlot, QVariant, QThread, QTimer, pyqtSignal
 from PyQt5.QtWidgets import QWidget
 
 from Elements.Board import Board
@@ -17,6 +17,8 @@ class ScanImage(QWidget):
     worker: ReaderWorker
     worker_thread: QThread
 
+    __get_images_signal = pyqtSignal()
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.ui = Ui_scan_image()
@@ -26,7 +28,6 @@ class ScanImage(QWidget):
         self.worker_thread = QThread()
         self.worker.frame_processed.connect(self.update_images)
         self.worker.memorizer_updated.connect(self.on_memorizer_status_update)
-        # self.worker_thread.started.connect(self.worker.run)
         self.ui.corner_and_inventory_select.corner_detector_changed.connect(self.worker.set_corner_detector)
         self.ui.corner_and_inventory_select.inventory_detector_changed.connect(self.worker.set_inventory_detector)
         self.ui.photo_drop.received_content.connect(self.worker.set_photo)
@@ -35,9 +36,10 @@ class ScanImage(QWidget):
         self.ui.checkBox_lower_moves_first.clicked["bool"].connect(self.worker.set_lower_moves_first)
         self.ui.checkBox_recognize.clicked["bool"].connect(self.worker.set_recognize_board)
         self.ui.image_getter_select.element_changed.connect(self.worker.set_image_getter)
-
+        self.__get_images_signal.connect(self.worker.request_images)
         self.worker.moveToThread(self.worker_thread)
         self.worker_thread.start()
+        self.__get_images_signal.emit()
 
         self.use_alarm = False
         self.ui.image_getter_select.set_values(combobox_values.image_getter())
@@ -110,12 +112,14 @@ class ScanImage(QWidget):
     def on_lower_moves_first_switched(self, lower_moves_first: bool):
         pass
 
-    @pyqtSlot(ImageNP, Board)
+    @pyqtSlot(ImageNP, ImageNP, Board)
     def update_images(
             self,
             full_img: ImageNP,
+            no_perspective: ImageNP,
             predicted_board: Board,
     ):
-        self.ui.corner_and_inventory_select.set_image(full_img)
+        self.ui.corner_and_inventory_select.set_images_fast(full_img, no_perspective)
         self.ui.board_view.set_board(predicted_board)
         self.ui.kif_recorder.set_kif(self.worker.reader.get_kif())
+        self.__get_images_signal.emit()

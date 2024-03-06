@@ -19,7 +19,7 @@ class Photo(ImageGetter):
         self.__check_image_validity()
 
     def get_image(self) -> np.ndarray:
-        return self.img
+        return self.img.copy()
 
     def set_image(self, img: str | ImageNP):
         if isinstance(img, str):
@@ -42,7 +42,7 @@ class Camera(ImageGetter):
     def get_image(self) -> np.ndarray:
         ret, frame = self.video.read()
         if ret:
-            frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
+            # frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
             return frame
         else:
             return generate_random_image(500, 500, 3)

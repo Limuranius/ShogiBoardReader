@@ -1,20 +1,17 @@
 import numpy as np
-from PyQt5.QtCore import pyqtSignal, QObject, QVariant, pyqtSlot
+from PyQt5.QtCore import pyqtSignal, QObject, QVariant, pyqtSlot, QMetaObject, Qt
 from Elements import *
 from Elements.Board import Board
 from extra.types import ImageNP
-from config import GLOBAL_CONFIG
-from extra.image_modes import ImageMode
 from extra import factories
-from config.Paths import KIFU_PATH
 
 
 class ReaderWorker(QObject):
     reader: ShogiBoardReader
 
     # Signal that sends processed/predicted data (or None if disabled) in following order:
-    # Full image, Predicted board object
-    frame_processed = pyqtSignal(ImageNP, Board)
+    # Full image, No perspective image, Predicted board object
+    frame_processed = pyqtSignal(ImageNP, ImageNP, Board)
 
     # Signal that sends responses of memorizer
     memorizer_updated = pyqtSignal(BoardChangeStatus)
@@ -29,30 +26,25 @@ class ReaderWorker(QObject):
 
     def send_images(self):
         full_img = self.reader.get_full_img(show_borders=True)
+        no_perspective = self.reader.get_board_image_no_perspective(show_grid=True)
         predicted_board = self.reader.get_board()
-        self.frame_processed.emit(full_img, predicted_board)
+        self.frame_processed.emit(
+            full_img.copy(),
+            no_perspective.copy(),
+            predicted_board
+        )
 
-    def main_loop(self):
+    @pyqtSlot()
+    def request_images(self):
         if self.predict_board:
             self.reader.update()
             self.memorizer_updated.emit(self.reader.get_last_update_status())
         self.send_images()
 
-    @pyqtSlot()
-    def run(self):
-        while self.running:
-            self.main_loop()
-
-    def stop(self):
-        self.running = False
-
     @pyqtSlot(QVariant)
     def set_image_getter(self, image_getter_factory):
         image_getter = image_getter_factory()
         self.reader.set(image_getter=image_getter)
-        print(type(image_getter))
-        print(type(self.reader.board_splitter.image_getter))
-        print()
 
     @pyqtSlot(QVariant)
     def set_photo(self, image: ImageNP):
