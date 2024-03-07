@@ -1,6 +1,6 @@
 import numpy as np
 import cv2
-from extra.types import ImageNP, FigureBoard, DirectionBoard
+from extra.types import ImageNP, FigureBoard, DirectionBoard, Corners
 
 
 def get_black_mask(image: np.ndarray):
@@ -130,3 +130,9 @@ def get_available_cam_ids() -> list[int]:
             cam_ids.append(i)
         cap.release()
     return cam_ids
+
+
+def bounding_box_image(image: ImageNP, corners: Corners):
+    x, y, w, h = cv2.boundingRect(np.array(corners))
+    return image[y: y + h, x: x + w]
+
