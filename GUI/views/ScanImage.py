@@ -13,36 +13,47 @@ CONFIG_BOARD_IMAGE_SIZE = (250, 250)
 
 
 class ScanImage(QWidget):
-    use_alarm: bool
-    worker: ReaderWorker
-    worker_thread: QThread
+    __use_alarm: bool
+    __worker: ReaderWorker
+    __worker_thread: QThread
 
-    __get_images_signal = pyqtSignal()
+    # Signal that is sent to worker to request images
+    __request_images_signal = pyqtSignal()
+
+    # if True, then request for images has already been sent and another on will not be made
+    __request_sent: bool = False
+
+    # if True, then requests will be made repeatedly, else only once
+    __continuous_request: bool = False
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.ui = Ui_scan_image()
         self.ui.setupUi(self)
 
-        self.worker = ReaderWorker()
-        self.worker_thread = QThread()
-        self.worker.frame_processed.connect(self.update_images)
-        self.worker.memorizer_updated.connect(self.on_memorizer_status_update)
-        self.ui.corner_and_inventory_select.corner_detector_changed.connect(self.worker.set_corner_detector)
-        self.ui.corner_and_inventory_select.inventory_detector_changed.connect(self.worker.set_inventory_detector)
-        self.ui.photo_drop.received_content.connect(self.worker.set_photo)
-        self.ui.video_drop.received_content.connect(self.worker.set_video)
-        self.ui.memorizer_select.element_changed.connect(self.worker.set_memorizer)
-        self.ui.checkBox_lower_moves_first.clicked["bool"].connect(self.worker.set_lower_moves_first)
-        self.ui.checkBox_recognize.clicked["bool"].connect(self.worker.set_recognize_board)
-        self.ui.image_getter_select.element_changed.connect(self.worker.set_image_getter)
-        self.__get_images_signal.connect(self.worker.request_images)
-        self.ui.cam_id_select.element_changed.connect(self.worker.set_image_getter)
-        self.worker.moveToThread(self.worker_thread)
-        self.worker_thread.start()
-        self.__get_images_signal.emit()
+        self.__worker = ReaderWorker()
+        self.__worker_thread = QThread()
+        self.__worker.frame_processed.connect(self.update_data)
+        self.__worker.memorizer_updated.connect(self.on_memorizer_status_update)
+        self.ui.corner_and_inventory_select.corner_detector_changed.connect(self.__worker.set_corner_detector)
+        self.ui.corner_and_inventory_select.inventory_detector_changed.connect(self.__worker.set_inventory_detector)
+        self.ui.photo_drop.received_content.connect(self.__worker.set_photo)
+        self.ui.video_drop.received_content.connect(self.__worker.set_video)
+        self.ui.memorizer_select.element_changed.connect(self.__worker.set_memorizer)
+        self.ui.checkBox_lower_moves_first.clicked["bool"].connect(self.__worker.set_lower_moves_first)
+        self.ui.checkBox_recognize.clicked["bool"].connect(self.__worker.set_recognize_board)
+        self.ui.image_getter_select.element_changed.connect(self.__worker.set_image_getter)
+        self.__request_images_signal.connect(self.__worker.send_data)
+        self.ui.cam_id_select.element_changed.connect(self.__worker.set_image_getter)
+        self.__worker.moveToThread(self.__worker_thread)
+        self.__worker_thread.start()
+        self.__request_data()
 
-        self.use_alarm = False
+        self.__use_alarm = False
+
+        cams_name, cams_values = combobox_values.cameras()
+        self.ui.cam_id_select.set_name(cams_name)
+        self.ui.cam_id_select.set_values(cams_values)
 
         ig_name, ig_values = combobox_values.image_getter()
         self.ui.image_getter_select.set_name(ig_name)
@@ -68,16 +79,20 @@ class ScanImage(QWidget):
         self.ui.cam_id_select.setVisible(False)
         if isinstance(image_getter, ImageGetters.Photo):
             self.ui.photo_drop.setVisible(True)
+            self.__continuous_request = False
         if isinstance(image_getter, ImageGetters.Video):
             self.ui.video_drop.setVisible(True)
             self.ui.frame_memorizer.setVisible(True)
+            self.__continuous_request = True
         if isinstance(image_getter, ImageGetters.Camera):
             self.ui.frame_memorizer.setVisible(True)
             self.ui.cam_id_select.setVisible(True)
+            self.__continuous_request = True
+        self.__request_data()
 
     @pyqtSlot(bool)
     def on_alarm_switched(self, use_alarm: bool):
-        self.use_alarm = use_alarm
+        self.__use_alarm = use_alarm
 
     @pyqtSlot(BoardChangeStatus)
     def on_memorizer_status_update(self, update_status: BoardChangeStatus):
@@ -127,14 +142,24 @@ class ScanImage(QWidget):
     def on_cam_id_changed(self, camera_factory):
         pass
 
-    @pyqtSlot(ImageNP, ImageNP, Board)
-    def update_images(
+    @pyqtSlot(ImageNP, ImageNP, Board, str)
+    def update_data(
             self,
             full_img: ImageNP,
             no_perspective: ImageNP,
             predicted_board: Board,
+            kif: str
     ):
         self.ui.corner_and_inventory_select.set_images_fast(full_img, no_perspective)
         self.ui.board_view.set_board(predicted_board)
-        self.ui.kif_recorder.set_kif(self.worker.reader.get_kif())
-        self.__get_images_signal.emit()
+        self.ui.kif_recorder.set_kif(kif)
+
+        if self.__request_sent:  # Checking that the data was sent in response to request
+            self.__request_sent = False
+            if self.__continuous_request:
+                self.__request_data()
+
+    def __request_data(self):
+        if not self.__request_sent:
+            self.__request_sent = True
+            self.__request_images_signal.emit()
