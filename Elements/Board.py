@@ -1,7 +1,7 @@
 import numpy as np
 import shogi
 
-from extra.figures import Figure, Direction, FIGURE_ICONS_PATHS
+from extra.figures import Figure, Direction, FIGURE_ICONS_PATHS, get_figure_image
 from extra.types import FigureBoard, DirectionBoard, ImageNP, Inventory
 from dataclasses import dataclass
 from extra import utils
@@ -32,17 +32,12 @@ class Board:
     def to_image(self) -> ImageNP:
         BOARD_SIZE = 1000
         FIGURE_SIZE = BOARD_SIZE // 9
-        INVENTORY_FIGURE_SIZE = FIGURE_SIZE // 2
-        board = np.full((BOARD_SIZE, BOARD_SIZE, 3), [255, 255, 255], dtype=np.uint8)
+        INVENTORY_FIGURE_SIZE = FIGURE_SIZE
+        INVENTORY_MARGIN = 50
 
-        grid_step = BOARD_SIZE // 9
-        for i in range(10):
-            y = i * grid_step
-            cv2.line(board, (0, y), (BOARD_SIZE, y), 0, thickness=5)
-        for j in range(10):
-            x = j * grid_step
-            cv2.line(board, (x, 0), (x, BOARD_SIZE), 0, thickness=5)
+        board_img = np.full((BOARD_SIZE, BOARD_SIZE, 3), [255, 255, 255], dtype=np.uint8)
 
+        # Adding figures icons
         figure_step = BOARD_SIZE // 9
         for i in range(9):
             for j in range(9):
@@ -51,31 +46,45 @@ class Board:
                 figure = self.figures[i][j]
                 direction = self.directions[i][j]
                 if figure != Figure.EMPTY:
-                    figure_img = cv2.imread(FIGURE_ICONS_PATHS[figure])
-                    figure_img = cv2.resize(figure_img, (FIGURE_SIZE, FIGURE_SIZE))
-                    if direction == Direction.DOWN:
-                        figure_img = np.flip(figure_img, axis=0)
-                    utils.overlay_image_on_image(board, figure_img, x, y)
+                    figure_icon = get_figure_image(figure, direction)
+                    figure_icon = cv2.resize(figure_icon, (FIGURE_SIZE, FIGURE_SIZE))
+                    utils.overlay_image_on_image(board_img, figure_icon, x, y)
+
+        # Drawing grid
+        grid_step = BOARD_SIZE // 9
+        for i in range(10):
+            y = i * grid_step
+            cv2.line(board_img, (0, y), (BOARD_SIZE, y), 0, thickness=5)
+        for j in range(10):
+            x = j * grid_step
+            cv2.line(board_img, (x, 0), (x, BOARD_SIZE), 0, thickness=5)
 
         # Drawing inventories
-        inv_fig_step = BOARD_SIZE // 18
         black_inv, white_inv = self.get_inventory_lists()
-
+        margin_line = np.full((INVENTORY_MARGIN, BOARD_SIZE, 3), [255, 255, 255], dtype=np.uint8)
+        black_inv_line = np.full((INVENTORY_FIGURE_SIZE, BOARD_SIZE, 3), [255, 255, 255], dtype=np.uint8)
+        white_inv_line = np.full((INVENTORY_FIGURE_SIZE, BOARD_SIZE, 3), [255, 255, 255], dtype=np.uint8)
         for i, black_inv_fig in enumerate(black_inv):
-            figure_img = cv2.imread(FIGURE_ICONS_PATHS[black_inv_fig])
-            figure_img = cv2.resize(figure_img, (INVENTORY_FIGURE_SIZE, INVENTORY_FIGURE_SIZE))
-            utils.overlay_image_on_image(board, figure_img,
-                                         x=BOARD_SIZE - INVENTORY_FIGURE_SIZE,
-                                         y=BOARD_SIZE - INVENTORY_FIGURE_SIZE - inv_fig_step * i)
+            figure_icon = get_figure_image(black_inv_fig, Direction.UP)
+            figure_icon = cv2.resize(figure_icon, (INVENTORY_FIGURE_SIZE, INVENTORY_FIGURE_SIZE))
+            utils.overlay_image_on_image(black_inv_line, figure_icon,
+                                         x=BOARD_SIZE - INVENTORY_FIGURE_SIZE * (i + 1),
+                                         y=0)
         for i, white_inv_fig in enumerate(white_inv):
-            figure_img = cv2.imread(FIGURE_ICONS_PATHS[white_inv_fig])
-            figure_img = cv2.resize(figure_img, (INVENTORY_FIGURE_SIZE, INVENTORY_FIGURE_SIZE))
-            figure_img = np.flip(figure_img, axis=0)
-            utils.overlay_image_on_image(board, figure_img,
-                                         x=0,
-                                         y=inv_fig_step * i)
-
-        return board
+            figure_icon = get_figure_image(white_inv_fig, Direction.DOWN)
+            figure_icon = cv2.resize(figure_icon, (INVENTORY_FIGURE_SIZE, INVENTORY_FIGURE_SIZE))
+            utils.overlay_image_on_image(white_inv_line, figure_icon,
+                                         x=INVENTORY_FIGURE_SIZE * i,
+                                         y=0)
+        board_img = np.array([
+            *white_inv_line,
+            *margin_line,
+            *board_img,
+            *margin_line,
+            *black_inv_line
+        ])
+        print(board_img.shape)
+        return board_img
 
     def to_shogi_board(self) -> shogi.Board:
         board = shogi.Board()
@@ -135,10 +144,11 @@ class Board:
     def get_inventory_lists(self) -> tuple[list[Figure], list[Figure]]:
         black = []
         white = []
-        if self.inventory_black and self.inventory_white:
+        if self.inventory_black is not None:
             for figure in self.inventory_black:
                 count = self.inventory_black[figure]
                 black += [figure] * count
+        if self.inventory_white is not None:
             for figure in self.inventory_white:
                 count = self.inventory_white[figure]
                 white += [figure] * count

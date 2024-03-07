@@ -8,7 +8,7 @@ from GUI.components import combobox_values
 from extra.types import ImageNP
 from GUI.workers.ReaderWorker import ReaderWorker
 
-BOARD_IMAGE_SIZE = (500, 500)
+BOARD_IMAGE_SIZE = (500, 661)
 CONFIG_BOARD_IMAGE_SIZE = (250, 250)
 
 

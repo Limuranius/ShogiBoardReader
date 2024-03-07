@@ -1,5 +1,6 @@
 from collections import defaultdict
 from Elements.Recognizers import Recognizer
+from extra.figures import Figure
 from .BoardMemorizer import BoardMemorizer
 from .BoardMemorizer.BoardChangeStatus import BoardChangeStatus
 from .BoardSplitter import BoardSplitter
@@ -115,10 +116,12 @@ class ShogiBoardReader:
         i2 = defaultdict(int)
         for img in i1_imgs:
             figure, direction = self.recognizer.recognize_cell(img)
-            i1[figure] += 1
+            if figure != Figure.EMPTY:
+                i1[figure] += 1
         for img in i2_imgs:
             figure, direction = self.recognizer.recognize_cell(img)
-            i2[figure] += 1
+            if figure != Figure.EMPTY:
+                i2[figure] += 1
         return i1, i2
 
     def get_kif(self) -> str:

@@ -33,18 +33,6 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
-          <widget class="QLabel" name="label_5">
-           <property name="font">
-            <font>
-             <pointsize>15</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>ImageGetter</string>
-           </property>
-          </widget>
-         </item>
-         <item>
           <widget class="DescriptiveComboBox" name="image_getter_select" native="true"/>
          </item>
          <item>

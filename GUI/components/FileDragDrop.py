@@ -43,7 +43,7 @@ class FileDragDrop(QWidget):
     @pyqtSlot(QtGui.QDropEvent)
     def dropEvent(self, event: QtGui.QDropEvent):
         files = [u.toLocalFile() for u in event.mimeData().urls()]
-
+        self.setStyleSheet("background-color: white")
         data = None
         if self.content_type == ONE_IMAGE:
             data = cv2.imread(files[0])

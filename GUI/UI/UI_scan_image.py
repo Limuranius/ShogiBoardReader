@@ -29,12 +29,6 @@ class Ui_scan_image(object):
         self.frame_2.setObjectName("frame_2")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.frame_2)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.label_5 = QtWidgets.QLabel(self.frame_2)
-        font = QtGui.QFont()
-        font.setPointSize(15)
-        self.label_5.setFont(font)
-        self.label_5.setObjectName("label_5")
-        self.verticalLayout_3.addWidget(self.label_5)
         self.image_getter_select = DescriptiveComboBox(self.frame_2)
         self.image_getter_select.setObjectName("image_getter_select")
         self.verticalLayout_3.addWidget(self.image_getter_select)
@@ -130,7 +124,6 @@ class Ui_scan_image(object):
     def retranslateUi(self, scan_image):
         _translate = QtCore.QCoreApplication.translate
         scan_image.setWindowTitle(_translate("scan_image", "scan_image"))
-        self.label_5.setText(_translate("scan_image", "ImageGetter"))
         self.label_3.setText(_translate("scan_image", "Config"))
         self.checkBox_recognize.setText(_translate("scan_image", "Recognize board"))
         self.label_4.setText(_translate("scan_image", "Memorizer"))

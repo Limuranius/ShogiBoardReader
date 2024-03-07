@@ -9,6 +9,8 @@ from GUI.UI.UI_scan_book import Ui_scan_book
 from extra import pdf_scan, factories
 from GUI.components.ProgressWorker import ProgressWorker
 
+BOARD_IMAGE_SIZE = (500, 661)
+
 
 class ScanBook(QWidget):
     __data: list[tuple[int, list[Board]]]
@@ -20,7 +22,7 @@ class ScanBook(QWidget):
         self.ui = Ui_scan_book()
         self.ui.setupUi(self)
         self.setAcceptDrops(True)
-        self.ui.board_view.set_size((600, 600))
+        self.ui.board_view.set_size(BOARD_IMAGE_SIZE)
         self.__data = []
         self.__data_i = 0
         self.update_pagination()
