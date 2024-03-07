@@ -24,12 +24,13 @@ class VisualCornerSelect(QWidget):
             image_getter=Photo(),
             corner_getter=CoolCornerDetector()
         )
-        self.ui.corner_detector_select.set_values(
-            combobox_values.corner_detector()
-        )
-        self.ui.inventory_detector_select.set_values(
-            combobox_values.inventory_detector()
-        )
+        cd_name, cd_values = combobox_values.corner_detector()
+        self.ui.corner_detector_select.set_name(cd_name)
+        self.ui.corner_detector_select.set_values(cd_values)
+
+        id_name, id_values = combobox_values.inventory_detector()
+        self.ui.inventory_detector_select.set_values(id_values)
+        self.ui.inventory_detector_select.set_name(id_name)
 
     @pyqtSlot(QVariant)
     def on_corner_detector_changed(self, corner_detector_factory):

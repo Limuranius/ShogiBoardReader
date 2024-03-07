@@ -16,16 +16,14 @@ class ReaderWorker(QObject):
     # Signal that sends responses of memorizer
     memorizer_updated = pyqtSignal(BoardChangeStatus)
 
-    predict_board: bool = False
-
-    running: bool = True
+    predict_board: bool = True
 
     def __init__(self):
         super().__init__()
         self.reader = factories.image_reader()
 
     def send_images(self):
-        full_img = self.reader.get_full_img(show_borders=True)
+        full_img = self.reader.get_full_img(show_borders=True, show_inventories=True)
         no_perspective = self.reader.get_board_image_no_perspective(show_grid=True)
         predicted_board = self.reader.get_board()
         self.frame_processed.emit(

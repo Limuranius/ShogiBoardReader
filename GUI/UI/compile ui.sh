@@ -1,4 +1,3 @@
-pyuic5 main_window.ui > main_window.py
 pyuic5 create_dataset.ui > create_dataset.py
 pyuic5 scan_image.ui > UI_scan_image.py
 pyuic5 scan_book.ui > UI_scan_book.py
@@ -8,3 +7,4 @@ pyuic5 BoardView.ui > UI_BoardView.py
 pyuic5 ProgressWorker.ui > UI_ProgressWorker.py
 pyuic5 KifRecorder.ui > UI_KifRecorder.py
 pyuic5 FileDragDrop.ui > UI_FileDragDrop.py
+pyuic5 ShogiVision.ui > UI_ShogiVision.py

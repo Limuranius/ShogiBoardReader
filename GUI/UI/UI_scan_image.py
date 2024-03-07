@@ -23,9 +23,6 @@ class Ui_scan_image(object):
         self.frame.setObjectName("frame")
         self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.frame)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
-        self.corner_and_inventory_select = VisualCornerSelect(self.frame)
-        self.corner_and_inventory_select.setObjectName("corner_and_inventory_select")
-        self.verticalLayout_6.addWidget(self.corner_and_inventory_select)
         self.frame_2 = QtWidgets.QFrame(self.frame)
         self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -47,7 +44,13 @@ class Ui_scan_image(object):
         self.video_drop = FileDragDrop(self.frame_2)
         self.video_drop.setObjectName("video_drop")
         self.verticalLayout_3.addWidget(self.video_drop)
+        self.cam_id_select = DescriptiveComboBox(self.frame_2)
+        self.cam_id_select.setObjectName("cam_id_select")
+        self.verticalLayout_3.addWidget(self.cam_id_select)
         self.verticalLayout_6.addWidget(self.frame_2)
+        self.corner_and_inventory_select = VisualCornerSelect(self.frame)
+        self.corner_and_inventory_select.setObjectName("corner_and_inventory_select")
+        self.verticalLayout_6.addWidget(self.corner_and_inventory_select)
         self.frame_config = QtWidgets.QFrame(self.frame)
         self.frame_config.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_config.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -61,6 +64,7 @@ class Ui_scan_image(object):
         self.label_3.setObjectName("label_3")
         self.verticalLayout_5.addWidget(self.label_3)
         self.checkBox_recognize = QtWidgets.QCheckBox(self.frame_config)
+        self.checkBox_recognize.setChecked(True)
         self.checkBox_recognize.setObjectName("checkBox_recognize")
         self.verticalLayout_5.addWidget(self.checkBox_recognize)
         self.verticalLayout_6.addWidget(self.frame_config)
@@ -95,6 +99,7 @@ class Ui_scan_image(object):
         self.memorizer_select.setObjectName("memorizer_select")
         self.verticalLayout_4.addWidget(self.memorizer_select)
         self.checkBox_lower_moves_first = QtWidgets.QCheckBox(self.frame_memorizer)
+        self.checkBox_lower_moves_first.setChecked(True)
         self.checkBox_lower_moves_first.setObjectName("checkBox_lower_moves_first")
         self.verticalLayout_4.addWidget(self.checkBox_lower_moves_first)
         self.checkBox_siren = QtWidgets.QCheckBox(self.frame_memorizer)
@@ -119,6 +124,7 @@ class Ui_scan_image(object):
         self.corner_and_inventory_select.corner_detector_changed['QVariant'].connect(scan_image.on_corner_detector_changed) # type: ignore
         self.corner_and_inventory_select.inventory_detector_changed['QVariant'].connect(scan_image.on_inventory_detector_changed) # type: ignore
         self.checkBox_lower_moves_first.clicked['bool'].connect(scan_image.on_lower_moves_first_switched) # type: ignore
+        self.cam_id_select.element_changed['QVariant'].connect(scan_image.on_cam_id_changed) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(scan_image)
 
     def retranslateUi(self, scan_image):

@@ -37,13 +37,21 @@ class ScanImage(QWidget):
         self.ui.checkBox_recognize.clicked["bool"].connect(self.worker.set_recognize_board)
         self.ui.image_getter_select.element_changed.connect(self.worker.set_image_getter)
         self.__get_images_signal.connect(self.worker.request_images)
+        self.ui.cam_id_select.element_changed.connect(self.worker.set_image_getter)
         self.worker.moveToThread(self.worker_thread)
         self.worker_thread.start()
         self.__get_images_signal.emit()
 
         self.use_alarm = False
-        self.ui.image_getter_select.set_values(combobox_values.image_getter())
-        self.ui.memorizer_select.set_values(combobox_values.memorizer())
+
+        ig_name, ig_values = combobox_values.image_getter()
+        self.ui.image_getter_select.set_name(ig_name)
+        self.ui.image_getter_select.set_values(ig_values)
+
+        mem_name, mem_values = combobox_values.memorizer()
+        self.ui.memorizer_select.set_name(mem_name)
+        self.ui.memorizer_select.set_values(mem_values)
+
         self.ui.photo_drop.set_content_type("ONE_IMAGE")
         self.ui.video_drop.set_content_type("VIDEO")
         self.ui.corner_and_inventory_select.set_size(CONFIG_BOARD_IMAGE_SIZE)
@@ -56,14 +64,16 @@ class ScanImage(QWidget):
         # Showing widgets only for chosen image getter
         self.ui.photo_drop.setVisible(False)
         self.ui.video_drop.setVisible(False)
-        self.ui.memorizer_select.setVisible(False)
+        self.ui.frame_memorizer.setVisible(False)
+        self.ui.cam_id_select.setVisible(False)
         if isinstance(image_getter, ImageGetters.Photo):
             self.ui.photo_drop.setVisible(True)
         if isinstance(image_getter, ImageGetters.Video):
             self.ui.video_drop.setVisible(True)
-            self.ui.memorizer_select.setVisible(True)
+            self.ui.frame_memorizer.setVisible(True)
         if isinstance(image_getter, ImageGetters.Camera):
-            self.ui.memorizer_select.setVisible(True)
+            self.ui.frame_memorizer.setVisible(True)
+            self.ui.cam_id_select.setVisible(True)
 
     @pyqtSlot(bool)
     def on_alarm_switched(self, use_alarm: bool):
@@ -94,7 +104,8 @@ class ScanImage(QWidget):
 
     @pyqtSlot(QVariant)
     def on_memorizer_changed(self, memorizer_factory):
-        pass
+        memorizer = memorizer_factory()
+        self.ui.kif_recorder.setVisible(memorizer is not None)
 
     @pyqtSlot(bool)
     def on_recognize_board_switched(self, recognize_board: bool):
@@ -110,6 +121,10 @@ class ScanImage(QWidget):
 
     @pyqtSlot(bool)
     def on_lower_moves_first_switched(self, lower_moves_first: bool):
+        pass
+
+    @pyqtSlot(QVariant)
+    def on_cam_id_changed(self, camera_factory):
         pass
 
     @pyqtSlot(ImageNP, ImageNP, Board)

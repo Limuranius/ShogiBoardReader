@@ -1,6 +1,6 @@
 import numpy as np
 import cv2
-from .types import ImageNP, FigureBoard, DirectionBoard
+from extra.types import ImageNP, FigureBoard, DirectionBoard
 
 
 def get_black_mask(image: np.ndarray):
@@ -121,3 +121,12 @@ def generate_random_image(*shape) -> ImageNP:
     return np.random.randint(0, 255, dtype=np.uint8, size=shape)
 
 
+def get_available_cam_ids() -> list[int]:
+    cam_ids = []
+    count = 10
+    for i in range(count):
+        cap = cv2.VideoCapture(i)
+        if cap.read()[0]:
+            cam_ids.append(i)
+        cap.release()
+    return cam_ids

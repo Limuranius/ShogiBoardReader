@@ -75,6 +75,7 @@ def extract_boards_images(img: ImageNP) -> list[ImageNP]:
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     mask = ((gray < 150) * 255).astype(np.uint8)
     board_boxes = __extract_boards_borders(mask)
+    board_boxes.sort(key=lambda box: box[1])
     board_images = [__capture_surroundings(img, box) for box in board_boxes]
     return board_images
 

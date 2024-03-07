@@ -24,9 +24,6 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_6">
       <item>
-       <widget class="VisualCornerSelect" name="corner_and_inventory_select" native="true"/>
-      </item>
-      <item>
        <widget class="QFrame" name="frame_2">
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
@@ -56,8 +53,14 @@
          <item>
           <widget class="FileDragDrop" name="video_drop" native="true"/>
          </item>
+         <item>
+          <widget class="DescriptiveComboBox" name="cam_id_select" native="true"/>
+         </item>
         </layout>
        </widget>
+      </item>
+      <item>
+       <widget class="VisualCornerSelect" name="corner_and_inventory_select" native="true"/>
       </item>
       <item>
        <widget class="QFrame" name="frame_config">
@@ -84,6 +87,9 @@
           <widget class="QCheckBox" name="checkBox_recognize">
            <property name="text">
             <string>Recognize board</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -139,6 +145,9 @@
           <widget class="QCheckBox" name="checkBox_lower_moves_first">
            <property name="text">
             <string>Lower moves  first</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -218,8 +227,8 @@
    <slot>on_image_getter_changed(QVariant)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>102</x>
-     <y>201</y>
+     <x>137</x>
+     <y>275</y>
     </hint>
     <hint type="destinationlabel">
      <x>4</x>
@@ -234,8 +243,8 @@
    <slot>on_photo_input(QVariant)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>71</x>
-     <y>220</y>
+     <x>106</x>
+     <y>305</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>
@@ -250,8 +259,8 @@
    <slot>on_video_input(QVariant)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>103</x>
-     <y>239</y>
+     <x>138</x>
+     <y>336</y>
     </hint>
     <hint type="destinationlabel">
      <x>1</x>
@@ -266,8 +275,8 @@
    <slot>on_memorizer_changed(QVariant)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>49</x>
-     <y>318</y>
+     <x>506</x>
+     <y>451</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>
@@ -282,8 +291,8 @@
    <slot>on_alarm_switched(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>49</x>
-     <y>346</y>
+     <x>506</x>
+     <y>519</y>
     </hint>
     <hint type="destinationlabel">
      <x>-2</x>
@@ -346,12 +355,28 @@
    <slot>on_lower_moves_first_switched(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>67</x>
-     <y>390</y>
+     <x>524</x>
+     <y>485</y>
     </hint>
     <hint type="destinationlabel">
      <x>-4</x>
      <y>384</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cam_id_select</sender>
+   <signal>element_changed(QVariant)</signal>
+   <receiver>scan_image</receiver>
+   <slot>on_cam_id_changed(QVariant)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>64</x>
+     <y>353</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>372</y>
     </hint>
    </hints>
   </connection>
@@ -368,5 +393,6 @@
   <slot>on_corner_detector_changed(QVariant)</slot>
   <slot>on_inventory_detector_changed(QVariant)</slot>
   <slot>on_lower_moves_first_switched(bool)</slot>
+  <slot>on_cam_id_changed(QVariant)</slot>
  </slots>
 </ui>

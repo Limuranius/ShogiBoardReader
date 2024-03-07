@@ -20,157 +20,42 @@
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="tab">
+      <widget class="QWidget" name="tab_scan_image">
        <attribute name="title">
-        <string>Tab 1</string>
+        <string>Scan Image</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QFrame" name="frame">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_6">
-           <item>
-            <widget class="VisualCornerSelect" name="corner_and_inventory_select" native="true"/>
-           </item>
-           <item>
-            <widget class="QFrame" name="frame_2">
-             <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_3">
-              <item>
-               <widget class="QLabel" name="label_5">
-                <property name="font">
-                 <font>
-                  <pointsize>15</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>ImageGetter</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="DescriptiveComboBox" name="image_getter_select" native="true"/>
-              </item>
-              <item>
-               <widget class="FileDragDrop" name="photo_drop" native="true"/>
-              </item>
-              <item>
-               <widget class="FileDragDrop" name="video_drop" native="true"/>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="QFrame" name="frame_3">
-             <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_4">
-              <item>
-               <widget class="QLabel" name="label_4">
-                <property name="font">
-                 <font>
-                  <pointsize>15</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Memorizer</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="DescriptiveComboBox" name="memorizer_select" native="true"/>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="checkBox_siren">
-                <property name="text">
-                 <string>Use siren</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_turn_status">
-                <property name="text">
-                 <string>Turn status</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="QFrame" name="frame_config">
-             <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_5">
-              <item>
-               <widget class="QLabel" name="label_3">
-                <property name="font">
-                 <font>
-                  <pointsize>15</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Config</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="checkBox_show_orig">
-                <property name="text">
-                 <string>Show original</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="checkBox_show_no_persp">
-                <property name="text">
-                 <string>Show no perspective</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="checkBox_recognize">
-                <property name="text">
-                 <string>Recognize board</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="BoardView" name="board_view" native="true"/>
-        </item>
-        <item>
-         <widget class="KifRecorder" name="kif_recorder" native="true"/>
+         <widget class="ScanImage" name="scan_image" native="true"/>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_2">
+      <widget class="QWidget" name="tab_scan_book">
        <attribute name="title">
-        <string>Tab 2</string>
+        <string>Scan Book</string>
        </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="ScanBook" name="scan_book" native="true"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Cat</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="ImageLabel" name="label_cat">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -179,34 +64,21 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>VisualCornerSelect</class>
+   <class>ScanImage</class>
    <extends>QWidget</extends>
-   <header>GUI/components/VisualCornerSelect.h</header>
+   <header>GUI/views/ScanImage.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>BoardView</class>
+   <class>ScanBook</class>
    <extends>QWidget</extends>
-   <header>GUI/components/BoardView.h</header>
+   <header>GUI/views/ScanBook.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>KifRecorder</class>
-   <extends>QWidget</extends>
-   <header>GUI/components/KifRecorder.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>DescriptiveComboBox</class>
-   <extends>QWidget</extends>
-   <header>GUI/components/DescriptiveComboBox.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>FileDragDrop</class>
-   <extends>QWidget</extends>
-   <header>GUI/components/FileDragDrop.h</header>
-   <container>1</container>
+   <class>ImageLabel</class>
+   <extends>QLabel</extends>
+   <header>GUI/components/ImageLabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

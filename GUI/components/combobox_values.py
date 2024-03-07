@@ -1,9 +1,10 @@
 import Elements
 from extra import factories
+from extra import utils
 
 
 def corner_detector():
-    return [
+    return "Corner detector", [
         (
             "Cool",
             "Universal corner detector.\nUse it if you're unsure what to choose",
@@ -28,7 +29,7 @@ def corner_detector():
 
 
 def inventory_detector():
-    return [
+    return "Inventory detector", [
         (
             "None",
             "Don't use inventory detector",
@@ -43,7 +44,7 @@ def inventory_detector():
 
 
 def memorizer():
-    return [
+    return "Memorizer", [
         (
             "None",
             "Don't use memorizer",
@@ -58,7 +59,7 @@ def memorizer():
 
 
 def image_getter():
-    return [
+    return "Image source", [
         (
             "Photo",
             "Photo of board",
@@ -75,3 +76,15 @@ def image_getter():
             Elements.ImageGetters.Camera
         ),
     ]
+
+
+def cameras():
+    return "Camera", [
+        (
+            str(cam_id),
+            f"Camera {cam_id}",
+            lambda: Elements.ImageGetters.Camera(cam_id)
+        )
+        for cam_id in utils.get_available_cam_ids()
+    ]
+
