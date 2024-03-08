@@ -21,13 +21,14 @@ class Board:
     def to_str_directions(self):
         return utils.board_to_str(self.directions)
 
-    def to_str(self):
-        s = "Figures:     Directions:"
+    def to_str(self) -> str:
+        s = "Figures:     Directions:\n"
         for fig_row, dir_row in zip(self.figures, self.directions):
             s += "".join([cell.value for cell in fig_row])
             s += "    "
             s += "".join([cell.value for cell in dir_row])
             s += "\n"
+        return s
 
     def to_image(self) -> ImageNP:
         BOARD_SIZE = 1000
@@ -152,3 +153,5 @@ class Board:
                 count = self.inventory_white[figure]
                 white += [figure] * count
         return black, white
+
+

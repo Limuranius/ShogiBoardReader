@@ -24,12 +24,17 @@ class RecognizerONNX(Recognizer):
         direction = CATEGORIES_DIRECTION[direction_label]
         return figure, direction
 
-    def recognize_board(self, cells_imgs: CellsImages) -> tuple[FigureBoard, DirectionBoard]:
+    def recognize_board(self, cells_imgs: CellsImages) -> tuple[FigureBoard, DirectionBoard, float]:
         inp = preprocessing.prepare_cells_imgs(cells_imgs)
         predictions = self.model.run(["figure", "direction"], {"input": inp})
 
         figure_predict = predictions[0].argmax(axis=1)
         direction_predict = predictions[1].argmax(axis=1)
+
+        figure_score = predictions[0].max(axis=1).mean()
+        direction_score = predictions[1].max(axis=1).mean()
+        score = (figure_score + direction_score) / 2
+
         figure_predict = np.reshape(figure_predict, (9, 9))
         direction_predict = np.reshape(direction_predict, (9, 9))
 
@@ -44,4 +49,4 @@ class RecognizerONNX(Recognizer):
                 direction = CATEGORIES_DIRECTION[direction_label]
                 figures[i][j] = figure
                 directions[i][j] = direction
-        return figures, directions
+        return figures, directions, score

@@ -115,6 +115,9 @@ class ScanImage(QWidget):
             case BoardChangeStatus.ACCUMULATING_DATA:
                 color = "lime"
                 self.stop_alarm()
+            case BoardChangeStatus.LOW_CERTAINTY:
+                color = "yellow"
+                self.stop_alarm()
         self.ui.label_turn_status.setStyleSheet(f"background-color: {color}")
 
     @pyqtSlot(QVariant)

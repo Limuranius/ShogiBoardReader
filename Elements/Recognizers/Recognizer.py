@@ -9,5 +9,6 @@ class Recognizer(ABC):
         pass
 
     @abstractmethod
-    def recognize_board(self, cells_imgs: CellsImages) -> tuple[FigureBoard, DirectionBoard]:
+    def recognize_board(self, cells_imgs: CellsImages) -> tuple[FigureBoard, DirectionBoard, float]:
+        """Returns predicted figures, directions and certainty score"""
         pass

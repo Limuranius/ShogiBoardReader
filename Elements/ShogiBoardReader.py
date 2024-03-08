@@ -59,13 +59,13 @@ class ShogiBoardReader:
         Runs recognizer and memorizer to update state of board
         """
         cells = self.board_splitter.get_board_cells(self.image_mode)
-        figures, directions = self.recognizer.recognize_board(cells)
+        figures, directions, score = self.recognizer.recognize_board(cells)
 
         self.__figures = figures
         self.__directions = directions
 
         if self.memorizer is not None:
-            self.memorizer.update(self.__figures, self.__directions)
+            self.memorizer.update(self.__figures, self.__directions, score)
 
     def get_last_update_status(self) -> BoardChangeStatus:
         if self.memorizer is not None:

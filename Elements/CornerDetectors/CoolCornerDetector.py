@@ -16,11 +16,12 @@ class CoolCornerDetector(CornerDetector):
                 (corners[3, 0], corners[3, 1])
             )
         except Exception as e:
+            h, w = image.shape[:2]
             corners = (
                 (0, 0),
-                (0, 0),
-                (0, 0),
-                (0, 0),
+                (w-1, 0),
+                (w-1, h-1),
+                (0, h-1),
             )
         return corners
 

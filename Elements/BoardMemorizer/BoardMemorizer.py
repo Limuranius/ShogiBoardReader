@@ -23,21 +23,24 @@ class BoardMemorizer:
         self.lower_moves_first = lower_moves_first
         self.__board = shogi.Board()
 
-    def update(self, figures: FigureBoard, directions: DirectionBoard) -> None:
+    def update(self, figures: FigureBoard, directions: DirectionBoard, certainty_score: float) -> None:
         """Updates board and stores status of update in 'update_status' variable"""
         new_board = Board(figures, directions)
-        change_status = self.__get_change_status(new_board)
+        if certainty_score < 0.99:
+            change_status = BoardChangeStatus.LOW_CERTAINTY
+        else:
+            change_status = self.__get_change_status(new_board)
         self.update_status = change_status
         match change_status:
             case BoardChangeStatus.NOTHING_CHANGED:
-                self.__boards_counter.update(figures, directions)
+                self.__boards_counter.update(new_board)
             case BoardChangeStatus.ACCUMULATING_DATA:
-                self.__boards_counter.update(figures, directions)
+                self.__boards_counter.update(new_board)
             case BoardChangeStatus.INVALID_MOVE | BoardChangeStatus.ILLEGAL_MOVE:
                 pass
             case BoardChangeStatus.VALID_MOVE:
                 curr_board = self.__boards_counter.get_max_board()
-                self.__boards_counter.update(figures, directions)
+                self.__boards_counter.update(new_board)
                 new_curr_board = self.__boards_counter.get_max_board()
                 if curr_board != new_curr_board:
                     move = get_move(curr_board, new_curr_board)
@@ -45,6 +48,8 @@ class BoardMemorizer:
                     self.__board.push_usi(
                         move.apply_side_transformation(self.lower_moves_first).to_usi()
                     )
+            case BoardChangeStatus.LOW_CERTAINTY:
+                pass
 
     def get_board(self) -> Board:
         return self.__boards_counter.get_max_board()
