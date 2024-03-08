@@ -1,4 +1,6 @@
+import cv2
 from PyQt5 import QtWidgets
+from PyQt5.QtCore import pyqtSlot, QVariant
 
 from config import GLOBAL_CONFIG
 from extra import factories
@@ -14,10 +16,10 @@ from ShogiNeuralNetwork.CellsDataset import CellsDataset
 from config import Paths
 
 
-BOARD_IMG_SIZE = 800
+BOARD_IMG_SIZE = (700, 700)
 
 
-class View(QMainWindow):
+class CreateDataset(QMainWindow):
     images_paths: list[str]
     reader: ShogiBoardReader
     cells_select = list[list[Skibidi]]
@@ -36,20 +38,18 @@ class View(QMainWindow):
         self.setup()
 
     def setup(self) -> None:
-        self.ui.grid = QtWidgets.QGridLayout(self.ui.frame_3)
+        self.ui.grid = QtWidgets.QGridLayout(self.ui.frame_cell_grid)
         for i in range(9):
             self.cells_select.append([])
             for j in range(9):
-                cell_select = Skibidi(self.ui.frame_3)
+                cell_select = Skibidi(self.ui.frame_cell_grid)
                 cell_select.set_cell(Figure.EMPTY, Direction.NONE)
                 self.ui.grid.addWidget(cell_select, i, j)
                 self.cells_select[i].append(cell_select)
-        self.ui.pushButton_add.clicked.connect(self.on_add_to_dataset_clicked)
-        self.ui.pushButton_skip.clicked.connect(self.on_skip_clicked)
 
-        self.ui.detector_select.set_size(BOARD_IMG_SIZE)
-        self.ui.detector_select.set_reader(self.reader)
-        self.ui.detector_select.corner_detector_changed.connect(self.on_corner_detector_changed)
+        self.ui.visual_corner_select.set_size(BOARD_IMG_SIZE)
+        self.ui.visual_corner_select.set_inventory_hidden(True)
+        self.ui.visual_corner_select.set_use_one_image(True)
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
@@ -76,9 +76,8 @@ class View(QMainWindow):
 
     def load_image(self, img_path: str) -> None:
         self.reader.set_image(img_path)
-
-        # Showing no-perspective image of board
-        self.ui.detector_select.update()
+        img = cv2.imread(img_path)
+        self.ui.visual_corner_select.set_images_by_splitter(img)
 
         # Loading each predicted cell into selects
         self.reader.update()
@@ -94,6 +93,7 @@ class View(QMainWindow):
         for img_path in self.images_paths:
             self.ui.listWidget.addItem(img_path)
 
+    @pyqtSlot()
     def on_add_to_dataset_clicked(self):
         cells_imgs = self.reader.get_cells_imgs(ImageMode.ORIGINAL)
         for i in range(9):
@@ -107,11 +107,14 @@ class View(QMainWindow):
         self.cells_dataset.save(Paths.DATASET_PATH)
         self.update()
 
+    @pyqtSlot()
     def on_skip_clicked(self):
         self.images_paths.pop(0)
         self.update()
 
-    def on_corner_detector_changed(self, new_cd: CornerDetectors.CornerDetector):
+    @pyqtSlot(QVariant)
+    def on_corner_detector_changed(self, corner_detector_factory):
+        new_cd = corner_detector_factory()
         self.reader.set(corner_detector=new_cd)
         self.update()
 

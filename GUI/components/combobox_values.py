@@ -6,7 +6,7 @@ from extra import utils
 def corner_detector():
     return "Corner detector", [
         (
-            "Cool",
+            "Universal",
             "Universal corner detector.\nUse it if you're unsure what to choose",
             Elements.CoolCornerDetector
         ),
@@ -21,7 +21,7 @@ def corner_detector():
             factories.hsv_corner_detector
         ),
         (
-            "Hardcoded",
+            "Manual",
             "Set corners manually. If nothing else is working...",
             Elements.HardcodedCornerDetector
         ),

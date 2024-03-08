@@ -12,6 +12,9 @@ class VisualCornerSelect(QWidget):
     __record_corner_clicks: bool
     __splitter: BoardSplitter
 
+    # if True then all information will be shown on one image
+    __use_one_image: bool = False
+
     corner_detector_changed = pyqtSignal(QVariant)
     inventory_detector_changed = pyqtSignal(QVariant)
 
@@ -46,6 +49,9 @@ class VisualCornerSelect(QWidget):
     def on_set_corners_clicked(self):
         self.ui.image_label_original.clear_clicks()
         self.__record_corner_clicks = True
+        if self.__use_one_image:
+            self.ui.image_label_original.setVisible(True)
+            self.ui.image_label_no_perspective.setVisible(False)
 
     @pyqtSlot(QVariant)
     def on_inventory_detector_changed(self, inventory_detector_factory):
@@ -60,6 +66,9 @@ class VisualCornerSelect(QWidget):
                 self.__splitter.corner_detector = HardcodedCornerDetector(corners)
                 self.corner_detector_changed.emit(QVariant(corner_detector_factory))
                 self.__record_corner_clicks = False
+                if self.__use_one_image:
+                    self.ui.image_label_original.setVisible(False)
+                    self.ui.image_label_no_perspective.setVisible(True)
 
     def __show_images(self, full_img: ImageNP, no_persp: ImageNP):
         self.ui.image_label_original.set_image(
@@ -86,3 +95,7 @@ class VisualCornerSelect(QWidget):
 
     def set_inventory_hidden(self, hidden: bool):
         self.ui.inventory_detector_select.setHidden(hidden)
+
+    def set_use_one_image(self, use_one_image: bool):
+        self.__use_one_image = use_one_image
+        self.ui.image_label_original.setVisible(False)

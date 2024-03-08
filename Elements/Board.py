@@ -83,7 +83,6 @@ class Board:
             *margin_line,
             *black_inv_line
         ])
-        print(board_img.shape)
         return board_img
 
     def to_shogi_board(self) -> shogi.Board:

@@ -1,3 +1,5 @@
+import multiprocessing
+
 from PyQt5.QtCore import pyqtSlot, QVariant, QThread, QTimer, pyqtSignal
 from PyQt5.QtWidgets import QWidget
 
@@ -5,6 +7,7 @@ from Elements.Board import Board
 from GUI.UI.UI_scan_image import Ui_scan_image
 from Elements import ImageGetters, BoardChangeStatus
 from GUI.components import combobox_values
+from config import Paths
 from extra.types import ImageNP
 from GUI.workers.ReaderWorker import ReaderWorker
 
@@ -13,7 +16,9 @@ CONFIG_BOARD_IMAGE_SIZE = (250, 250)
 
 
 class ScanImage(QWidget):
-    __use_alarm: bool
+    __use_alarm: bool = False
+    __sound_thread: multiprocessing.Process = multiprocessing.Process()
+
     __worker: ReaderWorker
     __worker_thread: QThread
 
@@ -34,7 +39,6 @@ class ScanImage(QWidget):
         self.__worker = ReaderWorker()
         self.__worker_thread = QThread()
         self.__worker.frame_processed.connect(self.update_data)
-        self.__worker.memorizer_updated.connect(self.on_memorizer_status_update)
         self.ui.corner_and_inventory_select.corner_detector_changed.connect(self.__worker.set_corner_detector)
         self.ui.corner_and_inventory_select.inventory_detector_changed.connect(self.__worker.set_inventory_detector)
         self.ui.photo_drop.received_content.connect(self.__worker.set_photo)
@@ -48,8 +52,6 @@ class ScanImage(QWidget):
         self.__worker.moveToThread(self.__worker_thread)
         self.__worker_thread.start()
         self.__request_data()
-
-        self.__use_alarm = False
 
         cams_name, cams_values = combobox_values.cameras()
         self.ui.cam_id_select.set_name(cams_name)
@@ -94,19 +96,25 @@ class ScanImage(QWidget):
     def on_alarm_switched(self, use_alarm: bool):
         self.__use_alarm = use_alarm
 
-    @pyqtSlot(BoardChangeStatus)
-    def on_memorizer_status_update(self, update_status: BoardChangeStatus):
+    def set_memorizer_status(self, update_status: BoardChangeStatus):
         self.ui.label_turn_status.setText(update_status.value)
         color = "white"
         match update_status:
             case BoardChangeStatus.NOTHING_CHANGED:
                 color = "white"
+                self.stop_alarm()
             case BoardChangeStatus.VALID_MOVE:
                 color = "green"
+                self.stop_alarm()
             case BoardChangeStatus.INVALID_MOVE:
                 color = "red"
+                self.start_alarm()
             case BoardChangeStatus.ILLEGAL_MOVE:
                 color = "orange"
+                self.start_alarm()
+            case BoardChangeStatus.ACCUMULATING_DATA:
+                color = "lime"
+                self.stop_alarm()
         self.ui.label_turn_status.setStyleSheet(f"background-color: {color}")
 
     @pyqtSlot(QVariant)
@@ -142,17 +150,19 @@ class ScanImage(QWidget):
     def on_cam_id_changed(self, camera_factory):
         pass
 
-    @pyqtSlot(ImageNP, ImageNP, Board, str)
+    @pyqtSlot(ImageNP, ImageNP, Board, str, BoardChangeStatus)
     def update_data(
             self,
             full_img: ImageNP,
             no_perspective: ImageNP,
             predicted_board: Board,
-            kif: str
+            kif: str,
+            update_status: BoardChangeStatus,
     ):
         self.ui.corner_and_inventory_select.set_images_fast(full_img, no_perspective)
         self.ui.board_view.set_board(predicted_board)
         self.ui.kif_recorder.set_kif(kif)
+        self.set_memorizer_status(update_status)
 
         if self.__request_sent:  # Checking that the data was sent in response to request
             self.__request_sent = False
@@ -163,3 +173,21 @@ class ScanImage(QWidget):
         if not self.__request_sent:
             self.__request_sent = True
             self.__request_images_signal.emit()
+
+    def start_alarm(self):
+        if not self.__use_alarm:
+            return
+        if not self.__sound_thread.is_alive():
+            self.__sound_thread = multiprocessing.Process(target=play_sound_in_repeat,
+                                                          args=[Paths.ALARM_PATH])
+            self.__sound_thread.start()
+
+    def stop_alarm(self):
+        if self.__sound_thread.is_alive():
+            self.__sound_thread.terminate()
+
+
+def play_sound_in_repeat(sound_path: str):
+    import playsound
+    while True:
+        playsound.playsound(sound_path)

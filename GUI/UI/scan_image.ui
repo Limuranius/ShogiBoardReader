@@ -99,6 +99,18 @@
       <item>
        <widget class="BoardView" name="board_view" native="true"/>
       </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame_3">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="QFrame" name="frame_memorizer">
         <property name="sizePolicy">
@@ -141,8 +153,11 @@
          </item>
          <item>
           <widget class="QCheckBox" name="checkBox_siren">
+           <property name="styleSheet">
+            <string notr="true">color: rgb(224, 27, 36);</string>
+           </property>
            <property name="text">
-            <string>Use siren</string>
+            <string>Use siren (LOUD)</string>
            </property>
           </widget>
          </item>
@@ -156,11 +171,11 @@
         </layout>
        </widget>
       </item>
+      <item>
+       <widget class="KifRecorder" name="kif_recorder" native="true"/>
+      </item>
      </layout>
     </widget>
-   </item>
-   <item>
-    <widget class="KifRecorder" name="kif_recorder" native="true"/>
    </item>
   </layout>
  </widget>

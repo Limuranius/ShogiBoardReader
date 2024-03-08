@@ -9,12 +9,14 @@ from extra import factories
 class ReaderWorker(QObject):
     reader: ShogiBoardReader
 
-    # Signal that sends processed/predicted data (or None if disabled) in following order:
-    # Full image | No perspective image | Predicted board object | kif string
-    frame_processed = pyqtSignal(ImageNP, ImageNP, Board, str)
-
-    # Signal that sends responses of memorizer
-    memorizer_updated = pyqtSignal(BoardChangeStatus)
+    # Signal that sends processed/predicted data:
+    frame_processed = pyqtSignal(
+        ImageNP,  # Full image
+        ImageNP,  # No perspective image
+        Board,  # Predicted board object
+        str,  # kif string
+        BoardChangeStatus  # board update status
+    )
 
     predict_board: bool = True
 
@@ -22,24 +24,23 @@ class ReaderWorker(QObject):
         super().__init__()
         self.reader = factories.image_reader()
 
-    def __send_data(self):
-        full_img = self.reader.get_full_img(show_borders=True, show_inventories=True)
-        no_perspective = self.reader.get_board_image_no_perspective(show_grid=True)
-        predicted_board = self.reader.get_board()
-        kif = self.reader.get_kif()
-        self.frame_processed.emit(
-            full_img.copy(),
-            no_perspective.copy(),
-            predicted_board,
-            kif
-        )
-
     @pyqtSlot()
     def send_data(self):
         if self.predict_board:
             self.reader.update()
-            self.memorizer_updated.emit(self.reader.get_last_update_status())
-        self.__send_data()
+
+        full_img = self.reader.get_full_img(show_borders=True, show_inventories=True)
+        no_perspective = self.reader.get_board_image_no_perspective(show_grid=True)
+        predicted_board = self.reader.get_board()
+        kif = self.reader.get_kif()
+        update_status = self.reader.get_last_update_status()
+        self.frame_processed.emit(
+            full_img.copy(),
+            no_perspective.copy(),
+            predicted_board,
+            kif,
+            update_status
+        )
 
     @pyqtSlot(QVariant)
     def set_image_getter(self, image_getter_factory):
