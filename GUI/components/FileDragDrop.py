@@ -2,7 +2,7 @@ import numpy as np
 from PIL import ImageGrab
 from PyQt5 import QtGui
 from PyQt5.QtCore import pyqtSlot, pyqtSignal, QVariant
-from PyQt5.QtWidgets import QWidget, QMessageBox
+from PyQt5.QtWidgets import QWidget, QMessageBox, QFrame
 from GUI.UI.UI_FileDragDrop import Ui_fileDragDrop
 import pyperclip
 import cv2
@@ -12,7 +12,7 @@ MANY_IMAGES = "MANY_IMAGES"
 VIDEO = "VIDEO"
 
 
-class FileDragDrop(QWidget):
+class FileDragDrop(QFrame):
     received_content = pyqtSignal(QVariant)
     content_type: str
 
@@ -71,13 +71,17 @@ class FileDragDrop(QWidget):
     def on_paste_clicked(self):
         if self.content_type == ONE_IMAGE:
             try:
-                image = ImageGrab.grabclipboard()
-                if image is None:
+                clipboard_data = ImageGrab.grabclipboard()
+                if clipboard_data is None:  # On windows when no image in clipboard
                     self.error_dialog("Could not load image")
                     return
-                image_np = np.array(image)
+                elif isinstance(clipboard_data, list):  # On windows when copied files
+                    img_path = clipboard_data[0]
+                    image_np = cv2.imread(img_path)
+                else:  # When there is image in clipboard
+                    image_np = np.array(clipboard_data)
                 data = image_np
-            except Exception:
+            except Exception:  # On linux when no image in clipboard
                 self.error_dialog("Could not load image")
                 return
         elif self.content_type == MANY_IMAGES:

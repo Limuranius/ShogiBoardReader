@@ -2,6 +2,8 @@ import os
 from PyQt5.QtCore import QLibraryInfo
 from PyQt5.QtWidgets import QApplication
 from GUI.views.ShogiVision import ShogiVision
+from GUI.components.error_mesage_box import error_message_box
+from config.Paths import MODEL_ONNX_PATH
 
 os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = QLibraryInfo.location(
     QLibraryInfo.PluginsPath
@@ -9,6 +11,10 @@ os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = QLibraryInfo.location(
 
 if __name__ == '__main__':
     app = QApplication([])
-    sv = ShogiVision()
-    sv.show()
-    app.exec()
+    if not os.path.exists(MODEL_ONNX_PATH):
+        error_message_box(
+            "model.onnx not found!\nVisit https://github.com/Limuranius/ShogiBoardReader for more information")
+    else:
+        sv = ShogiVision()
+        sv.show()
+        app.exec()

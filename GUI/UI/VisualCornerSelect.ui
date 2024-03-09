@@ -60,6 +60,19 @@
        </widget>
       </item>
       <item>
+       <widget class="QLabel" name="label_click_corners">
+        <property name="styleSheet">
+         <string notr="true">color: rgb(46, 194, 126);</string>
+        </property>
+        <property name="text">
+         <string>Now click 4 corners on left image</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="DescriptiveComboBox" name="inventory_detector_select" native="true"/>
       </item>
      </layout>

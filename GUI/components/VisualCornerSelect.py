@@ -1,4 +1,4 @@
-from PyQt5.QtCore import pyqtSlot, pyqtSignal, QVariant, QThread
+from PyQt5.QtCore import pyqtSlot, pyqtSignal, QVariant, QThread, QTimer
 from PyQt5.QtWidgets import QWidget
 
 from Elements import HardcodedCornerDetector, BoardSplitter, CoolCornerDetector
@@ -18,6 +18,8 @@ class VisualCornerSelect(QWidget):
     corner_detector_changed = pyqtSignal(QVariant)
     inventory_detector_changed = pyqtSignal(QVariant)
 
+    __label_disappear_timer: QTimer
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.ui = Ui_visualCornerSelect()
@@ -35,6 +37,9 @@ class VisualCornerSelect(QWidget):
         self.ui.inventory_detector_select.set_values(id_values)
         self.ui.inventory_detector_select.set_name(id_name)
 
+        self.ui.label_click_corners.setVisible(False)
+        self.__label_disappear_timer = QTimer()
+
     @pyqtSlot(QVariant)
     def on_corner_detector_changed(self, corner_detector_factory):
         corner_detector = corner_detector_factory()
@@ -49,6 +54,8 @@ class VisualCornerSelect(QWidget):
     def on_set_corners_clicked(self):
         self.ui.image_label_original.clear_clicks()
         self.__record_corner_clicks = True
+        self.ui.label_click_corners.setVisible(True)
+        self.__label_disappear_timer.singleShot(5000, lambda: self.ui.label_click_corners.setVisible(False))
         if self.__use_one_image:
             self.ui.image_label_original.setVisible(True)
             self.ui.image_label_no_perspective.setVisible(False)

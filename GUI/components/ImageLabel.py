@@ -38,8 +38,10 @@ class ImageLabel(QLabel):
         if self.__img_size:
             image = cv2.resize(image, self.__img_size)
         if show_presses:
+            h, w = image.shape[:2]
+            thickness = int((h + w) / 2 * 0.01)
             pts = np.array(self.resized_presses)
-            image = cv2.polylines(image, [pts], isClosed=True, color=[0, 255, 0], thickness=3)
+            image = cv2.polylines(image, [pts], isClosed=True, color=[0, 255, 255], thickness=thickness)
         set_image_to_label(self, image)
 
     def mousePressEvent(self, ev: QMouseEvent) -> None:

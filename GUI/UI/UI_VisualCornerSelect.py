@@ -42,6 +42,11 @@ class Ui_visualCornerSelect(object):
         self.pushButton_set_corners = QtWidgets.QPushButton(self.frame)
         self.pushButton_set_corners.setObjectName("pushButton_set_corners")
         self.verticalLayout_2.addWidget(self.pushButton_set_corners)
+        self.label_click_corners = QtWidgets.QLabel(self.frame)
+        self.label_click_corners.setStyleSheet("color: rgb(46, 194, 126);")
+        self.label_click_corners.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_click_corners.setObjectName("label_click_corners")
+        self.verticalLayout_2.addWidget(self.label_click_corners)
         self.inventory_detector_select = DescriptiveComboBox(self.frame)
         self.inventory_detector_select.setObjectName("inventory_detector_select")
         self.verticalLayout_2.addWidget(self.inventory_detector_select)
@@ -60,5 +65,6 @@ class Ui_visualCornerSelect(object):
         self.image_label_original.setText(_translate("visualCornerSelect", "Image"))
         self.image_label_no_perspective.setText(_translate("visualCornerSelect", "Image"))
         self.pushButton_set_corners.setText(_translate("visualCornerSelect", "Set Corners"))
+        self.label_click_corners.setText(_translate("visualCornerSelect", "Now click 4 corners on left image"))
 from GUI.components.DescriptiveComboBox import DescriptiveComboBox
 from GUI.components.ImageLabel import ImageLabel
