@@ -13,6 +13,7 @@ from GUI.workers.ReaderWorker import ReaderWorker
 
 BOARD_IMAGE_SIZE = (500, 661)
 CONFIG_BOARD_IMAGE_SIZE = (250, 250)
+CONFIG_BOARD_IMAGE_SIZE_VIEW_MODE = (500, 500)
 
 
 class ScanImage(QWidget):
@@ -188,6 +189,17 @@ class ScanImage(QWidget):
     def stop_alarm(self):
         if self.__sound_thread.is_alive():
             self.__sound_thread.terminate()
+
+    @pyqtSlot(bool)
+    def on_view_mode_changed(self, use_view_mode: bool):
+        hide_all = use_view_mode
+        self.ui.corner_and_inventory_select.set_selects_hidden(hide_all)
+        self.ui.frame_images_select.setHidden(hide_all)
+        self.ui.frame_mem_kif.setHidden(hide_all)
+        if use_view_mode:
+            self.ui.corner_and_inventory_select.set_size(CONFIG_BOARD_IMAGE_SIZE_VIEW_MODE)
+        else:
+            self.ui.corner_and_inventory_select.set_size(CONFIG_BOARD_IMAGE_SIZE)
 
 
 def play_sound_in_repeat(sound_path: str):

@@ -103,6 +103,9 @@ class VisualCornerSelect(QWidget):
     def set_inventory_hidden(self, hidden: bool):
         self.ui.inventory_detector_select.setHidden(hidden)
 
+    def set_selects_hidden(self, hidden: bool):
+        self.ui.frame_selects.setHidden(hidden)
+
     def set_use_one_image(self, use_one_image: bool):
         self.__use_one_image = use_one_image
         self.ui.image_label_original.setVisible(False)
