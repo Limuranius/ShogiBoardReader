@@ -1,4 +1,5 @@
 import multiprocessing
+import playsound
 
 from PyQt5.QtCore import pyqtSlot, QVariant, QThread, QTimer, pyqtSignal
 from PyQt5.QtWidgets import QWidget
@@ -203,6 +204,5 @@ class ScanImage(QWidget):
 
 
 def play_sound_in_repeat(sound_path: str):
-    import playsound
     while True:
         playsound.playsound(sound_path)

@@ -13,6 +13,7 @@ class DescriptiveComboBox(QWidget):
         super().__init__(*args, **kwargs)
         self.ui = Ui_descriptiveComboBox()
         self.ui.setupUi(self)
+        self.__values = []
 
     def set_values(self, values: list[tuple[str, str, object]]):
         self.__values = values
