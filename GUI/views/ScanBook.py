@@ -1,7 +1,7 @@
 from PyQt5 import QtGui
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtWidgets import QWidget, QListWidgetItem
-import fitz
+import pypdfium2
 
 from Elements import ShogiBoardReader
 from Elements.Board import Board
@@ -87,37 +87,37 @@ class ScanBook(QWidget):
             self.ui.listWidget_pageBoards.addItem(item)
 
     def load_pdf(self, pdf_path: str):
-        with fitz.open(pdf_path) as pdf:
-            total = len(pdf)
+        pdf = pypdfium2.PdfDocument(pdf_path)
+        total = len(pdf)
 
-            def pbar_func():
-                data = []
-                for page_number in range(len(pdf)):
-                    print(page_number)
-                    page_img = pdf_scan.get_pdf_page_image(pdf, page_number)
-                    boards_imgs = pdf_scan.extract_boards_images(page_img)
-                    boards = []
-                    for board_img in boards_imgs:
-                        self.__reader.set_image(board_img)
-                        self.__reader.update()
-                        board = self.__reader.get_board()
-                        boards.append(board)
-                    data.append((page_number + 1, boards))
-                    yield
-                yield data
+        def pbar_func():
+            data = []
+            for page_number in range(total):
+                page_img = pdf_scan.get_pdf_page_image(pdf, page_number)
+                boards_imgs = pdf_scan.extract_boards_images(page_img)
+                boards = []
+                for board_img in boards_imgs:
+                    self.__reader.set_image(board_img)
+                    self.__reader.update()
+                    board = self.__reader.get_board()
+                    boards.append(board)
+                data.append((page_number + 1, boards))
+                yield
+            yield data
 
-            def on_finish(result_data):
-                self.__data = result_data
-                self.update_boards_list()
-                self.update_pagination()
+        def on_finish(result_data):
+            self.__data = result_data
+            self.update_boards_list()
+            self.update_pagination()
 
-            pbar = ProgressWorker(
-                total=total,
-                worker_func=pbar_func()
-            )
-            pbar.work_done.connect(on_finish)
-            pbar.setModal(True)
-            pbar.exec()
+        pbar = ProgressWorker(
+            total=total,
+            worker_func=pbar_func()
+        )
+        pbar.work_done.connect(on_finish)
+        pbar.setModal(True)
+        pbar.exec()
+        pdf.close()
 
 
 

@@ -1,5 +1,5 @@
 import cv2
-import fitz
+import pypdfium2
 import numpy as np
 
 from extra.types import ImageNP, Box
@@ -103,8 +103,7 @@ def __extract_boards_borders(img_mask: ImageNP, x0=0, y0=0) -> list[Box]:
     return boards_boxes
 
 
-def get_pdf_page_image(pdf: fitz.Document, page_number: int):
+def get_pdf_page_image(pdf: pypdfium2.PdfDocument, page_number: int):
     page = pdf[page_number]
-    pix: fitz.Pixmap = page.get_pixmap(matrix=fitz.Matrix(3, 3))
-    img = np.frombuffer(pix.samples, dtype=np.uint8).reshape((pix.height, pix.width, 3))
-    return img
+    image = page.render(scale=4).to_numpy()
+    return image
