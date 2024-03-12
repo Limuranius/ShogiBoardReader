@@ -1,7 +1,5 @@
-import multiprocessing
-import playsound
-
-from PyQt5.QtCore import pyqtSlot, QVariant, QThread, QTimer, pyqtSignal
+from PyQt5.QtCore import pyqtSlot, QVariant, QThread, pyqtSignal, QUrl
+from PyQt5.QtMultimedia import QSoundEffect
 from PyQt5.QtWidgets import QWidget
 
 from Elements.Board import Board
@@ -19,7 +17,7 @@ CONFIG_BOARD_IMAGE_SIZE_VIEW_MODE = (500, 500)
 
 class ScanImage(QWidget):
     __use_alarm: bool = False
-    __sound_thread: multiprocessing.Process = multiprocessing.Process()
+    __alarm_sound: QSoundEffect
 
     __worker: ReaderWorker
     __worker_thread: QThread
@@ -72,6 +70,10 @@ class ScanImage(QWidget):
         self.ui.corner_and_inventory_select.set_size(CONFIG_BOARD_IMAGE_SIZE)
         self.ui.board_view.set_size(BOARD_IMAGE_SIZE)
 
+        self.__alarm_sound = QSoundEffect()
+        self.__alarm_sound.setSource(QUrl.fromLocalFile(Paths.ALARM_PATH))
+        self.__alarm_sound.setLoopCount(QSoundEffect.Infinite)
+
     @pyqtSlot(QVariant)
     def on_image_getter_changed(self, image_getter_factory):
         image_getter = image_getter_factory()
@@ -97,6 +99,8 @@ class ScanImage(QWidget):
     @pyqtSlot(bool)
     def on_alarm_switched(self, use_alarm: bool):
         self.__use_alarm = use_alarm
+        if not use_alarm:
+            self.stop_alarm()
 
     def set_memorizer_status(self, update_status: BoardChangeStatus):
         self.ui.label_turn_status.setText(update_status.value)
@@ -119,7 +123,7 @@ class ScanImage(QWidget):
                 self.stop_alarm()
             case BoardChangeStatus.LOW_CERTAINTY:
                 color = "yellow"
-                self.stop_alarm()
+                self.start_alarm()
         self.ui.label_turn_status.setStyleSheet(f"background-color: {color}")
 
     @pyqtSlot(QVariant)
@@ -180,16 +184,11 @@ class ScanImage(QWidget):
             self.__request_images_signal.emit()
 
     def start_alarm(self):
-        if not self.__use_alarm:
-            return
-        if not self.__sound_thread.is_alive():
-            self.__sound_thread = multiprocessing.Process(target=play_sound_in_repeat,
-                                                          args=[Paths.ALARM_PATH])
-            self.__sound_thread.start()
+        if self.__use_alarm and not self.__alarm_sound.isPlaying():
+            self.__alarm_sound.play()
 
     def stop_alarm(self):
-        if self.__sound_thread.is_alive():
-            self.__sound_thread.terminate()
+        self.__alarm_sound.stop()
 
     @pyqtSlot(bool)
     def on_view_mode_changed(self, use_view_mode: bool):
@@ -201,8 +200,3 @@ class ScanImage(QWidget):
             self.ui.corner_and_inventory_select.set_size(CONFIG_BOARD_IMAGE_SIZE_VIEW_MODE)
         else:
             self.ui.corner_and_inventory_select.set_size(CONFIG_BOARD_IMAGE_SIZE)
-
-
-def play_sound_in_repeat(sound_path: str):
-    while True:
-        playsound.playsound(sound_path)
