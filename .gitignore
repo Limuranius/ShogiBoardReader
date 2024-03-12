@@ -6,3 +6,6 @@ ShogiNeuralNetwork/datasets
 __pycache__
 .idea
 venv
+dist
+build
+*.spec

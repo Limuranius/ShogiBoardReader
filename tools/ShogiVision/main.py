@@ -13,7 +13,7 @@ if __name__ == '__main__':
     app = QApplication([])
     if not os.path.exists(MODEL_ONNX_PATH):
         error_message_box(
-            "model.onnx not found!\nVisit https://github.com/Limuranius/ShogiBoardReader for more information")
+            "ShogiVision/_internal/model.onnx not found!")
     else:
         sv = ShogiVision()
         sv.show()

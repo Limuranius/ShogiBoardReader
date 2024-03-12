@@ -79,12 +79,14 @@ def image_getter():
 
 
 def cameras():
-    return "Camera", [
-        (
+    cams = []
+    for cam_id in utils.get_available_cam_ids():
+        def func(cam_id=cam_id):
+            return Elements.ImageGetters.Camera(cam_id)
+        cams.append((
             str(cam_id),
             f"Camera {cam_id}",
-            lambda: Elements.ImageGetters.Camera(cam_id)
-        )
-        for cam_id in utils.get_available_cam_ids()
-    ]
+            func
+        ))
+    return "Camera", cams
 
