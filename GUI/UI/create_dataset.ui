@@ -50,15 +50,7 @@
      </widget>
     </item>
     <item>
-     <widget class="DetectorSelect" name="detector_select">
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout"/>
-     </widget>
+     <widget class="VisualCornerSelect" name="visual_corner_select" native="true"/>
     </item>
     <item>
      <widget class="QFrame" name="frame_4">
@@ -70,7 +62,7 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QFrame" name="frame_3">
+        <widget class="QFrame" name="frame_cell_grid">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
@@ -99,16 +91,72 @@
     </item>
    </layout>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DetectorSelect</class>
-   <extends>QFrame</extends>
-   <header>GUI/components/DetectorSelect.h</header>
+   <class>VisualCornerSelect</class>
+   <extends>QWidget</extends>
+   <header>GUI/components/VisualCornerSelect.h</header>
    <container>1</container>
+   <slots>
+    <signal>corner_detector_changed(QVariant)</signal>
+   </slots>
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButton_add</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>on_add_to_dataset_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>736</x>
+     <y>529</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>800</x>
+     <y>568</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_skip</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>on_skip_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>42</x>
+     <y>539</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>4</x>
+     <y>556</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>visual_corner_select</sender>
+   <signal>corner_detector_changed(QVariant)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>on_corner_detector_changed(QVariant)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>589</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>568</x>
+     <y>-15</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>on_add_to_dataset_clicked()</slot>
+  <slot>on_skip_clicked()</slot>
+  <slot>on_corner_detector_changed(QVariant)</slot>
+ </slots>
 </ui>

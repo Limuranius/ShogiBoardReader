@@ -1,3 +1,4 @@
+from . import ImageGetters
 from .ImageGetters import ImageGetter
 from Elements.CornerDetectors.CornerDetector import CornerDetector
 from Elements.InventoryDetectors import InventoryDetector
@@ -30,10 +31,11 @@ class BoardSplitter:
         img_no_persp = utils.remove_perspective(full_img, np.array(corners))
         if draw_grid:
             h, w = img_no_persp.shape[:2]
+            grid_thickness = int((h + w) / 2 * 0.01)
             for x in np.linspace(0, w, num=10, dtype=np.int_):
-                cv2.line(img_no_persp, [x, 0], [x, h], color=[0, 255, 0], thickness=3)
+                cv2.line(img_no_persp, [x, 0], [x, h], color=[0, 255, 0], thickness=grid_thickness)
             for y in np.linspace(0, h, num=10, dtype=np.int_):
-                cv2.line(img_no_persp, [0, y], [w, y], color=[0, 255, 0], thickness=3)
+                cv2.line(img_no_persp, [0, y], [w, y], color=[0, 255, 0], thickness=grid_thickness)
         return img_mode.convert_image(img_no_persp)
 
     def get_board_cells(self, image_mode: ImageMode) -> list[list[ImageNP]]:
@@ -68,7 +70,8 @@ class BoardSplitter:
     ) -> ImageNP:
         full_img = self.image_getter.get_image().copy()
         color = [0, 255, 0]
-        thickness = max(full_img.shape) // 500 + 1
+        h, w = full_img.shape[:2]
+        thickness = int((h + w) / 2 * 0.007)
         corners = np.array(self.corner_detector.get_corners(full_img))
         if show_borders:
             cv2.polylines(full_img, [corners], True, color, thickness=thickness)
@@ -95,3 +98,9 @@ class BoardSplitter:
         i1_imgs = [image_mode.convert_image(image) for image in i1_imgs]
         i2_imgs = [image_mode.convert_image(image) for image in i2_imgs]
         return i1_imgs, i2_imgs
+
+    def set_image(self, img: str | ImageNP) -> None:
+        if isinstance(self.image_getter, ImageGetters.Photo):
+            self.image_getter.set_image(img)
+        else:
+            raise Exception("Can't set image on image getter other than Photo")

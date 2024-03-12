@@ -21,6 +21,7 @@ class Skibidi(QFrame):
         self.imageLabel = ImageLabel(self)
         self.verticalLayout.addWidget(self.imageLabel)
         self.imageLabel.clicked.connect(self.on_img_clicked)
+        self.imageLabel.set_size((70, 70))
 
     def set_cell(self, figure: Figure, direction: Direction):
         self.__figure = figure
@@ -35,7 +36,6 @@ class Skibidi(QFrame):
 
     def update_image(self) -> None:
         img = get_figure_image(self.get_figure(), self.get_direction())
-        img = cv2.resize(img, (70, 70))
         self.imageLabel.set_image(img)
 
     def on_img_clicked(self):

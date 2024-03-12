@@ -1,7 +1,7 @@
 import numpy as np
 import shogi
 
-from extra.figures import Figure, Direction, FIGURE_ICONS_PATHS
+from extra.figures import Figure, Direction, FIGURE_ICONS_PATHS, get_figure_image
 from extra.types import FigureBoard, DirectionBoard, ImageNP, Inventory
 from dataclasses import dataclass
 from extra import utils
@@ -21,27 +21,24 @@ class Board:
     def to_str_directions(self):
         return utils.board_to_str(self.directions)
 
-    def to_str(self):
-        s = "Figures:     Directions:"
+    def to_str(self) -> str:
+        s = "Figures:     Directions:\n"
         for fig_row, dir_row in zip(self.figures, self.directions):
             s += "".join([cell.value for cell in fig_row])
             s += "    "
             s += "".join([cell.value for cell in dir_row])
             s += "\n"
+        return s
 
     def to_image(self) -> ImageNP:
         BOARD_SIZE = 1000
         FIGURE_SIZE = BOARD_SIZE // 9
-        board = np.full((BOARD_SIZE, BOARD_SIZE, 3), [255, 255, 255], dtype=np.uint8)
+        INVENTORY_FIGURE_SIZE = FIGURE_SIZE
+        INVENTORY_MARGIN = 50
 
-        grid_step = BOARD_SIZE // 9
-        for i in range(10):
-            y = i * grid_step
-            cv2.line(board, (0, y), (BOARD_SIZE, y), 0, thickness=5)
-        for j in range(10):
-            x = j * grid_step
-            cv2.line(board, (x, 0), (x, BOARD_SIZE), 0, thickness=5)
+        board_img = np.full((BOARD_SIZE, BOARD_SIZE, 3), [255, 255, 255], dtype=np.uint8)
 
+        # Adding figures icons
         figure_step = BOARD_SIZE // 9
         for i in range(9):
             for j in range(9):
@@ -50,12 +47,44 @@ class Board:
                 figure = self.figures[i][j]
                 direction = self.directions[i][j]
                 if figure != Figure.EMPTY:
-                    figure_img = cv2.imread(FIGURE_ICONS_PATHS[figure])
-                    figure_img = cv2.resize(figure_img, (FIGURE_SIZE, FIGURE_SIZE))
-                    if direction == Direction.DOWN:
-                        figure_img = np.flip(figure_img, axis=0)
-                    utils.overlay_image_on_image(board, figure_img, x, y)
-        return board
+                    figure_icon = get_figure_image(figure, direction)
+                    figure_icon = cv2.resize(figure_icon, (FIGURE_SIZE, FIGURE_SIZE))
+                    utils.overlay_image_on_image(board_img, figure_icon, x, y)
+
+        # Drawing grid
+        grid_step = BOARD_SIZE // 9
+        for i in range(10):
+            y = i * grid_step
+            cv2.line(board_img, (0, y), (BOARD_SIZE, y), 0, thickness=5)
+        for j in range(10):
+            x = j * grid_step
+            cv2.line(board_img, (x, 0), (x, BOARD_SIZE), 0, thickness=5)
+
+        # Drawing inventories
+        black_inv, white_inv = self.get_inventory_lists()
+        margin_line = np.full((INVENTORY_MARGIN, BOARD_SIZE, 3), [255, 255, 255], dtype=np.uint8)
+        black_inv_line = np.full((INVENTORY_FIGURE_SIZE, BOARD_SIZE, 3), [255, 255, 255], dtype=np.uint8)
+        white_inv_line = np.full((INVENTORY_FIGURE_SIZE, BOARD_SIZE, 3), [255, 255, 255], dtype=np.uint8)
+        for i, black_inv_fig in enumerate(black_inv):
+            figure_icon = get_figure_image(black_inv_fig, Direction.UP)
+            figure_icon = cv2.resize(figure_icon, (INVENTORY_FIGURE_SIZE, INVENTORY_FIGURE_SIZE))
+            utils.overlay_image_on_image(black_inv_line, figure_icon,
+                                         x=BOARD_SIZE - INVENTORY_FIGURE_SIZE * (i + 1),
+                                         y=0)
+        for i, white_inv_fig in enumerate(white_inv):
+            figure_icon = get_figure_image(white_inv_fig, Direction.DOWN)
+            figure_icon = cv2.resize(figure_icon, (INVENTORY_FIGURE_SIZE, INVENTORY_FIGURE_SIZE))
+            utils.overlay_image_on_image(white_inv_line, figure_icon,
+                                         x=INVENTORY_FIGURE_SIZE * i,
+                                         y=0)
+        board_img = np.array([
+            *white_inv_line,
+            *margin_line,
+            *board_img,
+            *margin_line,
+            *black_inv_line
+        ])
+        return board_img
 
     def to_shogi_board(self) -> shogi.Board:
         board = shogi.Board()
@@ -105,3 +134,24 @@ class Board:
                     board.add_piece_into_hand(piece_type, shogi.BLACK, count_black)
                     board.add_piece_into_hand(piece_type, shogi.WHITE, count_white)
         return board
+
+    @classmethod
+    def get_empty_board(cls):
+        figures = [[Figure.EMPTY] * 9 for _ in range(9)]
+        directions = [[Direction.NONE] * 9 for _ in range(9)]
+        return Board(figures, directions)
+
+    def get_inventory_lists(self) -> tuple[list[Figure], list[Figure]]:
+        black = []
+        white = []
+        if self.inventory_black is not None:
+            for figure in self.inventory_black:
+                count = self.inventory_black[figure]
+                black += [figure] * count
+        if self.inventory_white is not None:
+            for figure in self.inventory_white:
+                count = self.inventory_white[figure]
+                white += [figure] * count
+        return black, white
+
+

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>boardView</class>
+ <widget class="QWidget" name="boardView">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>416</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>BoardView</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="ImageLabel" name="board_image_label">
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="pushButton_copy_sfen">
+        <property name="text">
+         <string>Copy SFEN</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_to_lishogi">
+        <property name="text">
+         <string>To lishogi</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ImageLabel</class>
+   <extends>QLabel</extends>
+   <header>GUI/components/ImageLabel.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pushButton_to_lishogi</sender>
+   <signal>clicked()</signal>
+   <receiver>boardView</receiver>
+   <slot>on_to_lishogi_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>312</x>
+     <y>252</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>318</x>
+     <y>-11</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_copy_sfen</sender>
+   <signal>clicked()</signal>
+   <receiver>boardView</receiver>
+   <slot>on_copy_sfen_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>186</x>
+     <y>263</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>167</x>
+     <y>-15</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>on_to_lishogi_clicked()</slot>
+  <slot>on_copy_sfen_clicked()</slot>
+ </slots>
+</ui>

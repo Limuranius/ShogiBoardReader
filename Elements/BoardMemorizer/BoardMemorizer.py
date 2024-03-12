@@ -8,7 +8,7 @@ from .BoardChangeStatus import BoardChangeStatus
 
 
 class BoardMemorizer:
-    __counter: BoardCounter
+    __boards_counter: BoardCounter
     __move_history: list[Move]
     __board: shogi.Board
 
@@ -18,39 +18,43 @@ class BoardMemorizer:
     update_status: BoardChangeStatus = BoardChangeStatus.VALID_MOVE
 
     def __init__(self, lower_moves_first: bool = True):
-        self.__counter = BoardCounter()
+        self.__boards_counter = BoardCounter()
         self.__move_history = []
         self.lower_moves_first = lower_moves_first
         self.__board = shogi.Board()
 
-    def update(self, figures: FigureBoard, directions: DirectionBoard) -> None:
+    def update(self, figures: FigureBoard, directions: DirectionBoard, certainty_score: float) -> None:
         """Updates board and stores status of update in 'update_status' variable"""
-        if not self.__counter.filled:
-            print("Accumulating data. Don't move anything")
-            self.__counter.update(figures, directions)
-
-        change_status = self.__validate_change(Board(figures, directions))
+        new_board = Board(figures, directions)
+        if certainty_score < 0.99:
+            change_status = BoardChangeStatus.LOW_CERTAINTY
+        else:
+            change_status = self.__get_change_status(new_board)
         self.update_status = change_status
         match change_status:
             case BoardChangeStatus.NOTHING_CHANGED:
-                self.__counter.update(figures, directions)
+                self.__boards_counter.update(new_board)
+            case BoardChangeStatus.ACCUMULATING_DATA:
+                self.__boards_counter.update(new_board)
             case BoardChangeStatus.INVALID_MOVE | BoardChangeStatus.ILLEGAL_MOVE:
                 pass
             case BoardChangeStatus.VALID_MOVE:
-                curr_board = self.__counter.get_max_board()
-                self.__counter.update(figures, directions)
-                new_curr_board = self.__counter.get_max_board()
+                curr_board = self.__boards_counter.get_max_board()
+                self.__boards_counter.update(new_board)
+                new_curr_board = self.__boards_counter.get_max_board()
                 if curr_board != new_curr_board:
                     move = get_move(curr_board, new_curr_board)
                     self.__move_history.append(move)
                     self.__board.push_usi(
                         move.apply_side_transformation(self.lower_moves_first).to_usi()
                     )
+            case BoardChangeStatus.LOW_CERTAINTY:
+                pass
 
     def get_board(self) -> Board:
-        return self.__counter.get_max_board()
+        return self.__boards_counter.get_max_board()
 
-    def save_to_kifu(self, file_path: str) -> None:
+    def get_kif(self) -> str:
         s = """手合割：平手
 先手：
 後手：
@@ -62,8 +66,7 @@ class BoardMemorizer:
             row_fmt = "{:>4} {}\n"
             s += row_fmt.format(i + 1, signature)
 
-        with open(file_path, "w") as f:
-            f.write(s)
+        return s
 
     def __remake_board(self):
         self.__board = shogi.Board()
@@ -76,8 +79,10 @@ class BoardMemorizer:
         self.lower_moves_first = lower_moves_first
         self.__remake_board()
 
-    def __validate_change(self, new_board: Board) -> BoardChangeStatus:
-        curr_board = self.__counter.get_max_board()
+    def __get_change_status(self, new_board: Board) -> BoardChangeStatus:
+        if not self.__boards_counter.filled:
+            return BoardChangeStatus.ACCUMULATING_DATA
+        curr_board = self.__boards_counter.get_max_board()
         if new_board == curr_board:
             return BoardChangeStatus.NOTHING_CHANGED
         move = get_move(

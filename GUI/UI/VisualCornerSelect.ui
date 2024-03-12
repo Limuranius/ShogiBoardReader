@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>visualCornerSelect</class>
+ <widget class="QWidget" name="visualCornerSelect">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>556</width>
+    <height>359</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>visualCornerSelect</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QFrame" name="frame_2">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="ImageLabel" name="image_label_original">
+        <property name="text">
+         <string>Image</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="ImageLabel" name="image_label_no_perspective">
+        <property name="text">
+         <string>Image</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame_selects">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="DescriptiveComboBox" name="corner_detector_select" native="true"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_set_corners">
+        <property name="text">
+         <string>Set Corners</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_click_corners">
+        <property name="styleSheet">
+         <string notr="true">color: rgb(46, 194, 126);</string>
+        </property>
+        <property name="text">
+         <string>Now click 4 corners on left image</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="DescriptiveComboBox" name="inventory_detector_select" native="true"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DescriptiveComboBox</class>
+   <extends>QWidget</extends>
+   <header>GUI/components/DescriptiveComboBox.h</header>
+   <container>1</container>
+   <slots>
+    <signal>element_changed(QVariant)</signal>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>ImageLabel</class>
+   <extends>QLabel</extends>
+   <header>GUI/components/ImageLabel.h</header>
+   <slots>
+    <signal>clicked()</signal>
+   </slots>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>image_label_original</sender>
+   <signal>clicked()</signal>
+   <receiver>visualCornerSelect</receiver>
+   <slot>on_image_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>110</x>
+     <y>95</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>134</x>
+     <y>-13</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_set_corners</sender>
+   <signal>clicked()</signal>
+   <receiver>visualCornerSelect</receiver>
+   <slot>on_set_corners_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>364</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>551</x>
+     <y>243</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>corner_detector_select</sender>
+   <signal>element_changed(QVariant)</signal>
+   <receiver>visualCornerSelect</receiver>
+   <slot>on_corner_detector_changed(QVariant)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>35</x>
+     <y>211</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-3</x>
+     <y>212</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>inventory_detector_select</sender>
+   <signal>element_changed(QVariant)</signal>
+   <receiver>visualCornerSelect</receiver>
+   <slot>on_inventory_detector_changed(QVariant)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>34</x>
+     <y>313</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-2</x>
+     <y>309</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <signal>corner_detector_changed(object)</signal>
+  <signal>inventory_detector_changed(object)</signal>
+  <slot>on_corner_detector_changed(QVariant)</slot>
+  <slot>on_inventory_detector_changed(QVariant)</slot>
+  <slot>on_image_clicked()</slot>
+  <slot>on_set_corners_clicked()</slot>
+ </slots>
+</ui>

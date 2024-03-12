@@ -6,3 +6,5 @@ class BoardChangeStatus(Enum):
     ILLEGAL_MOVE = "Illegal move"
     VALID_MOVE = "Valid move"
     NOTHING_CHANGED = "Board did not change"
+    ACCUMULATING_DATA = "Accumulating data"
+    LOW_CERTAINTY = "Low certainty"

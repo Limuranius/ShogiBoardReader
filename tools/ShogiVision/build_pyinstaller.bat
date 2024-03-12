@@ -1,0 +1,11 @@
+pyinstaller main.py ^
+--paths ../../ ^
+--collect-all "pypdfium2_raw" ^
+--collect-all "pypdfium2" ^
+--add-data "../../models/model.onnx:./models" ^
+--add-data "../../config.ini:." ^
+--add-data "../../img:./img" ^
+--add-data "../../sounds:./sounds" ^
+--icon "../../img/shogi_eye.ico" ^
+--windowed ^
+--name "ShogiVision"

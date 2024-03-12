@@ -38,24 +38,20 @@ class Ui_MainWindow(object):
         self.pushButton_skip.setObjectName("pushButton_skip")
         self.verticalLayout_2.addWidget(self.pushButton_skip)
         self.horizontalLayout.addWidget(self.frame)
-        self.detector_select = DetectorSelect(self.centralwidget)
-        self.detector_select.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.detector_select.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.detector_select.setObjectName("detector_select")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.detector_select)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.horizontalLayout.addWidget(self.detector_select)
+        self.visual_corner_select = VisualCornerSelect(self.centralwidget)
+        self.visual_corner_select.setObjectName("visual_corner_select")
+        self.horizontalLayout.addWidget(self.visual_corner_select)
         self.frame_4 = QtWidgets.QFrame(self.centralwidget)
         self.frame_4.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_4.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_4.setObjectName("frame_4")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.frame_4)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.frame_3 = QtWidgets.QFrame(self.frame_4)
-        self.frame_3.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame_3.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_3.setObjectName("frame_3")
-        self.verticalLayout_3.addWidget(self.frame_3)
+        self.frame_cell_grid = QtWidgets.QFrame(self.frame_4)
+        self.frame_cell_grid.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_cell_grid.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_cell_grid.setObjectName("frame_cell_grid")
+        self.verticalLayout_3.addWidget(self.frame_cell_grid)
         self.pushButton_add = QtWidgets.QPushButton(self.frame_4)
         self.pushButton_add.setEnabled(False)
         font = QtGui.QFont()
@@ -65,11 +61,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.addWidget(self.pushButton_add)
         self.horizontalLayout.addWidget(self.frame_4)
         MainWindow.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
+        self.pushButton_add.clicked.connect(MainWindow.on_add_to_dataset_clicked) # type: ignore
+        self.pushButton_skip.clicked.connect(MainWindow.on_skip_clicked) # type: ignore
+        self.visual_corner_select.corner_detector_changed['QVariant'].connect(MainWindow.on_corner_detector_changed) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -78,4 +74,4 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "Loaded"))
         self.pushButton_skip.setText(_translate("MainWindow", "Skip"))
         self.pushButton_add.setText(_translate("MainWindow", "Add to dataset"))
-from GUI.components.DetectorSelect import DetectorSelect
+from GUI.components.VisualCornerSelect import VisualCornerSelect

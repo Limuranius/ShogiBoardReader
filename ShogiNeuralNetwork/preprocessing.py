@@ -3,7 +3,6 @@ import numpy as np
 from config import GLOBAL_CONFIG
 from extra.types import CellsImages, ImageNP
 
-
 CELL_IMAGE_SIZE = GLOBAL_CONFIG.NeuralNetwork.cell_img_size
 
 
@@ -34,3 +33,10 @@ def prepare_cells_imgs(cells_imgs: CellsImages) -> np.ndarray:
     imgs = np.array(imgs).astype("float32") / 255
     imgs = np.reshape(imgs, (81, CELL_IMAGE_SIZE, CELL_IMAGE_SIZE, 1))
     return imgs
+
+
+def prepare_cell_img(cell_img: ImageNP) -> ImageNP:
+    cell_img = cv2.resize(cell_img, (CELL_IMAGE_SIZE, CELL_IMAGE_SIZE))
+    cell_img = np.array(cell_img).astype("float32") / 255
+    cell_img = np.reshape(cell_img, (1, CELL_IMAGE_SIZE, CELL_IMAGE_SIZE, 1))
+    return cell_img

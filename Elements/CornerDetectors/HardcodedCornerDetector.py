@@ -5,7 +5,10 @@ class HardcodedCornerDetector(CornerDetector):
     corners: Corners
 
     def __init__(self, corners: Corners = None):
-        self.corners = corners
+        if corners is None:
+            self.corners = ((0, 0), (0, 0), (0, 0), (0, 0))
+        else:
+            self.corners = corners
 
     def get_corners(self, image: np.ndarray) -> Corners:
         return self.corners

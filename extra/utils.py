@@ -1,6 +1,6 @@
 import numpy as np
 import cv2
-from .types import ImageNP, FigureBoard, DirectionBoard
+from extra.types import ImageNP, FigureBoard, DirectionBoard, Corners
 
 
 def get_black_mask(image: np.ndarray):
@@ -115,4 +115,24 @@ def board_to_str(board: FigureBoard | DirectionBoard) -> str:
             s += figure.value
         s += "\n"
     return s
+
+
+def generate_random_image(*shape) -> ImageNP:
+    return np.random.randint(0, 255, dtype=np.uint8, size=shape)
+
+
+def get_available_cam_ids() -> list[int]:
+    cam_ids = []
+    count = 10
+    for i in range(count):
+        cap = cv2.VideoCapture(i)
+        if cap.read()[0]:
+            cam_ids.append(i)
+        cap.release()
+    return cam_ids
+
+
+def bounding_box_image(image: ImageNP, corners: Corners):
+    x, y, w, h = cv2.boundingRect(np.array(corners))
+    return image[y: y + h, x: x + w]
 
