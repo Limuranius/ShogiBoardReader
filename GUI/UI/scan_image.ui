@@ -188,31 +188,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>VisualCornerSelect</class>
-   <extends>QWidget</extends>
-   <header>GUI/components/VisualCornerSelect.h</header>
-   <container>1</container>
-   <slots>
-    <signal>corner_detector_changed(QVariant)</signal>
-    <signal>inventory_detector_changed(QVariant)</signal>
-   </slots>
-  </customwidget>
-  <customwidget>
-   <class>BoardView</class>
-   <extends>QWidget</extends>
-   <header>GUI/components/BoardView.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>KifRecorder</class>
-   <extends>QWidget</extends>
-   <header>GUI/components/KifRecorder.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>DescriptiveComboBox</class>
    <extends>QWidget</extends>
-   <header>GUI/components/DescriptiveComboBox.h</header>
+   <header>GUI/widgets/DescriptiveComboBox.h</header>
    <container>1</container>
    <slots>
     <signal>element_changed(QVariant)</signal>
@@ -221,11 +199,33 @@
   <customwidget>
    <class>FileDragDrop</class>
    <extends>QWidget</extends>
-   <header>GUI/components/FileDragDrop.h</header>
+   <header>GUI/widgets/FileDragDrop.h</header>
    <container>1</container>
    <slots>
     <signal>received_content(QVariant)</signal>
    </slots>
+  </customwidget>
+  <customwidget>
+   <class>BoardView</class>
+   <extends>QWidget</extends>
+   <header>GUI/widgets/BoardView.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>VisualCornerSelect</class>
+   <extends>QWidget</extends>
+   <header>GUI/widgets/VisualCornerSelect.h</header>
+   <container>1</container>
+   <slots>
+    <signal>corner_detector_changed(QVariant)</signal>
+    <signal>inventory_detector_changed(QVariant)</signal>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>KifRecorder</class>
+   <extends>QWidget</extends>
+   <header>GUI/widgets/KifRecorder.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -96,7 +96,7 @@
   <customwidget>
    <class>BoardView</class>
    <extends>QWidget</extends>
-   <header>GUI/components/BoardView.h</header>
+   <header>GUI/widgets/BoardView.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -7,7 +7,7 @@ from Elements import ShogiBoardReader
 from Elements.Board import Board
 from GUI.UI.UI_scan_book import Ui_scan_book
 from extra import pdf_scan, factories
-from GUI.components.ProgressWorker import ProgressWorker
+from GUI.widgets.ProgressWorker import ProgressWorker
 
 BOARD_IMAGE_SIZE = (500, 661)
 

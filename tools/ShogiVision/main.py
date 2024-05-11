@@ -2,7 +2,7 @@ import os
 from PyQt5.QtCore import QLibraryInfo
 from PyQt5.QtWidgets import QApplication
 from GUI.views.ShogiVision import ShogiVision
-from GUI.components.error_mesage_box import error_message_box
+from GUI.widgets.error_mesage_box import error_message_box
 from config.Paths import MODEL_ONNX_PATH
 
 os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = QLibraryInfo.location(

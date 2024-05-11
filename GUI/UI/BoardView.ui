@@ -59,7 +59,10 @@
   <customwidget>
    <class>ImageLabel</class>
    <extends>QLabel</extends>
-   <header>GUI/components/ImageLabel.h</header>
+   <header>GUI/widgets/ImageLabel.h</header>
+   <slots>
+    <signal>clicked()</signal>
+   </slots>
   </customwidget>
  </customwidgets>
  <resources/>

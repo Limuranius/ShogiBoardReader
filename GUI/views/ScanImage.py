@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QWidget
 from Elements.Board import Board
 from GUI.UI.UI_scan_image import Ui_scan_image
 from Elements import ImageGetters, BoardChangeStatus
-from GUI.components import combobox_values
+from GUI.widgets import combobox_values
 from config import Paths
 from extra.types import ImageNP
 from GUI.workers.ReaderWorker import ReaderWorker

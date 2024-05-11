@@ -1,7 +1,7 @@
 import cv2
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QDialog
-from GUI.components.ImageLabel import ImageLabel
+from GUI.widgets.ImageLabel import ImageLabel
 from extra.types import Figure, Direction
 from extra.figures import get_figure_image
 from PyQt5.QtCore import pyqtSignal

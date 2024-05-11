@@ -11,7 +11,7 @@ from extra.image_modes import ImageMode
 
 from GUI.UI.create_dataset import Ui_MainWindow
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
-from GUI.components.Skibidi import Skibidi
+from GUI.widgets.Skibidi import Skibidi
 from ShogiNeuralNetwork.CellsDataset import CellsDataset
 from config import Paths
 
