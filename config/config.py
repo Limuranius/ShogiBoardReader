@@ -36,15 +36,33 @@ class Tweaks:
     img_scale: int
 
 
+@section(section_name="Visuals")
+class Visuals:
+    show_borders: bool
+    show_grid: bool
+    show_inventories: bool
+    lines_thickness_fraction: float
+
+
+@section(section_name="Settings")
+class Settings:
+    use_siren: bool
+
+
+
 class Config:
     NeuralNetwork: NeuralNetwork
     HSVThreshold: HSVThreshold
     Tweaks: Tweaks
+    Visuals: Visuals
+    Settings: Settings
 
     def __init__(self, config_path: str):
         self.NeuralNetwork = NeuralNetwork(config_path)
         self.HSVThreshold = HSVThreshold(config_path)
         self.Tweaks = Tweaks(config_path)
+        self.Visuals = Visuals(config_path)
+        self.Settings = Settings(config_path)
 
 
 GLOBAL_CONFIG = Config(CONFIG_PATH)

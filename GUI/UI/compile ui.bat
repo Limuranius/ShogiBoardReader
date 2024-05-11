@@ -1,5 +1,6 @@
 pyuic5 create_dataset.ui > create_dataset.py
 pyuic5 scan_image.ui > UI_scan_image.py
+pyuic5 Settings.ui > UI_Settings.py
 pyuic5 scan_book.ui > UI_scan_book.py
 pyuic5 DescriptiveComboBox.ui > UI_DescriptiveComboBox.py
 pyuic5 DetectorsSelect.ui > UI_DetectorsSelect.py

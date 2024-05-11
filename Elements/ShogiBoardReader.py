@@ -76,7 +76,7 @@ class ShogiBoardReader:
 
     def get_board(self) -> Board:
         if self.memorizer is None:
-            if self.board_splitter.inventory_detector is None:
+            if self.board_splitter.get_inventory_detector() is None:
                 return Board(self.__figures, self.__directions)
             else:
                 inventory_black, inventory_white = self.get_inventories()
@@ -84,29 +84,23 @@ class ShogiBoardReader:
         else:
             return self.memorizer.get_board()
 
-    def set(self,
-            image_getter: ImageGetter = 0,
-            corner_detector: CornerDetector = 0,
-            board_splitter: BoardSplitter = 0,
-            recognizer: Recognizer = 0,
-            memorizer: BoardMemorizer = 0,
-            inventory_detector: InventoryDetector = 0,
-            ):
-        if image_getter != 0:
-            self.board_splitter.image_getter = image_getter
-        if corner_detector != 0:
-            self.board_splitter.corner_detector = corner_detector
-        if board_splitter != 0:
-            self.board_splitter = board_splitter
-        if recognizer != 0:
-            self.recognizer = recognizer
-        if memorizer != 0:
-            self.memorizer = memorizer
-        if inventory_detector != 0:
-            self.board_splitter.inventory_detector = inventory_detector
+    def set_board_splitter(self, splitter: BoardSplitter) -> None:
+        self.board_splitter = splitter
 
-    def set_image(self, img: str | ImageNP) -> None:
-        self.board_splitter.set_image(img)
+    def set_recognizer(self, recognizer: Recognizer) -> None:
+        self.recognizer = recognizer
+
+    def set_memorizer(self, memorizer: BoardMemorizer) -> None:
+        self.memorizer = memorizer
+
+    def get_board_splitter(self) -> BoardSplitter:
+        return self.board_splitter
+
+    def get_recognizer(self) -> Recognizer:
+        return self.recognizer
+
+    def get_memorizer(self) -> BoardMemorizer:
+        return self.memorizer
 
     def get_cells_imgs(self, img_mode: ImageMode) -> list[list[ImageNP]]:
         return self.board_splitter.get_board_cells(img_mode)

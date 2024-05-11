@@ -1,3 +1,4 @@
+from config import GLOBAL_CONFIG
 from . import ImageGetters
 from .ImageGetters import ImageGetter
 from Elements.CornerDetectors.CornerDetector import CornerDetector
@@ -11,28 +12,28 @@ import copy
 
 
 class BoardSplitter:
-    image_getter: ImageGetter
-    corner_detector: CornerDetector
-    inventory_detector: InventoryDetector
+    __image_getter: ImageGetter
+    __corner_detector: CornerDetector
+    __inventory_detector: InventoryDetector
 
     def __init__(self,
                  image_getter: ImageGetter,
                  corner_getter: CornerDetector,
                  inventory_detector: InventoryDetector = None):
-        self.image_getter = image_getter
-        self.corner_detector = corner_getter
-        self.inventory_detector = inventory_detector
+        self.__image_getter = image_getter
+        self.__corner_detector = corner_getter
+        self.__inventory_detector = inventory_detector
 
     def get_board_image_no_perspective(self,
                                        img_mode: ImageMode = ImageMode.ORIGINAL,
                                        draw_grid: bool = False) -> ImageNP:
         """Returns image of board without perspective and surroundings"""
-        full_img = self.image_getter.get_image()
-        corners = self.corner_detector.get_corners(full_img)
+        full_img = self.__image_getter.get_image()
+        corners = self.__corner_detector.get_corners(full_img)
         img_no_persp = utils.remove_perspective(full_img, np.array(corners))
         if draw_grid:
             h, w = img_no_persp.shape[:2]
-            grid_thickness = int((h + w) / 2 * 0.01)
+            grid_thickness = int((h + w) / 2 * GLOBAL_CONFIG.Visuals.lines_thickness_fraction) + 1
             for x in np.linspace(0, w, num=10, dtype=np.int_):
                 cv2.line(img_no_persp, [x, 0], [x, h], color=[0, 255, 0], thickness=grid_thickness)
             for y in np.linspace(0, h, num=10, dtype=np.int_):
@@ -69,11 +70,11 @@ class BoardSplitter:
             show_grid: bool = False,
             show_inventories: bool = False
     ) -> ImageNP:
-        full_img = self.image_getter.get_image().copy()
+        full_img = self.__image_getter.get_image().copy()
         color = [0, 255, 0]
         h, w = full_img.shape[:2]
-        thickness = int((h + w) / 2 * 0.007)
-        corners = np.array(self.corner_detector.get_corners(full_img))
+        thickness = int((h + w) / 2 * GLOBAL_CONFIG.Visuals.lines_thickness_fraction) + 1
+        corners = np.array(self.__corner_detector.get_corners(full_img))
         if show_borders:
             cv2.polylines(full_img, [corners], True, color, thickness=thickness)
         if show_grid:
@@ -86,8 +87,8 @@ class BoardSplitter:
                 cv2.line(full_img, p1, p2, color, thickness)
             for p1, p2 in zip(left_points, reversed(right_points)):
                 cv2.line(full_img, p1, p2, color, thickness)
-        if show_inventories and self.inventory_detector is not None:
-            i1_corners, i2_corners = self.inventory_detector.get_inventories_corners(full_img)
+        if show_inventories and self.__inventory_detector is not None:
+            i1_corners, i2_corners = self.__inventory_detector.get_inventories_corners(full_img)
             i1_corners = np.array(i1_corners)
             i2_corners = np.array(i2_corners)
             cv2.polylines(full_img, [i1_corners, i2_corners], True, color, thickness=thickness)
@@ -95,16 +96,11 @@ class BoardSplitter:
 
     def get_inventory_cells(self, image_mode: ImageMode) -> tuple[list[ImageNP], list[ImageNP]]:
         img = self.get_full_img()
-        i1_imgs, i2_imgs = self.inventory_detector.get_figure_images(img)
+        i1_imgs, i2_imgs = self.__inventory_detector.get_figure_images(img)
         i1_imgs = [image_mode.convert_image(image) for image in i1_imgs]
         i2_imgs = [image_mode.convert_image(image) for image in i2_imgs]
         return i1_imgs, i2_imgs
 
-    def set_image(self, img: str | ImageNP) -> None:
-        if isinstance(self.image_getter, ImageGetters.Photo):
-            self.image_getter.set_image(img)
-        else:
-            raise Exception("Can't set image on image getter other than Photo")
     def __copy__(self):
         return BoardSplitter(
             image_getter=copy.copy(self.__image_getter),
@@ -112,3 +108,20 @@ class BoardSplitter:
             inventory_detector=copy.copy(self.__inventory_detector)
         )
 
+    def set_image_getter(self, image_getter: ImageGetter):
+        self.__image_getter = image_getter
+
+    def set_corner_detector(self, corner_detector: CornerDetector):
+        self.__corner_detector = corner_detector
+
+    def set_inventory_detector(self, inventory_detector: InventoryDetector | None):
+        self.__inventory_detector = inventory_detector
+
+    def get_image_getter(self):
+        return self.__image_getter
+
+    def get_corner_detector(self):
+        return self.__corner_detector
+
+    def get_inventory_detector(self):
+        return self.__inventory_detector

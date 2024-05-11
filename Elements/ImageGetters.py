@@ -14,21 +14,11 @@ class ImageGetter(ABC):
 class Photo(ImageGetter):
     img: np.ndarray
 
-    def __init__(self, img_path: str = None):
-        self.img = cv2.imread(img_path)
-        self.__check_image_validity()
-
-    def get_image(self) -> np.ndarray:
-        return self.img.copy()
-
-    def set_image(self, img: str | ImageNP):
+    def __init__(self, img: str | ImageNP = ""):
         if isinstance(img, str):
             self.img = cv2.imread(img)
         else:
             self.img = img
-        self.__check_image_validity()
-
-    def __check_image_validity(self):
         if self.img is None:
             self.img = generate_random_image(500, 500, 3)
 
@@ -57,10 +47,12 @@ class Camera(ImageGetter):
 
 class Video(ImageGetter):
     video: cv2.VideoCapture
+    __path: str
 
     def __init__(self, video_path: str = ""):
         self.video = cv2.VideoCapture(video_path)
         self.finished_playing = False
+        self.__path = video_path
 
     def get_image(self) -> ImageNP:
         ret, frame = self.video.read()
@@ -68,6 +60,9 @@ class Video(ImageGetter):
             return frame
         else:
             return generate_random_image(500, 500, 3)
+
+    def restart(self) -> None:
+        self.video = cv2.VideoCapture(self.__path)
 
     def __copy__(self):
         return Video(self.__path)

@@ -2,7 +2,6 @@ from Elements import *
 from config import Paths, GLOBAL_CONFIG
 from extra.image_modes import ImageMode
 
-
 CONFIG_IMAGE_MODE = ImageMode(GLOBAL_CONFIG.NeuralNetwork.image_mode)
 
 
@@ -59,6 +58,19 @@ def book_reader(image_mode: ImageMode = CONFIG_IMAGE_MODE):
             image_getter=ImageGetters.Photo(),
             corner_getter=BookCornerDetector(),
             inventory_detector=BookInventoryDetector()
+        ),
+        recognizer=default_recognizer()
+    )
+    return reader
+
+
+def camera_reader(image_mode: ImageMode = CONFIG_IMAGE_MODE):
+    reader = ShogiBoardReader(
+        image_mode=image_mode,
+        board_splitter=BoardSplitter(
+            image_getter=ImageGetters.Camera(),
+            corner_getter=CoolCornerDetector(),
+            inventory_detector=None
         ),
         recognizer=default_recognizer()
     )

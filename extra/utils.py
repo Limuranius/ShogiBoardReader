@@ -136,3 +136,18 @@ def bounding_box_image(image: ImageNP, corners: Corners):
     x, y, w, h = cv2.boundingRect(np.array(corners))
     return image[y: y + h, x: x + w]
 
+
+def draw_points(
+        image: ImageNP,
+        points: list[tuple[int, int]],
+        line_color: tuple[int, int, int] = (0, 255, 0),
+        dot_color: tuple[int, int, int] = (0, 0, 255),
+        thickness_fraction: float = 0.01,
+):
+    h, w = image.shape[:2]
+    line_thickness = int((h + w) / 2 * thickness_fraction)
+    dot_radius = line_thickness
+    new_image = cv2.polylines(image, [np.array(points)], isClosed=True, color=line_color, thickness=line_thickness)
+    for point in points:
+        new_image = cv2.circle(new_image, point, dot_radius, color=dot_color, thickness=-1)
+    return new_image
