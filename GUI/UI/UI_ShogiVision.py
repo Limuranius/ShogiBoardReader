@@ -60,6 +60,6 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_scan_book), _translate("MainWindow", "Scan Book"))
         self.label_cat.setText(_translate("MainWindow", "TextLabel"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Cat"))
-from GUI.widgets.ImageLabel import ImageLabel
+from GUI.components.ImageLabel import ImageLabel
 from GUI.views.ScanBook import ScanBook
 from GUI.views.ScanImage import ScanImage

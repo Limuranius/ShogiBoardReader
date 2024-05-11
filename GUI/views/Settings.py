@@ -1,5 +1,7 @@
-from PyQt5.QtCore import pyqtSlot, QVariant
-from PyQt5.QtWidgets import QWidget
+import copy
+
+from PyQt5.QtCore import pyqtSlot, QVariant, pyqtSignal
+from PyQt5.QtWidgets import QDialog
 from Elements.ImageGetters import Camera, Photo, Video
 from GUI.UI.UI_Settings import Ui_settings
 from Elements import ImageGetters, BoardSplitter, BoardMemorizer, ShogiBoardReader
@@ -8,8 +10,11 @@ from config import GLOBAL_CONFIG
 from extra.types import ImageNP
 
 
-class Settings(QWidget):
+class Settings(QDialog):
     __reader: ShogiBoardReader
+
+    # Emitted when OK clicked
+    reader_changed = pyqtSignal(ShogiBoardReader)
 
     def __init__(self, reader: ShogiBoardReader, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -90,8 +95,11 @@ class Settings(QWidget):
 
     @pyqtSlot()
     def on_ok_clicked(self):
+        self.accepted.emit()
+        self.reader_changed.emit(copy.copy(self.__reader))
         self.close()
 
     @pyqtSlot()
     def on_cancel_clicked(self):
+        self.rejected.emit()
         self.close()

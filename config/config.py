@@ -47,6 +47,7 @@ class Visuals:
 @section(section_name="Settings")
 class Settings:
     use_siren: bool
+    predict_board: bool
 
 
 
