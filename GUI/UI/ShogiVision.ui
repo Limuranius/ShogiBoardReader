@@ -78,7 +78,7 @@
   <customwidget>
    <class>ImageLabel</class>
    <extends>QLabel</extends>
-   <header>GUI/components/ImageLabel.h</header>
+   <header>GUI/widgets/ImageLabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

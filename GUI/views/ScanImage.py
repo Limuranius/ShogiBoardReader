@@ -1,24 +1,20 @@
+import copy
+
 from PyQt5.QtCore import pyqtSlot, QVariant, QThread, pyqtSignal, QUrl
 from PyQt5.QtMultimedia import QSoundEffect
 from PyQt5.QtWidgets import QWidget
 
 from Elements.Board import Board
-from GUI.UI.UI_scan_image import Ui_scan_image
-from Elements import ImageGetters, BoardChangeStatus
-from GUI.widgets import combobox_values
+from Elements.ImageGetters import Photo
+from GUI.UI.UI_ScanImage import Ui_scan_image
+from Elements import ImageGetters, BoardChangeStatus, ShogiBoardReader
+from GUI.views.Settings import Settings
 from config import Paths
 from extra.types import ImageNP
 from GUI.workers.ReaderWorker import ReaderWorker
 
-BOARD_IMAGE_SIZE = (500, 661)
-CONFIG_BOARD_IMAGE_SIZE = (250, 250)
-CONFIG_BOARD_IMAGE_SIZE_VIEW_MODE = (500, 500)
-
 
 class ScanImage(QWidget):
-    __use_alarm: bool = False
-    __alarm_sound: QSoundEffect
-
     __worker: ReaderWorker
     __worker_thread: QThread
 
@@ -39,71 +35,17 @@ class ScanImage(QWidget):
         self.__worker = ReaderWorker()
         self.__worker_thread = QThread()
         self.__worker.frame_processed.connect(self.update_data)
-        self.ui.corner_and_inventory_select.corner_detector_changed.connect(self.__worker.set_corner_detector)
-        self.ui.corner_and_inventory_select.inventory_detector_changed.connect(self.__worker.set_inventory_detector)
-        self.ui.photo_drop.received_content.connect(self.__worker.set_photo)
-        self.ui.video_drop.received_content.connect(self.__worker.set_video)
-        self.ui.memorizer_select.element_changed.connect(self.__worker.set_memorizer)
-        self.ui.checkBox_lower_moves_first.clicked["bool"].connect(self.__worker.set_lower_moves_first)
-        self.ui.checkBox_recognize.clicked["bool"].connect(self.__worker.set_recognize_board)
-        self.ui.image_getter_select.element_changed.connect(self.__worker.set_image_getter)
         self.__request_images_signal.connect(self.__worker.send_data)
-        self.ui.cam_id_select.element_changed.connect(self.__worker.set_image_getter)
         self.__worker.moveToThread(self.__worker_thread)
         self.__worker_thread.start()
-        self.__request_data()
+        # self.__request_data()
 
-        cams_name, cams_values = combobox_values.cameras()
-        self.ui.cam_id_select.set_name(cams_name)
-        self.ui.cam_id_select.set_values(cams_values)
-
-        ig_name, ig_values = combobox_values.image_getter()
-        self.ui.image_getter_select.set_name(ig_name)
-        self.ui.image_getter_select.set_values(ig_values)
-
-        mem_name, mem_values = combobox_values.memorizer()
-        self.ui.memorizer_select.set_name(mem_name)
-        self.ui.memorizer_select.set_values(mem_values)
-
-        self.ui.photo_drop.set_content_type("ONE_IMAGE")
-        self.ui.video_drop.set_content_type("VIDEO")
-        self.ui.corner_and_inventory_select.set_size(CONFIG_BOARD_IMAGE_SIZE)
-        self.ui.board_view.set_size(BOARD_IMAGE_SIZE)
-
-        self.__alarm_sound = QSoundEffect()
-        self.__alarm_sound.setSource(QUrl.fromLocalFile(Paths.ALARM_PATH))
-        self.__alarm_sound.setLoopCount(QSoundEffect.Infinite)
-
-    @pyqtSlot(QVariant)
-    def on_image_getter_changed(self, image_getter_factory):
-        image_getter = image_getter_factory()
-
-        # Showing widgets only for chosen image getter
-        self.ui.photo_drop.setVisible(False)
-        self.ui.video_drop.setVisible(False)
-        self.ui.frame_memorizer.setVisible(False)
-        self.ui.cam_id_select.setVisible(False)
-        if isinstance(image_getter, ImageGetters.Photo):
-            self.ui.photo_drop.setVisible(True)
-            self.__continuous_request = False
-        if isinstance(image_getter, ImageGetters.Video):
-            self.ui.video_drop.setVisible(True)
-            self.ui.frame_memorizer.setVisible(True)
-            self.__continuous_request = True
-        if isinstance(image_getter, ImageGetters.Camera):
-            self.ui.frame_memorizer.setVisible(True)
-            self.ui.cam_id_select.setVisible(True)
-            self.__continuous_request = True
-        self.__request_data()
-
-    @pyqtSlot(bool)
-    def on_alarm_switched(self, use_alarm: bool):
-        self.__use_alarm = use_alarm
-        if not use_alarm:
-            self.stop_alarm()
+        # self.__alarm_sound = QSoundEffect()
+        # self.__alarm_sound.setSource(QUrl.fromLocalFile(Paths.ALARM_PATH))
+        # self.__alarm_sound.setLoopCount(QSoundEffect.Infinite)
 
     def set_memorizer_status(self, update_status: BoardChangeStatus):
-        self.ui.label_turn_status.setText(update_status.value)
+        self.ui.label_memorizer_status.setText(update_status.value)
         color = "white"
         match update_status:
             case BoardChangeStatus.NOTHING_CHANGED:
@@ -124,40 +66,7 @@ class ScanImage(QWidget):
             case BoardChangeStatus.LOW_CERTAINTY:
                 color = "yellow"
                 self.start_alarm()
-        self.ui.label_turn_status.setStyleSheet(f"background-color: {color}")
-
-    @pyqtSlot(QVariant)
-    def on_photo_input(self, image: ImageNP):
-        pass
-
-    @pyqtSlot(QVariant)
-    def on_video_input(self, video_path: str):
-        pass
-
-    @pyqtSlot(QVariant)
-    def on_memorizer_changed(self, memorizer_factory):
-        memorizer = memorizer_factory()
-        self.ui.kif_recorder.setVisible(memorizer is not None)
-
-    @pyqtSlot(bool)
-    def on_recognize_board_switched(self, recognize_board: bool):
-        pass
-
-    @pyqtSlot(QVariant)
-    def on_corner_detector_changed(self, corner_detector_factory):
-        pass
-
-    @pyqtSlot(QVariant)
-    def on_inventory_detector_changed(self, inventory_detector_factory):
-        pass
-
-    @pyqtSlot(bool)
-    def on_lower_moves_first_switched(self, lower_moves_first: bool):
-        pass
-
-    @pyqtSlot(QVariant)
-    def on_cam_id_changed(self, camera_factory):
-        pass
+        self.ui.label_memorizer_status.setStyleSheet(f"background-color: {color}")
 
     @pyqtSlot(ImageNP, ImageNP, Board, str, BoardChangeStatus)
     def update_data(
@@ -168,12 +77,12 @@ class ScanImage(QWidget):
             kif: str,
             update_status: BoardChangeStatus,
     ):
-        self.ui.corner_and_inventory_select.set_images_fast(full_img, no_perspective)
+        self.ui.label_full_image.set_image(full_img)
         self.ui.board_view.set_board(predicted_board)
         self.ui.kif_recorder.set_kif(kif)
         self.set_memorizer_status(update_status)
 
-        if self.__request_sent:  # Checking that the data was sent in response to request
+        if self.__request_sent:  # Checking that the data was sent in response to request and not some random events
             self.__request_sent = False
             if self.__continuous_request:
                 self.__request_data()
@@ -183,20 +92,52 @@ class ScanImage(QWidget):
             self.__request_sent = True
             self.__request_images_signal.emit()
 
+    def start_stream(self):
+        self.__continuous_request = True
+        self.__request_data()
+        self.ui.pushButton_pause.setText("Pause")
+
+    def stop_stream(self):
+        self.__continuous_request = False
+        self.ui.pushButton_pause.setText("Continue")
+
+    @pyqtSlot()
+    def on_pause_clicked(self):
+        if self.ui.pushButton_pause.text() == "Pause":
+            self.stop_stream()
+        else:
+            self.start_stream()
+
+    @pyqtSlot()
+    def on_restart_video_clicked(self):
+        pass
+
+    @pyqtSlot()
+    def on_settings_clicked(self):
+        reader = self.__worker.get_reader()
+        settings_win = Settings(copy.copy(reader))
+        settings_win.reader_changed.connect(self.on_reader_changed)
+        settings_win.setModal(True)
+        settings_win.exec()
+
+
+    @pyqtSlot()
+    def on_clear_memorizer_clicked(self):
+        pass
+
+    @pyqtSlot(ShogiBoardReader)
+    def on_reader_changed(self, new_reader: ShogiBoardReader):
+        self.__worker.set_reader(new_reader)
+
+        # Checking image getter type
+        image_getter = new_reader.get_board_splitter().get_image_getter()
+        if isinstance(image_getter, Photo):
+            self.stop_stream()
+        else:
+            self.start_stream()
+
     def start_alarm(self):
-        if self.__use_alarm and not self.__alarm_sound.isPlaying():
-            self.__alarm_sound.play()
+        pass
 
     def stop_alarm(self):
-        self.__alarm_sound.stop()
-
-    @pyqtSlot(bool)
-    def on_view_mode_changed(self, use_view_mode: bool):
-        hide_all = use_view_mode
-        self.ui.corner_and_inventory_select.set_selects_hidden(hide_all)
-        self.ui.frame_images_select.setHidden(hide_all)
-        self.ui.frame_mem_kif.setHidden(hide_all)
-        if use_view_mode:
-            self.ui.corner_and_inventory_select.set_size(CONFIG_BOARD_IMAGE_SIZE_VIEW_MODE)
-        else:
-            self.ui.corner_and_inventory_select.set_size(CONFIG_BOARD_IMAGE_SIZE)
+        pass

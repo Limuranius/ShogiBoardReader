@@ -12,6 +12,4 @@ class ShogiVision(QMainWindow):
         self.ui.setupUi(self)
 
         cat_img = cv2.imread(os.path.join(Paths.IMGS_DIR, "cat.jpg"))
-        h, w = cat_img.shape[:2]
         self.ui.label_cat.set_image(cat_img)
-        self.ui.label_cat.set_size((w // 2, h // 2))
