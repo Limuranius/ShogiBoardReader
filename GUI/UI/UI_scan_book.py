@@ -18,6 +18,11 @@ class Ui_scan_book(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout(scan_book)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.frame = QtWidgets.QFrame(scan_book)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
+        self.frame.setSizePolicy(sizePolicy)
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
@@ -43,6 +48,10 @@ class Ui_scan_book(object):
         self.label_page.setAlignment(QtCore.Qt.AlignCenter)
         self.label_page.setObjectName("label_page")
         self.horizontalLayout_2.addWidget(self.label_page)
+        self.spinBox_page_number = QtWidgets.QSpinBox(self.frame_3)
+        self.spinBox_page_number.setMaximum(0)
+        self.spinBox_page_number.setObjectName("spinBox_page_number")
+        self.horizontalLayout_2.addWidget(self.spinBox_page_number)
         self.pushButton_next = QtWidgets.QPushButton(self.frame_3)
         self.pushButton_next.setObjectName("pushButton_next")
         self.horizontalLayout_2.addWidget(self.pushButton_next)
@@ -63,6 +72,7 @@ class Ui_scan_book(object):
         self.pushButton_previous.clicked.connect(scan_book.on_previous_clicked) # type: ignore
         self.pushButton_next.clicked.connect(scan_book.on_next_clicked) # type: ignore
         self.listWidget_pageBoards.itemSelectionChanged.connect(scan_book.on_board_changed) # type: ignore
+        self.spinBox_page_number.valueChanged['int'].connect(scan_book.on_page_number_changed) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(scan_book)
 
     def retranslateUi(self, scan_book):

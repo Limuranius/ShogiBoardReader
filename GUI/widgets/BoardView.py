@@ -35,6 +35,3 @@ class BoardView(QWidget):
     def set_board(self, board: Board):
         self.__board = board
         self.__show_board()
-
-    def set_size(self, img_size: tuple[int, int]):
-        self.ui.board_image_label.set_size(img_size)

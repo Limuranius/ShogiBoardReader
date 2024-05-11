@@ -9,3 +9,4 @@ pyuic5 ProgressWorker.ui > UI_ProgressWorker.py
 pyuic5 KifRecorder.ui > UI_KifRecorder.py
 pyuic5 FileDragDrop.ui > UI_FileDragDrop.py
 pyuic5 ShogiVision.ui > UI_ShogiVision.py
+pyuic5 BookPageRangeDialog.ui > UI_BookPageRangeDialog.py
