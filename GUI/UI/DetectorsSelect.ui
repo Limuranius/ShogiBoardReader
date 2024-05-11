@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>556</width>
+    <width>786</width>
     <height>359</height>
    </rect>
   </property>
@@ -40,26 +40,28 @@
      </layout>
     </widget>
    </item>
-   <item>
+   <item alignment="Qt::AlignHCenter">
     <widget class="QFrame" name="frame_selects">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
        <widget class="DescriptiveComboBox" name="corner_detector_select" native="true"/>
       </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_set_corners">
-        <property name="text">
-         <string>Set Corners</string>
-        </property>
-       </widget>
+      <item row="0" column="1">
+       <widget class="DescriptiveComboBox" name="inventory_detector_select" native="true"/>
       </item>
-      <item>
+      <item row="2" column="0">
        <widget class="QLabel" name="label_click_corners">
         <property name="styleSheet">
          <string notr="true">color: rgb(46, 194, 126);</string>
@@ -72,8 +74,33 @@
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="DescriptiveComboBox" name="inventory_detector_select" native="true"/>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="pushButton_set_corners">
+        <property name="text">
+         <string>Set Corners</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QCheckBox" name="checkBox_show_borders">
+        <property name="text">
+         <string>Show borders</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QCheckBox" name="checkBox_show_grid">
+        <property name="text">
+         <string>Show grid</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QCheckBox" name="checkBox_show_inventories">
+        <property name="text">
+         <string>Show inventories</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -84,7 +111,7 @@
   <customwidget>
    <class>DescriptiveComboBox</class>
    <extends>QWidget</extends>
-   <header>GUI/components/DescriptiveComboBox.h</header>
+   <header>GUI/widgets/DescriptiveComboBox.h</header>
    <container>1</container>
    <slots>
     <signal>element_changed(QVariant)</signal>
@@ -93,7 +120,7 @@
   <customwidget>
    <class>ImageLabel</class>
    <extends>QLabel</extends>
-   <header>GUI/components/ImageLabel.h</header>
+   <header>GUI/widgets/ImageLabel.h</header>
    <slots>
     <signal>clicked()</signal>
    </slots>
@@ -124,8 +151,8 @@
    <slot>on_set_corners_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>364</x>
-     <y>260</y>
+     <x>412</x>
+     <y>308</y>
     </hint>
     <hint type="destinationlabel">
      <x>551</x>
@@ -140,8 +167,8 @@
    <slot>on_corner_detector_changed(QVariant)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>35</x>
-     <y>211</y>
+     <x>258</x>
+     <y>273</y>
     </hint>
     <hint type="destinationlabel">
      <x>-3</x>
@@ -156,12 +183,60 @@
    <slot>on_inventory_detector_changed(QVariant)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>34</x>
-     <y>313</y>
+     <x>429</x>
+     <y>273</y>
     </hint>
     <hint type="destinationlabel">
      <x>-2</x>
      <y>309</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_show_borders</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>visualCornerSelect</receiver>
+   <slot>on_show_borders_switched(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>470</x>
+     <y>259</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>672</x>
+     <y>258</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_show_grid</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>visualCornerSelect</receiver>
+   <slot>on_show_grid_switched(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>486</x>
+     <y>285</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>650</x>
+     <y>280</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_show_inventories</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>visualCornerSelect</receiver>
+   <slot>on_show_inventories_switched(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>538</x>
+     <y>319</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>666</x>
+     <y>318</y>
     </hint>
    </hints>
   </connection>
@@ -173,5 +248,8 @@
   <slot>on_inventory_detector_changed(QVariant)</slot>
   <slot>on_image_clicked()</slot>
   <slot>on_set_corners_clicked()</slot>
+  <slot>on_show_borders_switched(bool)</slot>
+  <slot>on_show_grid_switched(bool)</slot>
+  <slot>on_show_inventories_switched(bool)</slot>
  </slots>
 </ui>
