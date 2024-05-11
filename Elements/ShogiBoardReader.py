@@ -1,3 +1,4 @@
+import copy
 from collections import defaultdict
 from Elements.Recognizers import Recognizer
 from extra.figures import Figure
@@ -129,3 +130,11 @@ class ShogiBoardReader:
             return ""
         else:
             return self.memorizer.get_kif()
+
+    def __copy__(self):
+        return ShogiBoardReader(
+            image_mode=self.image_mode,
+            board_splitter=copy.copy(self.board_splitter),
+            recognizer=copy.copy(self.recognizer),
+            memorizer=copy.copy(self.memorizer)
+        )

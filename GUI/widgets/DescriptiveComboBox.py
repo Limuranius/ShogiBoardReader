@@ -1,6 +1,7 @@
 from PyQt5.QtCore import pyqtSignal, pyqtSlot, QVariant
 from PyQt5.QtWidgets import QWidget
 from GUI.UI.UI_DescriptiveComboBox import Ui_descriptiveComboBox
+import copy
 
 
 class DescriptiveComboBox(QWidget):
@@ -26,5 +27,16 @@ class DescriptiveComboBox(QWidget):
     @pyqtSlot(int)
     def on_element_changed(self, index: int):
         text, description, value = self.__values[index]
+        value_copy = copy.copy(value)
         self.ui.label_description.setText(description)
-        self.element_changed.emit(QVariant(value))
+        self.element_changed.emit(QVariant(value_copy))
+
+    def switch_to_same_class(self, obj: object, emit_signal: bool = True):
+        for i, (_, _, value) in enumerate(self.__values):
+            if type(obj) is type(value):  # Have same class
+                if emit_signal:
+                    self.ui.comboBox.setCurrentIndex(i)
+                else:
+                    self.ui.comboBox.blockSignals(True)
+                    self.ui.comboBox.setCurrentIndex(i)
+                    self.ui.comboBox.blockSignals(False)

@@ -7,6 +7,7 @@ from extra.image_modes import ImageMode
 from extra.types import ImageNP
 import numpy as np
 import cv2
+import copy
 
 
 class BoardSplitter:
@@ -104,3 +105,10 @@ class BoardSplitter:
             self.image_getter.set_image(img)
         else:
             raise Exception("Can't set image on image getter other than Photo")
+    def __copy__(self):
+        return BoardSplitter(
+            image_getter=copy.copy(self.__image_getter),
+            corner_getter=copy.copy(self.__corner_detector),
+            inventory_detector=copy.copy(self.__inventory_detector)
+        )
+

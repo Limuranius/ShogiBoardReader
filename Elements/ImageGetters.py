@@ -32,6 +32,13 @@ class Photo(ImageGetter):
         if self.img is None:
             self.img = generate_random_image(500, 500, 3)
 
+    def get_image(self) -> np.ndarray:
+        return self.img.copy()
+
+    def __copy__(self):
+        new_img = Photo(self.img.copy())
+        return new_img
+
 
 class Camera(ImageGetter):
     video: cv2.VideoCapture
@@ -61,3 +68,6 @@ class Video(ImageGetter):
             return frame
         else:
             return generate_random_image(500, 500, 3)
+
+    def __copy__(self):
+        return Video(self.__path)

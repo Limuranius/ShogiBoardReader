@@ -8,22 +8,22 @@ def corner_detector():
         (
             "Universal",
             "Universal corner detector.\nUse it if you're unsure what to choose",
-            Elements.CoolCornerDetector
+            Elements.CoolCornerDetector()
         ),
         (
             "Book",
             "Works really good in e-books",
-            Elements.BookCornerDetector
+            Elements.BookCornerDetector()
         ),
         (
             "HSV Markers",
             "Detects colored markers using HSV thresholding",
-            factories.hsv_corner_detector
+            factories.hsv_corner_detector()
         ),
         (
             "Manual",
             "Set corners manually. If nothing else is working...",
-            Elements.HardcodedCornerDetector
+            Elements.HardcodedCornerDetector()
         ),
     ]
 
@@ -33,12 +33,12 @@ def inventory_detector():
         (
             "None",
             "Don't use inventory detector",
-            lambda: None
+            None
         ),
         (
             "Book",
             "Detects inventories of e-books' boards",
-            Elements.InventoryDetectors.BookInventoryDetector
+            Elements.InventoryDetectors.BookInventoryDetector()
         ),
     ]
 
@@ -48,12 +48,12 @@ def memorizer():
         (
             "None",
             "Don't use memorizer",
-            lambda: None
+            None
         ),
         (
             "Memorizer",
             "Use memorizer",
-            Elements.BoardMemorizer
+            Elements.BoardMemorizer()
         ),
     ]
 
@@ -63,17 +63,17 @@ def image_getter():
         (
             "Photo",
             "Photo of board",
-            Elements.ImageGetters.Photo
+            Elements.ImageGetters.Photo()
         ),
         (
             "Video",
             "Recorded video of board",
-            Elements.ImageGetters.Video
+            Elements.ImageGetters.Video()
         ),
         (
             "Camera",
             "Use camera connected to computer",
-            Elements.ImageGetters.Camera
+            Elements.ImageGetters.Camera()
         ),
     ]
 
@@ -81,12 +81,10 @@ def image_getter():
 def cameras():
     cams = []
     for cam_id in utils.get_available_cam_ids():
-        def func(cam_id=cam_id):
-            return Elements.ImageGetters.Camera(cam_id)
         cams.append((
             str(cam_id),
             f"Camera {cam_id}",
-            func
+            Elements.ImageGetters.Camera(cam_id)
         ))
     return "Camera", cams
 
