@@ -39,13 +39,19 @@
           <widget class="DescriptiveComboBox" name="image_getter_select" native="true"/>
          </item>
          <item>
-          <widget class="FileDragDrop" name="video_drop" native="true"/>
-         </item>
-         <item>
-          <widget class="FileDragDrop" name="photo_drop" native="true"/>
-         </item>
-         <item>
           <widget class="DescriptiveComboBox" name="cam_id_select" native="true"/>
+         </item>
+         <item>
+          <widget class="UploadFileButton" name="pushButton_upload_file">
+           <property name="font">
+            <font>
+             <pointsize>11</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Upload Files</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -124,13 +130,9 @@
    </slots>
   </customwidget>
   <customwidget>
-   <class>FileDragDrop</class>
-   <extends>QWidget</extends>
-   <header>GUI/widgets/FileDragDrop.h</header>
-   <container>1</container>
-   <slots>
-    <signal>received_content(QVariant)</signal>
-   </slots>
+   <class>UploadFileButton</class>
+   <extends>QPushButton</extends>
+   <header>GUI/widgets/UploadFileButton.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
@@ -148,38 +150,6 @@
     <hint type="destinationlabel">
      <x>4</x>
      <y>201</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>photo_drop</sender>
-   <signal>received_content(QVariant)</signal>
-   <receiver>settings</receiver>
-   <slot>on_photo_input(QVariant)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>167</x>
-     <y>155</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>-1</x>
-     <y>231</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>video_drop</sender>
-   <signal>received_content(QVariant)</signal>
-   <receiver>settings</receiver>
-   <slot>on_video_input(QVariant)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>167</x>
-     <y>172</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1</x>
-     <y>257</y>
     </hint>
    </hints>
   </connection>

@@ -6,6 +6,7 @@ from Elements.ImageGetters import Camera, Photo, Video
 from GUI.UI.UI_Settings import Ui_settings
 from Elements import ImageGetters, BoardSplitter, BoardMemorizer, ShogiBoardReader
 from GUI.widgets import combobox_values
+from GUI.widgets.UploadFileDialog import FileType
 from config import GLOBAL_CONFIG
 from extra.types import ImageNP
 
@@ -37,24 +38,24 @@ class Settings(QDialog):
         self.ui.memorizer_select.set_name(mem_name)
         self.ui.memorizer_select.set_values(mem_values)
 
-        self.ui.photo_drop.set_content_type("ONE_IMAGE")
-        self.ui.video_drop.set_content_type("VIDEO")
-
     @pyqtSlot(QVariant)
     def on_image_getter_changed(self, image_getter: ImageGetters.ImageGetter):
         splitter = self.__reader.get_board_splitter()
         splitter.set_image_getter(image_getter)
 
         # Showing widgets only for chosen image getter
-        self.ui.photo_drop.setVisible(False)
-        self.ui.video_drop.setVisible(False)
+        self.ui.pushButton_upload_file.setVisible(False)
         self.ui.groupBox_memorizer.setVisible(False)
         self.ui.cam_id_select.setVisible(False)
         if isinstance(image_getter, ImageGetters.Photo):
-            self.ui.photo_drop.setVisible(True)
+            self.ui.pushButton_upload_file.setVisible(True)
+            self.ui.pushButton_upload_file.set_file_type(FileType.ONE_IMAGE)
+            self.ui.pushButton_upload_file.connect_function(self.on_photo_input)
             self.ui.corner_and_inventory_select.stop_continuous_update()
         if isinstance(image_getter, ImageGetters.Video):
-            self.ui.video_drop.setVisible(True)
+            self.ui.pushButton_upload_file.setVisible(True)
+            self.ui.pushButton_upload_file.set_file_type(FileType.VIDEO)
+            self.ui.pushButton_upload_file.connect_function(self.on_video_input)
             self.ui.groupBox_memorizer.setVisible(True)
             self.ui.corner_and_inventory_select.start_continuous_update()
         if isinstance(image_getter, ImageGetters.Camera):
@@ -66,6 +67,7 @@ class Settings(QDialog):
     def on_photo_input(self, image: ImageNP):
         splitter = self.__reader.get_board_splitter()
         splitter.set_image_getter(Photo(image))
+        self.ui.corner_and_inventory_select.update_images()
 
     @pyqtSlot(QVariant)
     def on_video_input(self, video_path: str):

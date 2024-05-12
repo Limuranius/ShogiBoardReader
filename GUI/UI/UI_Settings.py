@@ -35,15 +35,15 @@ class Ui_settings(object):
         self.image_getter_select = DescriptiveComboBox(self.groupBox)
         self.image_getter_select.setObjectName("image_getter_select")
         self.verticalLayout_2.addWidget(self.image_getter_select)
-        self.video_drop = FileDragDrop(self.groupBox)
-        self.video_drop.setObjectName("video_drop")
-        self.verticalLayout_2.addWidget(self.video_drop)
-        self.photo_drop = FileDragDrop(self.groupBox)
-        self.photo_drop.setObjectName("photo_drop")
-        self.verticalLayout_2.addWidget(self.photo_drop)
         self.cam_id_select = DescriptiveComboBox(self.groupBox)
         self.cam_id_select.setObjectName("cam_id_select")
         self.verticalLayout_2.addWidget(self.cam_id_select)
+        self.pushButton_upload_file = UploadFileButton(self.groupBox)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.pushButton_upload_file.setFont(font)
+        self.pushButton_upload_file.setObjectName("pushButton_upload_file")
+        self.verticalLayout_2.addWidget(self.pushButton_upload_file)
         self.verticalLayout_6.addWidget(self.groupBox)
         self.groupBox_memorizer = QtWidgets.QGroupBox(self.frame)
         self.groupBox_memorizer.setObjectName("groupBox_memorizer")
@@ -74,8 +74,6 @@ class Ui_settings(object):
 
         self.retranslateUi(settings)
         self.image_getter_select.element_changed['QVariant'].connect(settings.on_image_getter_changed) # type: ignore
-        self.photo_drop.received_content['QVariant'].connect(settings.on_photo_input) # type: ignore
-        self.video_drop.received_content['QVariant'].connect(settings.on_video_input) # type: ignore
         self.corner_and_inventory_select.splitter_changed['QVariant'].connect(settings.on_splitter_changed) # type: ignore
         self.checkBox_lower_moves_first.clicked['bool'].connect(settings.on_lower_moves_first_switched) # type: ignore
         self.cam_id_select.element_changed['QVariant'].connect(settings.on_cam_id_changed) # type: ignore
@@ -89,6 +87,7 @@ class Ui_settings(object):
         _translate = QtCore.QCoreApplication.translate
         settings.setWindowTitle(_translate("settings", "Settings"))
         self.groupBox.setTitle(_translate("settings", "Select image"))
+        self.pushButton_upload_file.setText(_translate("settings", "Upload Files"))
         self.groupBox_memorizer.setTitle(_translate("settings", "Board memorizer"))
         self.checkBox_lower_moves_first.setText(_translate("settings", "Lower moves  first"))
         self.checkBox_siren.setText(_translate("settings", "Use siren (LOUD)"))
@@ -96,4 +95,4 @@ class Ui_settings(object):
         self.pushButton_cancel.setText(_translate("settings", "Cancel"))
 from GUI.widgets.DescriptiveComboBox import DescriptiveComboBox
 from GUI.widgets.DetectorsSelect import DetectorsSelect
-from GUI.widgets.FileDragDrop import FileDragDrop
+from GUI.widgets.UploadFileButton import UploadFileButton

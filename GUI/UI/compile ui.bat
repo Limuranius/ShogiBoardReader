@@ -7,6 +7,6 @@ pyuic5 DetectorsSelect.ui > UI_DetectorsSelect.py
 pyuic5 BoardView.ui > UI_BoardView.py
 pyuic5 ProgressWorker.ui > UI_ProgressWorker.py
 pyuic5 KifRecorder.ui > UI_KifRecorder.py
-pyuic5 FileDragDrop.ui > UI_FileDragDrop.py
 pyuic5 ShogiVision.ui > UI_ShogiVision.py
 pyuic5 BookPageRangeDialog.ui > UI_BookPageRangeDialog.py
+pyuic5 UploadFileDialog.ui > UI_UploadFileDialog.py

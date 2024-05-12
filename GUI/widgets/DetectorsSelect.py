@@ -51,7 +51,7 @@ class DetectorsSelect(QWidget):
         self.ui.label_click_corners.setVisible(False)
         self.__label_disappear_timer = QTimer()
         self.__update_images_timer = QTimer()
-        self.__update_images_timer.timeout.connect(self.__update_images)
+        self.__update_images_timer.timeout.connect(self.update_images)
 
         self.__clicked_corners = []
 
@@ -63,7 +63,7 @@ class DetectorsSelect(QWidget):
             self.ui.pushButton_set_corners.setVisible(False)
             self.__splitter.set_corner_detector(corner_detector)
             self.splitter_changed.emit(QVariant(copy.copy(self.__splitter)))
-            self.__update_images()
+            self.update_images()
 
     @pyqtSlot()
     def on_set_corners_clicked(self):
@@ -95,10 +95,10 @@ class DetectorsSelect(QWidget):
                 if self.__use_one_image:
                     self.ui.image_label_original.setVisible(False)
                     self.ui.image_label_no_perspective.setVisible(True)
-            self.__update_images()
+            self.update_images()
 
-    def __update_images(self):
-        no_persp = self.__splitter.get_board_image_no_perspective(draw_grid=True)
+    def update_images(self):
+        no_persp = self.__splitter.get_board_image_no_perspective(draw_grid=GLOBAL_CONFIG.Visuals.show_grid)
         if self.__record_corner_clicks:
             full_img = self.__splitter.get_full_img()
             self.ui.image_label_original.set_image(
@@ -137,11 +137,14 @@ class DetectorsSelect(QWidget):
     @pyqtSlot(bool)
     def on_show_borders_switched(self, show_borders: bool):
         GLOBAL_CONFIG.Visuals.show_borders = show_borders
+        self.update_images()
 
     @pyqtSlot(bool)
     def on_show_grid_switched(self, show_grid: bool):
         GLOBAL_CONFIG.Visuals.show_grid = show_grid
+        self.update_images()
 
     @pyqtSlot(bool)
     def on_show_inventories_switched(self, show_inventories: bool):
         GLOBAL_CONFIG.Visuals.show_inventories = show_inventories
+        self.update_images()
