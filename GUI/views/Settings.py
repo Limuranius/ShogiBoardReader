@@ -48,17 +48,17 @@ class Settings(QDialog):
         # Showing widgets only for chosen image getter
         self.ui.photo_drop.setVisible(False)
         self.ui.video_drop.setVisible(False)
-        self.ui.frame_memorizer.setVisible(False)
+        self.ui.groupBox_memorizer.setVisible(False)
         self.ui.cam_id_select.setVisible(False)
         if isinstance(image_getter, ImageGetters.Photo):
             self.ui.photo_drop.setVisible(True)
             self.ui.corner_and_inventory_select.stop_continuous_update()
         if isinstance(image_getter, ImageGetters.Video):
             self.ui.video_drop.setVisible(True)
-            self.ui.frame_memorizer.setVisible(True)
+            self.ui.groupBox_memorizer.setVisible(True)
             self.ui.corner_and_inventory_select.start_continuous_update()
         if isinstance(image_getter, ImageGetters.Camera):
-            self.ui.frame_memorizer.setVisible(True)
+            self.ui.groupBox_memorizer.setVisible(True)
             self.ui.cam_id_select.setVisible(True)
             self.ui.corner_and_inventory_select.start_continuous_update()
 

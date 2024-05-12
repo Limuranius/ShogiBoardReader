@@ -30,22 +30,19 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_6">
       <item>
-       <widget class="QFrame" name="frame_images_select">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="title">
+         <string>Select image</string>
         </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_3">
+        <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
           <widget class="DescriptiveComboBox" name="image_getter_select" native="true"/>
          </item>
          <item>
-          <widget class="FileDragDrop" name="photo_drop" native="true"/>
+          <widget class="FileDragDrop" name="video_drop" native="true"/>
          </item>
          <item>
-          <widget class="FileDragDrop" name="video_drop" native="true"/>
+          <widget class="FileDragDrop" name="photo_drop" native="true"/>
          </item>
          <item>
           <widget class="DescriptiveComboBox" name="cam_id_select" native="true"/>
@@ -54,32 +51,11 @@
        </widget>
       </item>
       <item>
-       <widget class="QFrame" name="frame_memorizer">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+       <widget class="QGroupBox" name="groupBox_memorizer">
+        <property name="title">
+         <string>Board memorizer</string>
         </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
-         <item>
-          <widget class="QLabel" name="label_4">
-           <property name="font">
-            <font>
-             <pointsize>15</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>Memorizer</string>
-           </property>
-          </widget>
-         </item>
+        <layout class="QVBoxLayout" name="verticalLayout">
          <item>
           <widget class="DescriptiveComboBox" name="memorizer_select" native="true"/>
          </item>
@@ -100,30 +76,6 @@
            </property>
            <property name="text">
             <string>Use siren (LOUD)</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QFrame" name="frame_config">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_5">
-         <item>
-          <widget class="QLabel" name="label_3">
-           <property name="font">
-            <font>
-             <pointsize>15</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>Config</string>
            </property>
           </widget>
          </item>
@@ -232,22 +184,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>memorizer_select</sender>
-   <signal>element_changed(QVariant)</signal>
-   <receiver>settings</receiver>
-   <slot>on_memorizer_changed(QVariant)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>167</x>
-     <y>267</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>-1</x>
-     <y>306</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>corner_and_inventory_select</sender>
    <signal>splitter_changed(QVariant)</signal>
    <receiver>settings</receiver>
@@ -340,6 +276,22 @@
     <hint type="destinationlabel">
      <x>1</x>
      <y>457</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>memorizer_select</sender>
+   <signal>element_changed(QVariant)</signal>
+   <receiver>settings</receiver>
+   <slot>on_memorizer_changed(QVariant)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>167</x>
+     <y>267</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>306</y>
     </hint>
    </hints>
   </connection>

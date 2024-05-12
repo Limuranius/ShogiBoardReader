@@ -41,18 +41,15 @@
     </widget>
    </item>
    <item alignment="Qt::AlignHCenter">
-    <widget class="QFrame" name="frame_selects">
+    <widget class="QGroupBox" name="groupBox_selects">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
+     <property name="title">
+      <string>Detection algoritms</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
@@ -60,6 +57,27 @@
       </item>
       <item row="0" column="1">
        <widget class="DescriptiveComboBox" name="inventory_detector_select" native="true"/>
+      </item>
+      <item row="0" column="2">
+       <widget class="QCheckBox" name="checkBox_show_borders">
+        <property name="text">
+         <string>Show borders</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="pushButton_set_corners">
+        <property name="text">
+         <string>Set Corners</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QCheckBox" name="checkBox_show_grid">
+        <property name="text">
+         <string>Show grid</string>
+        </property>
+       </widget>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_click_corners">
@@ -71,27 +89,6 @@
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QPushButton" name="pushButton_set_corners">
-        <property name="text">
-         <string>Set Corners</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QCheckBox" name="checkBox_show_borders">
-        <property name="text">
-         <string>Show borders</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="QCheckBox" name="checkBox_show_grid">
-        <property name="text">
-         <string>Show grid</string>
         </property>
        </widget>
       </item>
@@ -109,20 +106,20 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>ImageLabel</class>
+   <extends>QLabel</extends>
+   <header>GUI/widgets/ImageLabel.h</header>
+   <slots>
+    <signal>clicked()</signal>
+   </slots>
+  </customwidget>
+  <customwidget>
    <class>DescriptiveComboBox</class>
    <extends>QWidget</extends>
    <header>GUI/widgets/DescriptiveComboBox.h</header>
    <container>1</container>
    <slots>
     <signal>element_changed(QVariant)</signal>
-   </slots>
-  </customwidget>
-  <customwidget>
-   <class>ImageLabel</class>
-   <extends>QLabel</extends>
-   <header>GUI/widgets/ImageLabel.h</header>
-   <slots>
-    <signal>clicked()</signal>
    </slots>
   </customwidget>
  </customwidgets>

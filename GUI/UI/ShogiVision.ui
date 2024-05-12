@@ -46,13 +46,22 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="ImageLabel" name="label_cat">
-          <property name="text">
-           <string>TextLabel</string>
+         <widget class="QGroupBox" name="groupBox">
+          <property name="title">
+           <string>Кеша и Кокос</string>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="ImageLabel" name="label_cat">
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
        </layout>
@@ -64,6 +73,14 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>ImageLabel</class>
+   <extends>QLabel</extends>
+   <header>GUI/widgets/ImageLabel.h</header>
+   <slots>
+    <signal>clicked()</signal>
+   </slots>
+  </customwidget>
+  <customwidget>
    <class>ScanImage</class>
    <extends>QWidget</extends>
    <header>GUI/views/ScanImage.h</header>
@@ -74,11 +91,6 @@
    <extends>QWidget</extends>
    <header>GUI/views/ScanBook.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>ImageLabel</class>
-   <extends>QLabel</extends>
-   <header>GUI/widgets/ImageLabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

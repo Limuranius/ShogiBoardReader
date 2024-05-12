@@ -41,3 +41,10 @@ class BoardCounter:
             self.filled = True
             self.__append_board(board)
             self.__pop_last()
+
+    def clear(self):
+        self.__board_frames.clear()
+        self.__board_counts.clear()
+        self.__board_from_str.clear()
+        self.filled = False
+        self.__append_board(Board.get_empty_board())

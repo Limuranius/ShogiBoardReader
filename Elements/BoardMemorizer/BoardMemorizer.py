@@ -97,3 +97,8 @@ class BoardMemorizer:
             return BoardChangeStatus.VALID_MOVE
         else:
             return BoardChangeStatus.ILLEGAL_MOVE
+
+    def clear(self):
+        self.__boards_counter.clear()
+        self.__move_history.clear()
+        self.__board = shogi.Board()

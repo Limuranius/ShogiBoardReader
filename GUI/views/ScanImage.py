@@ -5,7 +5,7 @@ from PyQt5.QtMultimedia import QSoundEffect
 from PyQt5.QtWidgets import QWidget
 
 from Elements.Board import Board
-from Elements.ImageGetters import Photo
+from Elements.ImageGetters import Photo, Video
 from GUI.UI.UI_ScanImage import Ui_scan_image
 from Elements import ImageGetters, BoardChangeStatus, ShogiBoardReader
 from GUI.views.Settings import Settings
@@ -38,7 +38,9 @@ class ScanImage(QWidget):
         self.__request_images_signal.connect(self.__worker.send_data)
         self.__worker.moveToThread(self.__worker_thread)
         self.__worker_thread.start()
-        # self.__request_data()
+
+        # Triggering initial reader change
+        self.on_reader_changed(self.__worker.get_reader())
 
         # self.__alarm_sound = QSoundEffect()
         # self.__alarm_sound.setSource(QUrl.fromLocalFile(Paths.ALARM_PATH))
@@ -110,7 +112,9 @@ class ScanImage(QWidget):
 
     @pyqtSlot()
     def on_restart_video_clicked(self):
-        pass
+        image_getter = self.__worker.get_reader().get_board_splitter().get_image_getter()
+        if isinstance(image_getter, Video):
+            image_getter.restart()
 
     @pyqtSlot()
     def on_settings_clicked(self):
@@ -120,10 +124,10 @@ class ScanImage(QWidget):
         settings_win.setModal(True)
         settings_win.exec()
 
-
     @pyqtSlot()
     def on_clear_memorizer_clicked(self):
-        pass
+        memorizer = self.__worker.get_reader().get_memorizer()
+        memorizer.clear()
 
     @pyqtSlot(ShogiBoardReader)
     def on_reader_changed(self, new_reader: ShogiBoardReader):
@@ -133,8 +137,21 @@ class ScanImage(QWidget):
         image_getter = new_reader.get_board_splitter().get_image_getter()
         if isinstance(image_getter, Photo):
             self.stop_stream()
+            self.ui.pushButton_pause.setDisabled(True)
         else:
             self.start_stream()
+            self.ui.pushButton_pause.setDisabled(False)
+        if isinstance(image_getter, Video):
+            self.ui.pushButton_restart_video.setDisabled(False)
+        else:
+            self.ui.pushButton_restart_video.setDisabled(True)
+
+        # Checking if memorizer is used
+        memorizer = self.__worker.get_reader().get_memorizer()
+        if memorizer is None:
+            self.ui.groupBox_memorizer.setDisabled(True)
+        else:
+            self.ui.groupBox_memorizer.setDisabled(False)
 
     def start_alarm(self):
         pass

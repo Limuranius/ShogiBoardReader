@@ -78,13 +78,15 @@ def image_getter():
     ]
 
 
-def cameras():
-    cams = []
-    for cam_id in utils.get_available_cam_ids():
-        cams.append((
-            str(cam_id),
-            f"Camera {cam_id}",
-            Elements.ImageGetters.Camera(cam_id)
-        ))
-    return "Camera", cams
+# Precalculating cameras on first start as it takes some time
+cams = []
+for cam_id in utils.get_available_cam_ids():
+    cams.append((
+        str(cam_id),
+        f"Camera {cam_id}",
+        Elements.ImageGetters.Camera(cam_id)
+    ))
 
+
+def cameras():
+    return "Camera", cams

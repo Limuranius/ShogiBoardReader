@@ -15,14 +15,17 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <widget class="QFrame" name="frame_4">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
+     <property name="title">
+      <string>Original image</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
        <widget class="QPushButton" name="pushButton_settings">
         <property name="font">
@@ -90,23 +93,29 @@
     </widget>
    </item>
    <item>
-    <widget class="BoardView" name="board_view" native="true"/>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Board View</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="BoardView" name="board_view" native="true"/>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
-    <widget class="QFrame" name="frame_memorizer">
+    <widget class="QGroupBox" name="groupBox_memorizer">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
+     <property name="title">
+      <string>Game record</string>
      </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+     <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QPushButton" name="pushButton_clear_memorizer">
         <property name="text">
