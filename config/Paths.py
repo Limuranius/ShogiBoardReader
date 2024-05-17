@@ -16,6 +16,7 @@ MODEL_ONNX_PATH = path.join(MODELS_DIR, "model.onnx")
 
 IMGS_DIR = path.join(ROOT_DIR, "img")
 FIGURE_ICONS_DIR = path.join(IMGS_DIR, "figures icons")
+ICONS_DIR = path.join(IMGS_DIR, "Icons")
 
 SOUNDS_DIR_PATH = path.join(ROOT_DIR, "sounds")
 ALARM_PATH = path.join(SOUNDS_DIR_PATH, "alarm.wav")

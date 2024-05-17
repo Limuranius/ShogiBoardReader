@@ -1,7 +1,12 @@
+import os
+
+from PyQt5 import QtGui, QtCore
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QPushButton
 from GUI.widgets.UploadFileDialog import UploadFileDialog, FileType
 from typing import Callable
+
+from config import Paths
 
 
 class UploadFileButton(QPushButton):
@@ -15,7 +20,13 @@ class UploadFileButton(QPushButton):
         super().__init__(*args, **kwargs)
         self.clicked.connect(self.on_click)
         self.__file_type = FileType.ONE_IMAGE
+
         self.setText("Upload files")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(os.path.join(Paths.ICONS_DIR, "upload.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.setIcon(icon)
+        self.setIconSize(QtCore.QSize(40, 40))
+        self.setFlat(True)
 
     @pyqtSlot()
     def on_click(self) -> None:
