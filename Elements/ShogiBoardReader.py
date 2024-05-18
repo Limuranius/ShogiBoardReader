@@ -5,16 +5,11 @@ from extra.figures import Figure
 from .BoardMemorizer import BoardMemorizer
 from .BoardMemorizer.BoardChangeStatus import BoardChangeStatus
 from .BoardSplitter import BoardSplitter
-from .ImageGetters import ImageGetter, Photo
-from .CornerDetectors import CornerDetector
-from extra.image_modes import ImageMode
 from extra.types import ImageNP, FigureBoard, DirectionBoard, Inventory
 from .Board import Board
-from .InventoryDetectors import InventoryDetector
 
 
 class ShogiBoardReader:
-    image_mode: ImageMode
     __board_splitter: BoardSplitter
     __recognizer: Recognizer
     __memorizer: BoardMemorizer
@@ -24,11 +19,9 @@ class ShogiBoardReader:
 
     def __init__(
             self,
-            image_mode: ImageMode,
             board_splitter: BoardSplitter,
             recognizer: Recognizer,
             memorizer: BoardMemorizer = None):
-        self.image_mode = image_mode
         self.__board_splitter = board_splitter
         self.__recognizer = recognizer
         self.__memorizer = memorizer
@@ -50,16 +43,15 @@ class ShogiBoardReader:
         return self.__board_splitter.get_full_img(show_borders, show_grid, show_inventories)
 
     def get_board_image_no_perspective(self,
-                                       img_mode: ImageMode = ImageMode.ORIGINAL,
                                        show_grid: bool = False) -> ImageNP:
         """Returns image of board without perspective and surroundings"""
-        return self.__board_splitter.get_board_image_no_perspective(img_mode, show_grid)
+        return self.__board_splitter.get_board_image_no_perspective(show_grid)
 
     def update(self) -> None:
         """
         Runs recognizer and memorizer to update state of board
         """
-        cells = self.__board_splitter.get_board_cells(self.image_mode)
+        cells = self.__board_splitter.get_board_cells()
         figures, directions, score = self.__recognizer.recognize_board(cells)
 
         self.__figures = figures
@@ -102,11 +94,8 @@ class ShogiBoardReader:
     def get_memorizer(self) -> BoardMemorizer:
         return self.__memorizer
 
-    def get_cells_imgs(self, img_mode: ImageMode) -> list[list[ImageNP]]:
-        return self.__board_splitter.get_board_cells(img_mode)
-
     def get_inventories(self) -> tuple[Inventory, Inventory]:
-        i1_imgs, i2_imgs = self.__board_splitter.get_inventory_cells(self.image_mode)
+        i1_imgs, i2_imgs = self.__board_splitter.get_inventory_cells()
         i1 = defaultdict(int)
         i2 = defaultdict(int)
         for img in i1_imgs:
@@ -127,7 +116,6 @@ class ShogiBoardReader:
 
     def __copy__(self):
         return ShogiBoardReader(
-            image_mode=self.image_mode,
             board_splitter=copy.copy(self.__board_splitter),
             recognizer=copy.copy(self.__recognizer),
             memorizer=copy.copy(self.__memorizer)

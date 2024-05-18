@@ -35,6 +35,6 @@ class ImageMode(Enum):
                     maxValue=255,
                     adaptiveMethod=cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
                     thresholdType=cv2.THRESH_BINARY_INV,
-                    blockSize=7,
-                    C=10
+                    blockSize=15,
+                    C=40
                 )

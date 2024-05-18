@@ -3,20 +3,30 @@ import onnxruntime
 from ShogiNeuralNetwork import preprocessing
 from ShogiNeuralNetwork.data_info import CATEGORIES_FIGURE_TYPE, CATEGORIES_DIRECTION
 from extra.figures import Figure, Direction
+from extra.image_modes import ImageMode
 from extra.types import CellsImages, FigureBoard, DirectionBoard, ImageNP
 from .Recognizer import Recognizer
+import json
 
 
 class RecognizerONNX(Recognizer):
     model: onnxruntime.InferenceSession
     cell_img_size: int
+    image_mode: ImageMode
 
-    def __init__(self, model_path: str, cell_img_size: int):
+    def __init__(self, model_path: str):
         self.model = onnxruntime.InferenceSession(model_path)
-        self.cell_img_size = cell_img_size
+
+        meta = self.model.get_modelmeta().custom_metadata_map
+        self.cell_img_size = json.loads(meta["cell_img_size"])
+        self.image_mode = ImageMode(json.loads(meta["image_mode"]))
 
     def recognize_cell(self, cell_img: ImageNP) -> tuple[Figure, Direction]:
-        inp = preprocessing.prepare_cell_img(cell_img)
+        inp = preprocessing.prepare_cell_img(
+            cell_img,
+            self.image_mode,
+            self.cell_img_size
+        )
         predictions = self.model.run(["figure", "direction"], {"input": inp})
         figure_label = predictions[0].argmax()
         direction_label = predictions[1].argmax()
@@ -25,7 +35,11 @@ class RecognizerONNX(Recognizer):
         return figure, direction
 
     def recognize_board(self, cells_imgs: CellsImages) -> tuple[FigureBoard, DirectionBoard, float]:
-        inp = preprocessing.prepare_cells_imgs(cells_imgs)
+        inp = preprocessing.prepare_cells_imgs(
+            cells_imgs,
+            self.image_mode,
+            self.cell_img_size,
+        )
         predictions = self.model.run(["figure", "direction"], {"input": inp})
 
         figure_predict = predictions[0].argmax(axis=1)

@@ -1,14 +1,10 @@
 from Elements import *
 from config import Paths, GLOBAL_CONFIG
-from extra.image_modes import ImageMode
-
-CONFIG_IMAGE_MODE = ImageMode(GLOBAL_CONFIG.NeuralNetwork.image_mode)
 
 
 def default_recognizer() -> Recognizers.Recognizer:
     return RecognizerONNX(
         model_path=Paths.MODEL_ONNX_PATH,
-        cell_img_size=GLOBAL_CONFIG.NeuralNetwork.cell_img_size
     )
 
 
@@ -26,9 +22,8 @@ def hsv_corner_detector():
     return CornerDetectors.HSVThresholdCornerDetector(hsv_low, hsv_high)
 
 
-def empty_reader(image_mode: ImageMode = CONFIG_IMAGE_MODE):
+def empty_reader():
     return ShogiBoardReader(
-        image_mode=image_mode,
         board_splitter=BoardSplitter(
             image_getter=None,
             corner_getter=None,
@@ -39,9 +34,8 @@ def empty_reader(image_mode: ImageMode = CONFIG_IMAGE_MODE):
     )
 
 
-def image_reader(image_mode: ImageMode = CONFIG_IMAGE_MODE):
+def image_reader():
     reader = ShogiBoardReader(
-        image_mode=image_mode,
         board_splitter=BoardSplitter(
             ImageGetters.Photo(),
             CornerDetectors.CoolCornerDetector(),
@@ -51,9 +45,8 @@ def image_reader(image_mode: ImageMode = CONFIG_IMAGE_MODE):
     return reader
 
 
-def book_reader(image_mode: ImageMode = CONFIG_IMAGE_MODE):
+def book_reader():
     reader = ShogiBoardReader(
-        image_mode=image_mode,
         board_splitter=BoardSplitter(
             image_getter=ImageGetters.Photo(),
             corner_getter=BookCornerDetector(),
@@ -64,9 +57,8 @@ def book_reader(image_mode: ImageMode = CONFIG_IMAGE_MODE):
     return reader
 
 
-def camera_reader(image_mode: ImageMode = CONFIG_IMAGE_MODE):
+def camera_reader():
     reader = ShogiBoardReader(
-        image_mode=image_mode,
         board_splitter=BoardSplitter(
             image_getter=ImageGetters.Camera(),
             corner_getter=CoolCornerDetector(),
@@ -75,3 +67,5 @@ def camera_reader(image_mode: ImageMode = CONFIG_IMAGE_MODE):
         recognizer=default_recognizer()
     )
     return reader
+
+default_recognizer()
