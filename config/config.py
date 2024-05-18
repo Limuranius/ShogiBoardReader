@@ -52,14 +52,14 @@ class Settings:
 
 
 class Config:
-    NeuralNetwork: NeuralNetworkTraining
+    NeuralNetworkTraining: NeuralNetworkTraining
     HSVThreshold: HSVThreshold
     Tweaks: Tweaks
     Visuals: Visuals
     Settings: Settings
 
     def __init__(self, config_path: str):
-        self.NeuralNetwork = NeuralNetworkTraining(config_path)
+        self.NeuralNetworkTraining = NeuralNetworkTraining(config_path)
         self.HSVThreshold = HSVThreshold(config_path)
         self.Tweaks = Tweaks(config_path)
         self.Visuals = Visuals(config_path)

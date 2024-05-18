@@ -1,12 +1,6 @@
-import os
-
 import cv2
 import numpy as np
-import itertools
-import math
 from .CornerDetector import *
-from extra.types import Inventory
-from config import Paths
 
 
 class BookCornerDetector(CornerDetector):

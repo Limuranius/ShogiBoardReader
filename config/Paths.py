@@ -1,5 +1,4 @@
 from os import path
-import os
 
 ROOT_DIR = path.abspath(path.join(path.dirname(__file__), ".."))
 

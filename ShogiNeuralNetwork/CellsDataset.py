@@ -12,7 +12,7 @@ import tqdm
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 from ShogiNeuralNetwork.data_info import CATEGORIES_FIGURE_TYPE, CATEGORIES_DIRECTION
-from config import GLOBAL_CONFIG, Paths
+from config import GLOBAL_CONFIG
 from extra.image_modes import ImageMode
 from extra.types import ImageNP, Figure, Direction
 import imagehash

@@ -1,4 +1,3 @@
-from extra.types import Figure, FigureBoard
 from .Move import *
 from ..Board import Board
 

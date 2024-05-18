@@ -2,14 +2,13 @@ import copy
 import os
 
 from PyQt5 import QtGui
-from PyQt5.QtCore import pyqtSlot, QVariant, QThread, pyqtSignal, QUrl
-from PyQt5.QtMultimedia import QSoundEffect
+from PyQt5.QtCore import pyqtSlot, QThread, pyqtSignal
 from PyQt5.QtWidgets import QWidget
 
 from Elements.Board import Board
 from Elements.ImageGetters import Photo, Video, Camera
 from GUI.UI.UI_ScanImage import Ui_scan_image
-from Elements import ImageGetters, BoardChangeStatus, ShogiBoardReader
+from Elements import BoardChangeStatus, ShogiBoardReader
 from GUI.views.Settings import Settings
 from GUI.widgets.UploadFileDialog import FileType
 from config import Paths

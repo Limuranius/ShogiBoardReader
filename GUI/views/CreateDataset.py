@@ -2,7 +2,7 @@ import cv2
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import pyqtSlot, QVariant
 from extra import factories
-from Elements import ShogiBoardReader, CornerDetectors
+from Elements import ShogiBoardReader
 from extra.figures import Figure, Direction
 from GUI.UI.create_dataset import Ui_MainWindow
 from PyQt5.QtWidgets import QMainWindow, QMessageBox

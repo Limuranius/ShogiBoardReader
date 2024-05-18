@@ -1,5 +1,4 @@
-import numpy as np
-from PyQt5.QtCore import pyqtSignal, QObject, QVariant, pyqtSlot, QMetaObject, Qt
+from PyQt5.QtCore import pyqtSignal, QObject, pyqtSlot
 from Elements import *
 from Elements.Board import Board
 from config import GLOBAL_CONFIG

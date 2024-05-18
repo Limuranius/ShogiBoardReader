@@ -1,7 +1,7 @@
 import numpy as np
 import shogi
 
-from extra.figures import Figure, Direction, FIGURE_ICONS_PATHS, get_figure_image
+from extra.figures import Figure, Direction, get_figure_image
 from extra.types import FigureBoard, DirectionBoard, ImageNP, Inventory
 from dataclasses import dataclass
 from extra import utils

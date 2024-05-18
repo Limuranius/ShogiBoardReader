@@ -1,6 +1,4 @@
 from collections import defaultdict
-
-from extra.types import Figure, FigureBoard, DirectionBoard, Direction
 from Elements.Board import Board
 
 
