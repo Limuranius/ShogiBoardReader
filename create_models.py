@@ -15,7 +15,10 @@ dataset = dataset.resize((GLOBAL_CONFIG.NeuralNetworkTraining.cell_img_size, GLO
 dataset = dataset.convert(ImageMode(GLOBAL_CONFIG.NeuralNetworkTraining.image_mode))
 train, test = dataset.get_tf_dataset()
 
-model = create_model(GLOBAL_CONFIG.NeuralNetworkTraining.cell_img_size)
+model = create_model(
+    cell_img_size=GLOBAL_CONFIG.NeuralNetworkTraining.cell_img_size,
+    conv_layers_filters_counts=[64, 64, 64, 64],
+)
 model = train_model(model, train, GLOBAL_CONFIG.NeuralNetworkTraining.epochs, 1)
 
 print(model.evaluate(test, return_dict=True, verbose=1))
