@@ -12,7 +12,7 @@ import tqdm
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 from ShogiNeuralNetwork.data_info import CATEGORIES_FIGURE_TYPE, CATEGORIES_DIRECTION
-from config import GLOBAL_CONFIG, Paths
+from config import GLOBAL_CONFIG
 from extra.image_modes import ImageMode
 from extra.types import ImageNP, Figure, Direction
 import imagehash
@@ -150,7 +150,7 @@ class CellsDataset:
 
     def __to_tf_dataset(self) -> tuple[tf.data.Dataset, tf.data.Dataset]:
         data = self.__prepare_1()
-        train, test = train_test_split(data, test_size=GLOBAL_CONFIG.NeuralNetwork.test_fraction)
+        train, test = train_test_split(data, test_size=GLOBAL_CONFIG.NeuralNetworkTraining.test_fraction)
 
         train_images = np.array(train["image"].tolist())
         train_figure_labels = train["figure_type"].to_numpy()
@@ -180,7 +180,7 @@ class CellsDataset:
         train_ds = (
             ds
             .shuffle(ds.cardinality())
-            .batch(GLOBAL_CONFIG.NeuralNetwork.batch_size)
+            .batch(GLOBAL_CONFIG.NeuralNetworkTraining.batch_size)
             .map(lambda img, outputs:
                  (augmentation.resize_and_rescale(img), outputs))
             .map(lambda img, outputs:
@@ -191,7 +191,7 @@ class CellsDataset:
     def __prepare_test(self, ds: tf.data.Dataset) -> tf.data.Dataset:
         test_ds = (
             ds
-            .batch(GLOBAL_CONFIG.NeuralNetwork.batch_size)
+            .batch(GLOBAL_CONFIG.NeuralNetworkTraining.batch_size)
             .map(lambda img, outputs:
                  (augmentation.resize_and_rescale(img), outputs))
         )

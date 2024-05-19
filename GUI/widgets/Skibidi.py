@@ -1,4 +1,3 @@
-import cv2
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QFrame
 from GUI.widgets.ImageLabel import ImageLabel

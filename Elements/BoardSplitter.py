@@ -1,10 +1,8 @@
 from config import GLOBAL_CONFIG
-from . import ImageGetters
 from .ImageGetters import ImageGetter
 from Elements.CornerDetectors.CornerDetector import CornerDetector
 from Elements.InventoryDetectors import InventoryDetector
 from extra import utils
-from extra.image_modes import ImageMode
 from extra.types import ImageNP
 import numpy as np
 import cv2
@@ -25,7 +23,6 @@ class BoardSplitter:
         self.__inventory_detector = inventory_detector
 
     def get_board_image_no_perspective(self,
-                                       img_mode: ImageMode = ImageMode.ORIGINAL,
                                        draw_grid: bool = False) -> ImageNP:
         """Returns image of board without perspective and surroundings"""
         full_img = self.__image_getter.get_image()
@@ -38,11 +35,11 @@ class BoardSplitter:
                 cv2.line(img_no_persp, [x, 0], [x, h], color=[0, 255, 0], thickness=grid_thickness)
             for y in np.linspace(0, h, num=10, dtype=np.int_):
                 cv2.line(img_no_persp, [0, y], [w, y], color=[0, 255, 0], thickness=grid_thickness)
-        return img_mode.convert_image(img_no_persp)
+        return img_no_persp
 
-    def get_board_cells(self, image_mode: ImageMode) -> list[list[ImageNP]]:
+    def get_board_cells(self) -> list[list[ImageNP]]:
         """Returns 2D 9x9 list with images of cells"""
-        board_img = self.get_board_image_no_perspective(image_mode)
+        board_img = self.get_board_image_no_perspective()
         return self.__get_board_cells(board_img)
 
     def __get_board_cells(self, board_img: ImageNP) -> list[list[ImageNP]]:
@@ -94,11 +91,9 @@ class BoardSplitter:
             cv2.polylines(full_img, [i1_corners, i2_corners], True, color, thickness=thickness)
         return full_img
 
-    def get_inventory_cells(self, image_mode: ImageMode) -> tuple[list[ImageNP], list[ImageNP]]:
+    def get_inventory_cells(self) -> tuple[list[ImageNP], list[ImageNP]]:
         img = self.get_full_img()
         i1_imgs, i2_imgs = self.__inventory_detector.get_figure_images(img)
-        i1_imgs = [image_mode.convert_image(image) for image in i1_imgs]
-        i2_imgs = [image_mode.convert_image(image) for image in i2_imgs]
         return i1_imgs, i2_imgs
 
     def __copy__(self):

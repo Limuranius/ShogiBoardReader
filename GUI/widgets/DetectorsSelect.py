@@ -1,6 +1,6 @@
 import copy
 
-from PyQt5.QtCore import pyqtSlot, pyqtSignal, QVariant, QThread, QTimer
+from PyQt5.QtCore import pyqtSlot, pyqtSignal, QVariant, QTimer
 from PyQt5.QtWidgets import QWidget
 from config.config import GLOBAL_CONFIG
 import extra.utils

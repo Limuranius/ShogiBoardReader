@@ -1,14 +1,16 @@
 import copy
+import os
 
-from PyQt5.QtCore import pyqtSlot, QVariant, QThread, pyqtSignal, QUrl
-from PyQt5.QtMultimedia import QSoundEffect
+from PyQt5 import QtGui
+from PyQt5.QtCore import pyqtSlot, QThread, pyqtSignal
 from PyQt5.QtWidgets import QWidget
 
 from Elements.Board import Board
-from Elements.ImageGetters import Photo, Video
+from Elements.ImageGetters import Photo, Video, Camera
 from GUI.UI.UI_ScanImage import Ui_scan_image
-from Elements import ImageGetters, BoardChangeStatus, ShogiBoardReader
+from Elements import BoardChangeStatus, ShogiBoardReader
 from GUI.views.Settings import Settings
+from GUI.widgets.UploadFileDialog import FileType
 from config import Paths
 from extra.types import ImageNP
 from GUI.workers.ReaderWorker import ReaderWorker
@@ -98,10 +100,16 @@ class ScanImage(QWidget):
         self.__continuous_request = True
         self.__request_data()
         self.ui.pushButton_pause.setText("Pause")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(os.path.join(Paths.ICONS_DIR, "pause.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.ui.pushButton_pause.setIcon(icon)
 
     def stop_stream(self):
         self.__continuous_request = False
-        self.ui.pushButton_pause.setText("Continue")
+        self.ui.pushButton_pause.setText("Play")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(os.path.join(Paths.ICONS_DIR, "play.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.ui.pushButton_pause.setIcon(icon)
 
     @pyqtSlot()
     def on_pause_clicked(self):
@@ -135,16 +143,25 @@ class ScanImage(QWidget):
 
         # Checking image getter type
         image_getter = new_reader.get_board_splitter().get_image_getter()
-        if isinstance(image_getter, Photo):
-            self.stop_stream()
-            self.ui.pushButton_pause.setDisabled(True)
-        else:
-            self.start_stream()
-            self.ui.pushButton_pause.setDisabled(False)
-        if isinstance(image_getter, Video):
-            self.ui.pushButton_restart_video.setDisabled(False)
-        else:
-            self.ui.pushButton_restart_video.setDisabled(True)
+        self.ui.pushButton_restart_video.setVisible(False)
+        self.ui.pushButton_pause.setVisible(False)
+        self.ui.pushButton_upload.setVisible(False)
+        match image_getter:
+            case Photo():
+                self.stop_stream()
+                self.ui.pushButton_upload.setVisible(True)
+                self.ui.pushButton_upload.set_file_type(FileType.ONE_IMAGE)
+                self.ui.pushButton_upload.connect_function(self.on_photo_uploaded)
+            case Video():
+                self.start_stream()
+                self.ui.pushButton_restart_video.setVisible(True)
+                self.ui.pushButton_pause.setVisible(True)
+                self.ui.pushButton_upload.setVisible(True)
+                self.ui.pushButton_upload.set_file_type(FileType.VIDEO)
+                self.ui.pushButton_upload.connect_function(self.on_video_uploaded)
+            case Camera():
+                self.start_stream()
+                self.ui.pushButton_pause.setVisible(True)
 
         # Checking if memorizer is used
         memorizer = self.__worker.get_reader().get_memorizer()
@@ -152,6 +169,15 @@ class ScanImage(QWidget):
             self.ui.groupBox_memorizer.setDisabled(True)
         else:
             self.ui.groupBox_memorizer.setDisabled(False)
+
+    def on_photo_uploaded(self, image: ImageNP):
+        splitter = self.__worker.get_reader().get_board_splitter()
+        splitter.set_image_getter(Photo(image))
+        self.__request_data()
+
+    def on_video_uploaded(self, video_path: str):
+        splitter = self.__worker.get_reader().get_board_splitter()
+        splitter.set_image_getter(Video(video_path))
 
     def start_alarm(self):
         pass

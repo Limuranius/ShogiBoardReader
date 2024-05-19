@@ -1,5 +1,3 @@
-import numpy as np
-
 from extra.types import ImageNP, Corners
 from .InventoryDetector import InventoryDetector
 from Elements.CornerDetectors import BookCornerDetector

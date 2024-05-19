@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_settings(object):
     def setupUi(self, settings):
         settings.setObjectName("settings")
-        settings.resize(1281, 583)
+        settings.resize(960, 583)
         self.horizontalLayout = QtWidgets.QHBoxLayout(settings)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.frame = QtWidgets.QFrame(settings)

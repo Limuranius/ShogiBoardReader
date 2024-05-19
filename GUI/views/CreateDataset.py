@@ -1,14 +1,9 @@
 import cv2
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import pyqtSlot, QVariant
-
-from config import GLOBAL_CONFIG
 from extra import factories
-from Elements import ShogiBoardReader, CornerDetectors
-
+from Elements import ShogiBoardReader
 from extra.figures import Figure, Direction
-from extra.image_modes import ImageMode
-
 from GUI.UI.create_dataset import Ui_MainWindow
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from GUI.widgets.Skibidi import Skibidi
@@ -31,7 +26,7 @@ class CreateDataset(QMainWindow):
         self.ui.setupUi(self)
         self.setAcceptDrops(True)
         self.images_paths = []
-        self.reader = factories.image_reader(ImageMode(GLOBAL_CONFIG.NeuralNetwork.image_mode))
+        self.reader = factories.image_reader()
         self.cells_dataset = CellsDataset()
         self.cells_dataset.load(Paths.DATASET_PATH)
         self.cells_select = []
@@ -95,7 +90,7 @@ class CreateDataset(QMainWindow):
 
     @pyqtSlot()
     def on_add_to_dataset_clicked(self):
-        cells_imgs = self.reader.get_cells_imgs(ImageMode.ORIGINAL)
+        cells_imgs = self.reader.get_board_splitter().get_board_cells()
         for i in range(9):
             for j in range(9):
                 cell_img = cells_imgs[i][j]

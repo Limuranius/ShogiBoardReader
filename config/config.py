@@ -2,8 +2,8 @@ from .mytypedconfig import section
 from .Paths import CONFIG_PATH
 
 
-@section(section_name="Neural Network")
-class NeuralNetwork:
+@section(section_name="Neural Network Training")
+class NeuralNetworkTraining:
     cell_img_size: int
     test_fraction: float
     width_shift_factor: float
@@ -52,14 +52,14 @@ class Settings:
 
 
 class Config:
-    NeuralNetwork: NeuralNetwork
+    NeuralNetworkTraining: NeuralNetworkTraining
     HSVThreshold: HSVThreshold
     Tweaks: Tweaks
     Visuals: Visuals
     Settings: Settings
 
     def __init__(self, config_path: str):
-        self.NeuralNetwork = NeuralNetwork(config_path)
+        self.NeuralNetworkTraining = NeuralNetworkTraining(config_path)
         self.HSVThreshold = HSVThreshold(config_path)
         self.Tweaks = Tweaks(config_path)
         self.Visuals = Visuals(config_path)

@@ -1,9 +1,7 @@
 import cv2
 import numpy as np
-from config import GLOBAL_CONFIG
+from extra.image_modes import ImageMode
 from extra.types import CellsImages, ImageNP
-
-CELL_IMAGE_SIZE = GLOBAL_CONFIG.NeuralNetwork.cell_img_size
 
 
 def reshape_image(img: np.ndarray):
@@ -24,19 +22,30 @@ def flatten(cells_imgs: CellsImages) -> list[ImageNP]:
     return flat_arr
 
 
-def prepare_cells_imgs(cells_imgs: CellsImages) -> np.ndarray:
-    """Prepares images of board cells for input into tf model
-    Does resizing, reshaping and rescaling
+def prepare_cells_imgs(
+        cells_imgs: CellsImages,
+        image_mode: ImageMode,
+        cell_image_size: int,
+) -> np.ndarray:
+    """
+    Prepares 2d array with images of board cells for input into model
+    Does resizing, reshaping, rescaling and conversion to image mode
     """
     imgs = flatten(cells_imgs)
-    imgs = [cv2.resize(image, (CELL_IMAGE_SIZE, CELL_IMAGE_SIZE)) for image in imgs]
+    imgs = [cv2.resize(image, (cell_image_size, cell_image_size)) for image in imgs]
+    imgs = [image_mode.convert_image(image) for image in imgs]
     imgs = np.array(imgs).astype("float32") / 255
-    imgs = np.reshape(imgs, (81, CELL_IMAGE_SIZE, CELL_IMAGE_SIZE, 1))
+    imgs = np.reshape(imgs, (81, cell_image_size, cell_image_size, 1))
     return imgs
 
 
-def prepare_cell_img(cell_img: ImageNP) -> ImageNP:
-    cell_img = cv2.resize(cell_img, (CELL_IMAGE_SIZE, CELL_IMAGE_SIZE))
+def prepare_cell_img(
+        cell_img: ImageNP,
+        image_mode: ImageMode,
+        cell_image_size: int,
+) -> ImageNP:
+    cell_img = cv2.resize(cell_img, (cell_image_size, cell_image_size))
+    cell_img = image_mode.convert_image(cell_img)
     cell_img = np.array(cell_img).astype("float32") / 255
-    cell_img = np.reshape(cell_img, (1, CELL_IMAGE_SIZE, CELL_IMAGE_SIZE, 1))
+    cell_img = np.reshape(cell_img, (1, cell_image_size, cell_image_size, 1))
     return cell_img

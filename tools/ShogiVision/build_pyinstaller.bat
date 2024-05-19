@@ -6,6 +6,6 @@ pyinstaller main.py ^
 --add-data "../../config.ini:." ^
 --add-data "../../img:./img" ^
 --add-data "../../sounds:./sounds" ^
---icon "../../img/shogi_eye.ico" ^
+--icon "../../img/Icons/shogi_eye.ico" ^
 --windowed ^
 --name "ShogiVision"

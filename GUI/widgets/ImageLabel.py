@@ -1,10 +1,8 @@
-import numpy as np
-from PyQt5.QtWidgets import QLabel, QSizePolicy
+from PyQt5.QtWidgets import QLabel
 from PyQt5.QtGui import QMouseEvent
-from PyQt5.QtCore import pyqtSignal, Qt, QSize
+from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QPixmap, QImage
 from extra.types import ImageNP
-import cv2
 from extra.utils import generate_random_image
 
 
