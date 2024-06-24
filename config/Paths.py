@@ -10,8 +10,9 @@ ORIGINAL_CELLS_DATASET_PATH = path.join(DATASETS_DIR, "original_cells.pickle")
 DATASET_PATH = path.join(DATASETS_DIR, "dataset")
 
 MODELS_DIR = path.join(ROOT_DIR, "models")
-MODEL_TF_PATH = path.join(MODELS_DIR, "model.model")
+MODEL_TF_PATH = path.join(MODELS_DIR, "model.keras")
 MODEL_ONNX_PATH = path.join(MODELS_DIR, "model.onnx")
+MODEL_TFLITE_PATH = path.join(MODELS_DIR, "model.tflite")
 
 IMGS_DIR = path.join(ROOT_DIR, "img")
 FIGURE_ICONS_DIR = path.join(IMGS_DIR, "figures icons")

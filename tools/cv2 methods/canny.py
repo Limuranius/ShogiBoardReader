@@ -22,11 +22,14 @@ cv2.createTrackbar("high", WIN_NAME, high, 255, set_high)
 
 img = cv2.imread(r"D:\Git Projects\ShogiBoardReader\temp\media\images\irl boards\board20.jpg")
 img = img[1000:4000]
+img = cv2.resize(img, (500, 500))
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+gray = cv2.GaussianBlur(gray, (3, 3), 0)
 # gray = cv2.resize(gray, (-1, -1), fx=0.2, fy=0.2)
 while True:
-    SIZE = 800
+    SIZE = 500
 
+    # gray = cv2.resize(gray, (SIZE, SIZE))
     canny = cv2.Canny(gray, low, high)
     # canny = cv2.resize(canny, (SIZE, SIZE))
 
