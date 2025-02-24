@@ -11,7 +11,7 @@ from GUI.UI.UI_ScanImage import Ui_scan_image
 from Elements import BoardChangeStatus, ShogiBoardReader
 from GUI.views.Settings import Settings
 from GUI.widgets.UploadFileDialog import FileType
-from config import Paths
+from config import paths
 from extra.types import ImageNP
 from GUI.workers.ReaderWorker import ReaderWorker
 
@@ -101,14 +101,14 @@ class ScanImage(QWidget):
         self.__request_data()
         self.ui.pushButton_pause.setText("Pause")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(os.path.join(Paths.ICONS_DIR, "pause.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(os.path.join(paths.ICONS_DIR, "pause.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.ui.pushButton_pause.setIcon(icon)
 
     def stop_stream(self):
         self.__continuous_request = False
         self.ui.pushButton_pause.setText("Play")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(os.path.join(Paths.ICONS_DIR, "play.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(os.path.join(paths.ICONS_DIR, "play.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.ui.pushButton_pause.setIcon(icon)
 
     @pyqtSlot()

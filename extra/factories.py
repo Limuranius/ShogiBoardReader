@@ -1,10 +1,11 @@
 from Elements import *
-from config import Paths, GLOBAL_CONFIG
+from config import paths, GLOBAL_CONFIG
 
 
 def default_recognizer() -> Recognizers.Recognizer:
-    return RecognizerONNX(
-        model_path=Paths.MODEL_ONNX_PATH,
+    return RecognizerYOLO(
+        figure_model_path=paths.FIGURE_CLASSIFICATION_MODEL_PATH,
+        direction_model_path=paths.DIRECTION_CLASSIFICATION_MODEL_PATH,
     )
 
 
@@ -67,5 +68,3 @@ def camera_reader():
         recognizer=default_recognizer()
     )
     return reader
-
-default_recognizer()

@@ -43,6 +43,8 @@ def order_points(pts: np.ndarray) -> np.ndarray:
     """
     Orders 4 corners stored in pts in the following order:
     top-left, top-right, bottom-right, bottom-left
+
+    pts can contain more than 4 points. Then function will extract 4 outermost points
     """
     rect = np.zeros((4, 2), dtype=pts.dtype)
     s = pts.sum(axis=1)

@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QMainWindow
 from GUI.UI.UI_ShogiVision import Ui_MainWindow
-from config import Paths
+from config import paths
 import cv2
 import os
 
@@ -14,7 +14,7 @@ class ShogiVision(QMainWindow):
 
     def set_animals_images(self):
         def set_image(label, img_name: str):
-            img = cv2.imread(os.path.join(Paths.IMGS_DIR, "top patreon members", img_name))
+            img = cv2.imread(os.path.join(paths.IMGS_DIR, "top patreon members", img_name))
             label.set_image(img)
 
         set_image(self.ui.label_asya, "Asya.jpg")

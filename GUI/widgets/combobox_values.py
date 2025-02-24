@@ -6,8 +6,13 @@ from extra import utils
 def corner_detector():
     return "Corner detector", [
         (
-            "Universal",
-            "Universal corner detector.\nUse it if you're unsure what to choose",
+            "Neural Network",
+            "Searches for board position using neural network\nUse it if you're unsure what to choose",
+            Elements.YOLOSegmentationCornerDetector()
+        ),
+        (
+            "Edge detection",
+            "Detects board corners using edge detection",
             Elements.CoolCornerDetector()
         ),
         (

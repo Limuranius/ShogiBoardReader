@@ -1,3 +1,5 @@
+import os.path
+
 import cv2
 import numpy as np
 from abc import ABC, abstractmethod
@@ -16,7 +18,10 @@ class Photo(ImageGetter):
 
     def __init__(self, img: str | ImageNP = ""):
         if isinstance(img, str):
-            self.img = cv2.imread(img)
+            if os.path.exists(img):
+                self.img = cv2.imread(img)
+            else:
+                self.img = None
         else:
             self.img = img
         if self.img is None:
@@ -35,6 +40,11 @@ class Camera(ImageGetter):
 
     def __init__(self, cam_id: int = 0):
         self.video = cv2.VideoCapture(cam_id)
+
+        # width = 2560
+        # height = 1440
+        # self.video.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+        # self.video.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 
     def get_image(self) -> np.ndarray:
         ret, frame = self.video.read()

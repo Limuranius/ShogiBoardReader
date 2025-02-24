@@ -1,6 +1,6 @@
 from __future__ import annotations
 from enum import Enum
-from config import Paths
+from config import paths
 import os
 import cv2
 
@@ -86,22 +86,22 @@ class Direction(Enum):
 
 
 FIGURE_ICONS_PATHS = {
-    Figure.PAWN: os.path.join(Paths.FIGURE_ICONS_DIR, "pawn.png"),
-    Figure.BISHOP: os.path.join(Paths.FIGURE_ICONS_DIR, "bishop.png"),
-    Figure.ROOK: os.path.join(Paths.FIGURE_ICONS_DIR, "rook.png"),
-    Figure.LANCE: os.path.join(Paths.FIGURE_ICONS_DIR, "lance.png"),
-    Figure.KNIGHT: os.path.join(Paths.FIGURE_ICONS_DIR, "knight.png"),
-    Figure.SILVER: os.path.join(Paths.FIGURE_ICONS_DIR, "silver.png"),
-    Figure.GOLD: os.path.join(Paths.FIGURE_ICONS_DIR, "gold.png"),
-    Figure.KING: os.path.join(Paths.FIGURE_ICONS_DIR, "king.png"),
-    Figure.EMPTY: os.path.join(Paths.FIGURE_ICONS_DIR, "empty.png"),
+    Figure.PAWN: os.path.join(paths.FIGURE_ICONS_DIR, "pawn.png"),
+    Figure.BISHOP: os.path.join(paths.FIGURE_ICONS_DIR, "bishop.png"),
+    Figure.ROOK: os.path.join(paths.FIGURE_ICONS_DIR, "rook.png"),
+    Figure.LANCE: os.path.join(paths.FIGURE_ICONS_DIR, "lance.png"),
+    Figure.KNIGHT: os.path.join(paths.FIGURE_ICONS_DIR, "knight.png"),
+    Figure.SILVER: os.path.join(paths.FIGURE_ICONS_DIR, "silver.png"),
+    Figure.GOLD: os.path.join(paths.FIGURE_ICONS_DIR, "gold.png"),
+    Figure.KING: os.path.join(paths.FIGURE_ICONS_DIR, "king.png"),
+    Figure.EMPTY: os.path.join(paths.FIGURE_ICONS_DIR, "empty.png"),
 
-    Figure.PAWN_PROM: os.path.join(Paths.FIGURE_ICONS_DIR, "promoted pawn.png"),
-    Figure.BISHOP_PROM: os.path.join(Paths.FIGURE_ICONS_DIR, "promoted bishop.png"),
-    Figure.ROOK_PROM: os.path.join(Paths.FIGURE_ICONS_DIR, "promoted rook.png"),
-    Figure.LANCE_PROM: os.path.join(Paths.FIGURE_ICONS_DIR, "promoted lance.png"),
-    Figure.KNIGHT_PROM: os.path.join(Paths.FIGURE_ICONS_DIR, "promoted knight.png"),
-    Figure.SILVER_PROM: os.path.join(Paths.FIGURE_ICONS_DIR, "promoted silver.png"),
+    Figure.PAWN_PROM: os.path.join(paths.FIGURE_ICONS_DIR, "promoted pawn.png"),
+    Figure.BISHOP_PROM: os.path.join(paths.FIGURE_ICONS_DIR, "promoted bishop.png"),
+    Figure.ROOK_PROM: os.path.join(paths.FIGURE_ICONS_DIR, "promoted rook.png"),
+    Figure.LANCE_PROM: os.path.join(paths.FIGURE_ICONS_DIR, "promoted lance.png"),
+    Figure.KNIGHT_PROM: os.path.join(paths.FIGURE_ICONS_DIR, "promoted knight.png"),
+    Figure.SILVER_PROM: os.path.join(paths.FIGURE_ICONS_DIR, "promoted silver.png"),
 }
 
 

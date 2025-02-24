@@ -14,8 +14,8 @@ if os.path.exists(NEW_BASE):
 os.makedirs(NEW_BASE, exist_ok=True)
 os.makedirs(EXE_DIR, exist_ok=True)
 
-EXCLUDE_COPY = ["temp", "tools", "README.md", "requirements_deploy.txt", ".idea", ".git",
-                "requirements_linux.txt", "requirements_windows.txt", "create_models.py", ".gitignore", "venv"]
+EXCLUDE_COPY = ["temp", "tools", "README.md", ".idea", ".git",
+                "create_models.py", ".gitignore", "venv"]
 REMOVE_DUNDER = [
     os.path.join("GUI", "widgets"),
     os.path.join("GUI", "workers"),
